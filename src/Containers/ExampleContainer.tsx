@@ -13,6 +13,7 @@ import { Brand } from '@/Components'
 import { useTheme } from '@/Hooks'
 import { useLazyFetchOneQuery } from '@/Services/modules/users'
 import { changeTheme, ThemeState } from '@/Store/Theme'
+import { Button } from '@ant-design/react-native'
 
 const ExampleContainer = () => {
   const { t } = useTranslation()
@@ -30,6 +31,8 @@ const ExampleContainer = () => {
   const onChangeTheme = ({ theme, darkMode }: Partial<ThemeState>) => {
     dispatch(changeTheme({ theme, darkMode }))
   }
+
+  return <Button type="primary">primary</Button>
 
   return (
     <ScrollView

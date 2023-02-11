@@ -7,6 +7,7 @@ import { useTheme } from '@/Hooks'
 import MainNavigator from './Main'
 import { navigationRef } from './utils'
 import analytics from '@react-native-firebase/analytics'
+import WizardContainer from '@/Containers/Wizard/WizardContainer'
 const Stack = createStackNavigator()
 
 // @refresh reset
@@ -16,10 +17,11 @@ const ApplicationNavigator = () => {
   const { colors } = NavigationTheme
 
   return (
-    <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
+    <SafeAreaView style={[Layout.fill, { backgroundColor: colors.background }]}>
       <NavigationContainer
         onReady={() => {
           if (routeNameRef.current) {
+            // @ts-ignore
             routeNameRef.current = navigationRef.current.getCurrentRoute().name
           }
         }}
@@ -27,14 +29,15 @@ const ApplicationNavigator = () => {
         ref={navigationRef}
         onStateChange={async () => {
           const previousRouteName = routeNameRef.current
+          // @ts-ignore
           const currentRouteName = navigationRef.current.getCurrentRoute().name
-
           if (previousRouteName !== currentRouteName) {
             await analytics().logScreenView({
               screen_name: currentRouteName,
               screen_class: currentRouteName,
             })
           }
+          // @ts-ignore
           routeNameRef.current = currentRouteName
         }}
       >
@@ -43,7 +46,7 @@ const ApplicationNavigator = () => {
           <Stack.Screen name="Startup" component={StartupContainer} />
           <Stack.Screen
             name="Main"
-            component={MainNavigator}
+            component={WizardContainer}
             options={{
               animationEnabled: false,
             }}

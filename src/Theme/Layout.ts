@@ -101,5 +101,12 @@ export default function ({}: ThemeVariables) {
     rotate90Inverse: {
       transform: [{ rotate: '-90deg' }],
     },
+    borderDebug: {
+      borderWidth: 1,
+      borderColor: 'red',
+    },
+    backgroundColor: {
+      backgroundColor: 'white',
+    },
   })
 }

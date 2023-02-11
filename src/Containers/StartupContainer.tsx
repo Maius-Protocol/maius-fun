@@ -15,10 +15,10 @@ const StartupContainer = () => {
     await new Promise(resolve =>
       setTimeout(() => {
         resolve(true)
-      }, 2000),
+      }, 10000),
     )
     await setDefaultTheme({ theme: 'default', darkMode: null })
-    navigateAndSimpleReset('Main')
+    // navigateAndSimpleReset('Main')
   }
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const StartupContainer = () => {
     <View style={[Layout.fill, Layout.colCenter]}>
       <Brand />
       <ActivityIndicator size={'large'} style={[Gutters.largeVMargin]} />
-      <Text style={Fonts.textCenter}>{t('welcome')}</Text>
+      <Text style={Fonts.textCenter}>A fun product from Maius Protocol</Text>
     </View>
   )
 }
