@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "mAirdrop.app"
-               BlueprintName = "mAirdrop"
-               ReferencedContainer = "container:mAirdrop.xcodeproj">
+               BuildableName = "MaiusAirdrop.app"
+               BlueprintName = "MaiusAirdrop"
+               ReferencedContainer = "container:MaiusAirdrop.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "mAirdropTests.xctest"
-               BlueprintName = "mAirdropTests"
-               ReferencedContainer = "container:mAirdrop.xcodeproj">
+               BuildableName = "MaiusAirdropTests.xctest"
+               BlueprintName = "MaiusAirdropTests"
+               ReferencedContainer = "container:MaiusAirdrop.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "mAirdrop.app"
-            BlueprintName = "mAirdrop"
-            ReferencedContainer = "container:mAirdrop.xcodeproj">
+            BuildableName = "MaiusAirdrop.app"
+            BlueprintName = "MaiusAirdrop"
+            ReferencedContainer = "container:MaiusAirdrop.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "mAirdrop.app"
-            BlueprintName = "mAirdrop"
-            ReferencedContainer = "container:mAirdrop.xcodeproj">
+            BuildableName = "MaiusAirdrop.app"
+            BlueprintName = "MaiusAirdrop"
+            ReferencedContainer = "container:MaiusAirdrop.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

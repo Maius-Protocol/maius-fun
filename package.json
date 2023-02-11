@@ -1,5 +1,5 @@
 {
-  "name": "mairdrop",
+  "name": "maiusairdrop",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,6 +16,8 @@
     "@react-native-camera-roll/camera-roll": "^5.2.3",
     "@react-native-community/segmented-control": "^2.2.2",
     "@react-native-community/slider": "^4.4.2",
+    "@react-native-firebase/analytics": "^17.1.0",
+    "@react-native-firebase/app": "^17.1.0",
     "@react-native-masked-view/masked-view": "^0.2.7",
     "@react-native-picker/picker": "^2.4.8",
     "@react-navigation/bottom-tabs": "^6.3.2",

@@ -1,4 +1,4 @@
-package com.mairdrop.newarchitecture;
+package com.megatunger.mairdrop.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.mairdrop.BuildConfig;
-import com.mairdrop.newarchitecture.components.MainComponentsRegistry;
-import com.mairdrop.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.megatunger.mairdrop.BuildConfig;
+import com.megatunger.mairdrop.newarchitecture.components.MainComponentsRegistry;
+import com.megatunger.mairdrop.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

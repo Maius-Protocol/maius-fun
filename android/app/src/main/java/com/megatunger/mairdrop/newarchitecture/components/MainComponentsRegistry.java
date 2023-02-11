@@ -1,4 +1,4 @@
-package com.mairdrop.newarchitecture.components;
+package com.megatunger.mairdrop.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

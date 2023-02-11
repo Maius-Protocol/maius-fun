@@ -6,12 +6,17 @@ install! 'cocoapods', :deterministic_uuids => false
 
 production = ENV["PRODUCTION"] == "1"
 
-target 'mAirdrop' do
+target 'MaiusAirdrop' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
   flags = get_default_flags()
 
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  $RNFirebaseAsStaticFramework = true
+  
   use_react_native!(
     :path => config[:reactNativePath],
     # to enable hermes on iOS, change `false` to `true` and then install pods
@@ -23,7 +28,7 @@ target 'mAirdrop' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'mAirdropTests' do
+  target 'MaiusAirdropTests' do
     inherit! :complete
     # Pods for testing
   end

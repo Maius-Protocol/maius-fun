@@ -1,4 +1,4 @@
-package com.mairdrop;
+package com.megatunger.mairdrop;
 
 import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
@@ -9,7 +9,7 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.react.ReactInstanceManager;
-import com.mairdrop.newarchitecture.MainApplicationReactNativeHost;
+import com.megatunger.mairdrop.newarchitecture.MainApplicationReactNativeHost;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -82,7 +82,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.mairdrop.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.megatunger.mairdrop.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

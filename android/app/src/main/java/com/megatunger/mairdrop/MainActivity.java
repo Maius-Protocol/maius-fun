@@ -1,4 +1,4 @@
-package com.mairdrop;
+package com.megatunger.mairdrop;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "mAirdrop";
+    return "Maius Airdrop";
   }
 
   // for react-native-screens
