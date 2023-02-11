@@ -6,6 +6,10 @@ import { store, persistor } from '@/Store'
 import ApplicationNavigator from '@/Navigators/Application'
 import { Provider as AntdProvider } from '@ant-design/react-native'
 import './Translations'
+import enUS from '@ant-design/react-native/lib/locale-provider/en_US'
+import { Colors } from '@/Theme/Variables'
+import { QueryClient, QueryClientProvider } from 'react-query'
+const queryClient = new QueryClient()
 
 const App = () => (
   <Provider store={store}>
@@ -17,8 +21,16 @@ const App = () => (
      * @see https://github.com/rt2zz/redux-persist/blob/master/docs/PersistGate.md
      */}
     <PersistGate loading={null} persistor={persistor}>
-      <AntdProvider>
-        <ApplicationNavigator />
+      <AntdProvider
+        locale={enUS}
+        theme={{
+          primary_button_fill: Colors.gray,
+          primary_button_fill_tap: 'black',
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <ApplicationNavigator />
+        </QueryClientProvider>
       </AntdProvider>
     </PersistGate>
   </Provider>

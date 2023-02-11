@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import { View } from '@ant-design/react-native'
-import WizardSteps from '@/Config/WizardSteps'
 import ChooseFrameContainer from '@/Containers/ChooseFrame/ChooseFrameContainer'
+import { useSelector } from 'react-redux'
+import { currentStep, WizardSteps } from '@/Store/Wizard'
 
 const WizardContainer = () => {
-  const [currentStep, setCurrentStep] = useState<WizardSteps>(
-    WizardSteps.CHOOSE_FRAME,
-  )
+  const step = useSelector(currentStep)
+
   return (
-    <View>
-      {currentStep === WizardSteps.CHOOSE_FRAME && <ChooseFrameContainer />}
-    </View>
+    <View>{step === WizardSteps.CHOOSE_FRAME && <ChooseFrameContainer />}</View>
   )
 }
 

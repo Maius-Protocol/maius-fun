@@ -25,9 +25,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>We need access to photo library in order to choose frame</string>
-    <key>NSCameraUsageDescription</key>
-    <string>This app requires access to the camera.</string>
+	<string>We need access to photo library in order to choose frame</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+    <string>This app needs bluetooth to discover nearby devices</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+    <string>This app needs bluetooth to discover nearby devices</string>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>This app needs audio to discover nearby devices</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>

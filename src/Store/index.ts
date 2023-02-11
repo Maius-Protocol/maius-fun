@@ -14,9 +14,12 @@ import {
 
 import { api } from '@/Services/api'
 import theme from './Theme'
+import wizard from './Wizard'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const reducers = combineReducers({
   theme,
+  wizard,
   api: api.reducer,
 })
 
@@ -27,7 +30,6 @@ const persistConfig = {
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
-
 const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware => {
@@ -49,5 +51,10 @@ const store = configureStore({
 const persistor = persistStore(store)
 
 setupListeners(store.dispatch)
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export { store, persistor }
