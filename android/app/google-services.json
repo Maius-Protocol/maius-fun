@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "11530837566",
+    "project_id": "mairdrop-fbdc9",
+    "storage_bucket": "mairdrop-fbdc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11530837566:android:ed209d92300555e4047b6f",
+        "android_client_info": {
+          "package_name": "com.megatunger.mairdrop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11530837566-ii5q82jlqpihl4nooe2lm1qbsfdkvupu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9evVZJNtMiSOOD7y01MAhPJLCLpC6Puo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11530837566-ii5q82jlqpihl4nooe2lm1qbsfdkvupu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "11530837566-42gm1v0f21eijeillbl79k345c83anid.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.megatunger.mairdrop"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
