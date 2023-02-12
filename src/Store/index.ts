@@ -15,11 +15,13 @@ import {
 import { api } from '@/Services/api'
 import theme from './Theme'
 import wizard from './Wizard'
+import wallet from './Wallet'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const reducers = combineReducers({
   theme,
   wizard,
+  wallet,
   api: api.reducer,
 })
 

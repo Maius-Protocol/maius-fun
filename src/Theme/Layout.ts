@@ -108,5 +108,15 @@ export default function ({}: ThemeVariables) {
     backgroundColor: {
       backgroundColor: 'white',
     },
+    shadow: {
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 9,
+      },
+      shadowOpacity: 0.38,
+      shadowRadius: 11.95,
+      elevation: 18,
+    },
   })
 }

@@ -1,32 +1,18 @@
 import React from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { useTheme } from '@/Hooks'
-import { windowWidth } from '@/Config/dimensions'
+import { maximumRes, windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
 import { Image, Text, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
 import { useMutation } from 'react-query'
-import {
-  Keypair,
-  Connection,
-  PublicKey,
-  Transaction,
-  SystemProgram,
-  sendAndConfirmTransaction,
-  LAMPORTS_PER_SOL,
-} from '@solana/web3.js'
-
+// import useMintInstruction from '@/Services/mutations/useMintInstruction'
 const MintNFTContainer = () => {
   const photo = useSelector(selectedPhoto)
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
-  const {} = useMutation(() => {
-    let mint = Keypair.generate()
-    console.log(`mint: ${mint.publicKey.toBase58()}`)
-    let mint1 = Keypair.generate()
-    console.log(`mint: ${mint.publicKey.toBase58()}`)
-  })
+  // const {} = useMintInstruction()
 
   return (
     <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
@@ -35,8 +21,8 @@ const MintNFTContainer = () => {
           <View
             style={[
               {
-                height: windowWidth * 0.8,
-                width: windowWidth * 0.8,
+                height: maximumRes(windowWidth * 0.8),
+                width: maximumRes(windowWidth * 0.8),
                 borderRadius: MetricsSizes.small,
                 overflow: 'hidden',
               },

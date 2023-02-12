@@ -1,0 +1,235 @@
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import {
+  clusterApiUrl,
+  Connection,
+  Keypair,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from '@solana/web3.js'
+import nacl from 'tweetnacl'
+import bs58 from 'bs58'
+import { Linking, View } from 'react-native'
+import { Config } from '@/Config'
+import { useDispatch } from 'react-redux'
+import { updateWalletPublicKey } from '@/Store/Wallet'
+const NETWORK = clusterApiUrl(Config.SOLANA_CLUSTER)
+
+const buildUrl = (path: string, params: URLSearchParams) =>
+  `https://phantom.app/ul/v1/${path}?${params.toString()}`
+
+const decryptPayload = (
+  data: string,
+  nonce: string,
+  sharedSecret?: Uint8Array,
+) => {
+  if (!sharedSecret) throw new Error('missing shared secret')
+
+  const decryptedData = nacl.box.open.after(
+    bs58.decode(data),
+    bs58.decode(nonce),
+    sharedSecret,
+  )
+  if (!decryptedData) {
+    throw new Error('Unable to decrypt data')
+  }
+  return JSON.parse(Buffer.from(decryptedData).toString('utf8'))
+}
+
+const encryptPayload = (payload: any, sharedSecret?: Uint8Array) => {
+  if (!sharedSecret) throw new Error('missing shared secret')
+
+  const nonce = nacl.randomBytes(24)
+
+  const encryptedPayload = nacl.box.after(
+    Buffer.from(JSON.stringify(payload)),
+    nonce,
+    sharedSecret,
+  )
+
+  return [nonce, encryptedPayload]
+}
+
+const WalletContext = React.createContext({})
+
+const WalletProvider: React.FunctionComponent = ({ children }) => {
+  const dispatch = useDispatch()
+  const [deepLink, setDeepLink] = useState<string>('')
+  const [logs, setLogs] = useState<string[]>([])
+  const connection = new Connection(NETWORK)
+  const addLog = useCallback(
+    (log: string) => setLogs(logs => [...logs, '> ' + log]),
+    [],
+  )
+  const [dappKeyPair] = useState(nacl.box.keyPair())
+  const [sharedSecret, setSharedSecret] = useState<Uint8Array>()
+  const [session, setSession] = useState<string>()
+  const [walletPublicKey, setWalletPublicKey] = useState<PublicKey>()
+
+  const connect = async () => {
+    const initialUrl = await Linking.getInitialURL()
+    console.log(initialUrl)
+    const params = new URLSearchParams({
+      dapp_encryption_public_key: bs58.encode(dappKeyPair.publicKey),
+      cluster: Config.SOLANA_CLUSTER,
+      app_url: 'https://phantom.app',
+      redirect_link: `${Config.IOS_APP_SCHEME}://onConnect`,
+    })
+
+    const url = buildUrl('connect', params)
+    await Linking.openURL(url)
+  }
+
+  const disconnect = async () => {
+    dispatch(
+      updateWalletPublicKey({
+        walletPublicKey: undefined,
+      }),
+    )
+  }
+
+  useEffect(() => {
+    if (!deepLink) return
+
+    const url = new URL(deepLink)
+    const params = url.searchParams
+
+    if (url.toString()?.includes('onConnect')) {
+      if (params.get('errorCode')) {
+        addLog(JSON.stringify(Object.fromEntries([...params]), null, 2))
+        return
+      }
+      const sharedSecretDapp = nacl.box.before(
+        bs58.decode(params.get('phantom_encryption_public_key')!),
+        dappKeyPair.secretKey,
+      )
+
+      const connectData = decryptPayload(
+        params.get('data')!,
+        params.get('nonce')!,
+        sharedSecretDapp,
+      )
+
+      setSharedSecret(sharedSecretDapp)
+      setSession(connectData.session)
+      setWalletPublicKey(new PublicKey(connectData.public_key))
+
+      addLog(JSON.stringify(connectData, null, 2))
+    }
+    // if (/onConnect/.test(url.pathname)) {
+    //   const sharedSecretDapp = nacl.box.before(
+    //     bs58.decode(params.get('phantom_encryption_public_key')!),
+    //     dappKeyPair.secretKey,
+    //   )
+    //
+    //   const connectData = decryptPayload(
+    //     params.get('data')!,
+    //     params.get('nonce')!,
+    //     sharedSecretDapp,
+    //   )
+    //
+    //   setSharedSecret(sharedSecretDapp)
+    //   setSession(connectData.session)
+    //   setPhantomWalletPublicKey(new PublicKey(connectData.public_key))
+    //
+    //   addLog(JSON.stringify(connectData, null, 2))
+    // } else if (/onDisconnect/.test(url.pathname)) {
+    //   addLog('Disconnected!')
+    // } else if (/onSignAndSendTransaction/.test(url.pathname)) {
+    //   const signAndSendTransactionData = decryptPayload(
+    //     params.get('data')!,
+    //     params.get('nonce')!,
+    //     sharedSecret,
+    //   )
+    //
+    //   addLog(JSON.stringify(signAndSendTransactionData, null, 2))
+    // } else if (/onSignAllTransactions/.test(url.pathname)) {
+    //   const signAllTransactionsData = decryptPayload(
+    //     params.get('data')!,
+    //     params.get('nonce')!,
+    //     sharedSecret,
+    //   )
+    //
+    //   const decodedTransactions = signAllTransactionsData.transactions.map(
+    //     (t: string) => Transaction.from(bs58.decode(t)),
+    //   )
+    //
+    //   addLog(JSON.stringify(decodedTransactions, null, 2))
+    // } else if (/onSignTransaction/.test(url.pathname)) {
+    //   const signTransactionData = decryptPayload(
+    //     params.get('data')!,
+    //     params.get('nonce')!,
+    //     sharedSecret,
+    //   )
+    //
+    //   const decodedTransaction = Transaction.from(
+    //     bs58.decode(signTransactionData.transaction),
+    //   )
+    //
+    //   addLog(JSON.stringify(decodedTransaction, null, 2))
+    // } else if (/onSignMessage/.test(url.pathname)) {
+    //   const signMessageData = decryptPayload(
+    //     params.get('data')!,
+    //     params.get('nonce')!,
+    //     sharedSecret,
+    //   )
+    //
+    //   addLog(JSON.stringify(signMessageData, null, 2))
+    // }
+  }, [deepLink])
+
+  useEffect(() => {
+    ;(async () => {
+      const initialUrl = await Linking.getInitialURL()
+      if (initialUrl) {
+        setDeepLink(initialUrl)
+      }
+    })()
+    const listener = Linking.addEventListener('url', handleDeepLink)
+    return () => {
+      Linking.removeSubscription(listener)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (walletPublicKey) {
+      dispatch(
+        updateWalletPublicKey({
+          walletPublicKey: walletPublicKey?.toBase58(),
+        }),
+      )
+    }
+  }, [walletPublicKey])
+
+  const handleDeepLink = ({ url }) => {
+    setDeepLink(url)
+  }
+
+  return (
+    <WalletContext.Provider
+      value={{
+        connect,
+        disconnect,
+      }}
+    >
+      {children}
+    </WalletContext.Provider>
+  )
+}
+
+export function useWallet() {
+  const context = useContext<any>(WalletContext)
+
+  if (!context) {
+    console.log('useWallet not wrapped')
+  }
+  return context
+}
+
+export default WalletProvider

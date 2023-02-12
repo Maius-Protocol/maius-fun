@@ -8,7 +8,10 @@ export enum WizardSteps {
 
 const slice = createSlice({
   name: 'wizard',
-  initialState: { step: WizardSteps.CHOOSE_FRAME } as WizardState,
+  initialState: {
+    step: WizardSteps.CHOOSE_FRAME,
+    selectedPhoto: undefined,
+  } as WizardState,
   reducers: {
     changeWizardStep: (state, { payload: { step } }: WizardPayload) => {
       if (typeof step !== 'undefined') {
@@ -21,15 +24,18 @@ const slice = createSlice({
 export const { changeWizardStep } = slice.actions
 
 export const currentStep = (state: RootState) => state.wizard.step
+export const selectedPhoto = (state: RootState) => state.wizard.selectedPhoto
 
 export default slice.reducer
 
 export type WizardState = {
   step: WizardSteps
+  selectedPhoto?: string
 }
 
 type WizardPayload = {
   payload: {
     step: WizardSteps
+    selectedPhoto?: string
   }
 }

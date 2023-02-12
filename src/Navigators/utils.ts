@@ -8,13 +8,23 @@ import {
   CommonActions,
   createNavigationContainerRef,
 } from '@react-navigation/native'
+import { store } from '@/Store'
 
 type RootStackParamList = {
   Startup: undefined
   Home: undefined
+  CHOOSE_FRAME: undefined
+  CAPTURE_PHOTO: undefined
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
+
+export enum AppRoutes {
+  CONNECT_WALLET = 'CONNECT_WALLET',
+  CHOOSE_FRAME = 'CHOOSE_FRAME',
+  CAPTURE_PHOTO = 'CAPTURE_PHOTO',
+  MINT_NFT = 'MINT_NFT',
+}
 
 export function navigate(name: keyof RootStackParamList, params: any) {
   if (navigationRef.isReady()) {
@@ -34,6 +44,15 @@ export function navigateAndReset(routes = [], index = 0) {
 }
 
 export function navigateAndSimpleReset(name: string, index = 0) {
+  if (!store.getState().wallet.walletPublicKey) {
+    navigationRef.dispatch(
+      CommonActions.reset({
+        index,
+        routes: [{ name }, { name: AppRoutes.CONNECT_WALLET }],
+      }),
+    )
+    return
+  }
   if (navigationRef.isReady()) {
     navigationRef.dispatch(
       CommonActions.reset({
