@@ -7,6 +7,8 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import { useMutation } from 'react-query'
 import { changeWizardStep, WizardSteps } from '@/Store/Wizard'
 import { useAppDispatch } from '@/Store'
+import { windowWidth } from '@/Config/dimensions'
+import { AppRoutes, navigate } from '@/Navigators/utils'
 
 const ChooseFrameContainer = () => {
   const dispatch = useAppDispatch()
@@ -20,17 +22,18 @@ const ChooseFrameContainer = () => {
   })
 
   const skip = () => {
-    dispatch(
-      changeWizardStep({
-        step: WizardSteps.CAPTURE_PHOTO,
-      }),
-    )
+    // dispatch(
+    //   changeWizardStep({
+    //     step: WizardSteps.CAPTURE_PHOTO,
+    //   }),
+    // )
+    navigate(AppRoutes.CAPTURE_PHOTO, {})
   }
 
   return (
     <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
       <View style={[Layout.fill, Layout.center]}>
-        <View style={{ height: 200, width: 200 }}>
+        <View style={{ height: windowWidth * 0.5, width: windowWidth * 0.5 }}>
           <Lottie source={Images.animations.image} autoPlay loop />
         </View>
         <View>
@@ -42,6 +45,7 @@ const ChooseFrameContainer = () => {
               Fonts.textSmall,
               Fonts.textBlack,
               Fonts.regular,
+              Gutters.smallTMargin,
               Fonts.textCenter,
             ]}
           >
