@@ -35,6 +35,7 @@
     "react": "18.0.0",
     "react-i18next": "^11.18.3",
     "react-native": "0.69.3",
+    "react-native-collapsible": "^1.6.0",
     "react-native-config": "^1.5.0",
     "react-native-flipper": "^0.156.0",
     "react-native-gesture-handler": "^2.9.0",
@@ -49,6 +50,7 @@
     "react-redux": "^8.0.2",
     "redux-flipper": "^2.0.2",
     "redux-persist": "^6.0.0",
+    "sleep-await": "^1.0.2",
     "tweetnacl": "^1.0.3"
   },
   "devDependencies": {

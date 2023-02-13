@@ -1,64 +1,32 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
-import {
-  clusterApiUrl,
-  Connection,
-  Keypair,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-} from '@solana/web3.js'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { clusterApiUrl, Connection } from '@solana/web3.js'
 import nacl from 'tweetnacl'
 import bs58 from 'bs58'
-import { Linking, View } from 'react-native'
+import { Linking } from 'react-native'
 import { Config } from '@/Config'
-import { useDispatch } from 'react-redux'
-import { updateWalletPublicKey } from '@/Store/Wallet'
-const NETWORK = clusterApiUrl(Config.SOLANA_CLUSTER)
-
+import { useDispatch, useSelector } from 'react-redux'
+import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
+import { decryptPayload } from '@/Utils/payload'
+import { NETWORK } from '../Config/solana'
 const buildUrl = (path: string, params: URLSearchParams) =>
   `https://phantom.app/ul/v1/${path}?${params.toString()}`
 
-const decryptPayload = (
-  data: string,
-  nonce: string,
-  sharedSecret?: Uint8Array,
-) => {
-  if (!sharedSecret) throw new Error('missing shared secret')
-
-  const decryptedData = nacl.box.open.after(
-    bs58.decode(data),
-    bs58.decode(nonce),
-    sharedSecret,
-  )
-  if (!decryptedData) {
-    throw new Error('Unable to decrypt data')
-  }
-  return JSON.parse(Buffer.from(decryptedData).toString('utf8'))
+interface WalletContextState {
+  connect: () => Promise<void>
+  disconnect: () => Promise<void>
+}
+interface WalletContextProps {
+  children: React.ReactNode
 }
 
-const encryptPayload = (payload: any, sharedSecret?: Uint8Array) => {
-  if (!sharedSecret) throw new Error('missing shared secret')
+const WalletContext = React.createContext<WalletContextState | undefined>(
+  undefined,
+)
 
-  const nonce = nacl.randomBytes(24)
-
-  const encryptedPayload = nacl.box.after(
-    Buffer.from(JSON.stringify(payload)),
-    nonce,
-    sharedSecret,
-  )
-
-  return [nonce, encryptedPayload]
-}
-
-const WalletContext = React.createContext({})
-
-const WalletProvider: React.FunctionComponent = ({ children }) => {
+const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
+  children,
+}): JSX.Element => {
+  const _walletPublickey = useSelector(walletPublicKey)
   const dispatch = useDispatch()
   const [deepLink, setDeepLink] = useState<string>('')
   const [logs, setLogs] = useState<string[]>([])
@@ -70,11 +38,9 @@ const WalletProvider: React.FunctionComponent = ({ children }) => {
   const [dappKeyPair] = useState(nacl.box.keyPair())
   const [sharedSecret, setSharedSecret] = useState<Uint8Array>()
   const [session, setSession] = useState<string>()
-  const [walletPublicKey, setWalletPublicKey] = useState<PublicKey>()
 
   const connect = async () => {
     const initialUrl = await Linking.getInitialURL()
-    console.log(initialUrl)
     const params = new URLSearchParams({
       dapp_encryption_public_key: bs58.encode(dappKeyPair.publicKey),
       cluster: Config.SOLANA_CLUSTER,
@@ -118,7 +84,11 @@ const WalletProvider: React.FunctionComponent = ({ children }) => {
 
       setSharedSecret(sharedSecretDapp)
       setSession(connectData.session)
-      setWalletPublicKey(new PublicKey(connectData.public_key))
+      dispatch(
+        updateWalletPublicKey({
+          walletPublicKey: connectData.public_key,
+        }),
+      )
 
       addLog(JSON.stringify(connectData, null, 2))
     }
@@ -184,32 +154,23 @@ const WalletProvider: React.FunctionComponent = ({ children }) => {
     // }
   }, [deepLink])
 
+  const handleDeepLink = ({ url }: { url: string }) => {
+    setDeepLink(url)
+  }
+
   useEffect(() => {
-    ;(async () => {
+    const myHandler = async () => {
       const initialUrl = await Linking.getInitialURL()
       if (initialUrl) {
         setDeepLink(initialUrl)
       }
-    })()
+    }
+    myHandler()
     const listener = Linking.addEventListener('url', handleDeepLink)
     return () => {
       Linking.removeSubscription(listener)
     }
   }, [])
-
-  useEffect(() => {
-    if (walletPublicKey) {
-      dispatch(
-        updateWalletPublicKey({
-          walletPublicKey: walletPublicKey?.toBase58(),
-        }),
-      )
-    }
-  }, [walletPublicKey])
-
-  const handleDeepLink = ({ url }) => {
-    setDeepLink(url)
-  }
 
   return (
     <WalletContext.Provider
@@ -223,7 +184,7 @@ const WalletProvider: React.FunctionComponent = ({ children }) => {
   )
 }
 
-export function useWallet() {
+export function useWallet(): WalletContextState {
   const context = useContext<any>(WalletContext)
 
   if (!context) {

@@ -25,3 +25,7 @@ export default slice.reducer
 export type WalletState = {
   walletPublicKey?: string
 }
+
+export type WalletPayload = {
+  payload: Partial<WalletState>
+}

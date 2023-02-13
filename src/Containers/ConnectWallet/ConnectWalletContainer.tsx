@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
 import { Button } from '@ant-design/react-native'
 import { useMutation } from 'react-query'
 import { useWallet } from '@/Hooks/useWallet'
-import { useSelector } from 'react-redux'
-import { walletPublicKey } from '@/Store/Wallet'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
 import { navigationRef } from '@/Navigators/utils'
+import { Config } from '@/Config'
 
 const ConnectWalletContainer = () => {
+  const dispatch = useDispatch()
   const { Images, Layout, Fonts, Gutters } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const { connect } = useWallet()
@@ -23,25 +25,57 @@ const ConnectWalletContainer = () => {
   }, [wallet])
 
   return (
-    <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
-      <View style={[Layout.fill, Layout.center]}>
-        <View style={{ height: windowWidth * 0.5, width: windowWidth * 0.5 }}>
-          <Lottie source={Images.animations.wallet} autoPlay loop />
+    <SafeAreaView>
+      <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+        <View style={[Layout.fill, Layout.center]}>
+          <View
+            style={{
+              height: windowWidth * 0.5,
+              width: windowWidth * 0.5,
+            }}
+          >
+            <Lottie source={Images.animations.wifi} autoPlay loop />
+          </View>
+          <View style={[Layout.center]}>
+            <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
+              Welcome to Maius Airdrop!
+            </Text>
+            <Text
+              style={[
+                Fonts.textSmall,
+                Fonts.textBlack,
+                Fonts.regular,
+                Fonts.textCenter,
+                Gutters.smallTMargin,
+              ]}
+            >
+              Please connect your wallet to start using app
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
-            Connect Wallet Required
-          </Text>
+        <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
+          <Button
+            loading={isLoading}
+            onPress={() => {
+              if (Config.MOCKING_ENABLED) {
+                dispatch(
+                  updateWalletPublicKey({
+                    walletPublicKey:
+                      '5P6KbkdP2GpUkuHi1tnbC2meToMxy52zZTiZnVzce4GJ',
+                  }),
+                )
+              }
+              mutate()
+            }}
+            type="primary"
+          >
+            <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
+              Connect with Phantom Wallet
+            </Text>
+          </Button>
         </View>
       </View>
-      <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
-        <Button loading={isLoading} onPress={mutate} type="primary">
-          <Text style={[Fonts.textWhite, Fonts.textCenter]}>
-            Connect Wallet
-          </Text>
-        </Button>
-      </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

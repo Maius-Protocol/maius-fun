@@ -17,6 +17,7 @@ import {
   ThemeNavigationTheme,
   ThemeNavigationColors,
 } from '@/Theme/theme'
+import { Colors } from '@/Theme/Variables'
 
 export default function () {
   // Get the scheme device
@@ -149,7 +150,19 @@ const buildTheme = <F, G, I, L, C>(
     ...mergeTheme(baseTheme, themeConfig, darkThemeConfig),
     darkMode,
     NavigationTheme: mergeNavigationTheme(
-      darkMode ? DarkTheme : DefaultTheme,
+      darkMode
+        ? DarkTheme
+        : {
+            dark: false,
+            colors: {
+              primary: 'rgb(0, 122, 255)',
+              background: Colors.background,
+              card: 'rgb(255, 255, 255)',
+              text: 'rgb(28, 28, 30)',
+              border: 'rgb(216, 216, 216)',
+              notification: 'rgb(255, 59, 48)',
+            },
+          },
       baseTheme.NavigationColors,
     ),
   }

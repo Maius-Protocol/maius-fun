@@ -6,7 +6,7 @@ export default function ({}: ThemeVariables) {
     animations: {
       image: require('@/Assets/Animations/5856-image-picture.json'),
       camera: require('@/Assets/Animations/9948-camera-pop-up.json'),
-      wallet: require('@/Assets/Animations/12202-wallet.json'),
+      wifi: require('@/Assets/Animations/75488-wifi-bounce.json'),
     },
   }
 }
