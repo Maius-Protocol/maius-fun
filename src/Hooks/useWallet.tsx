@@ -38,11 +38,10 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   const [session, setSession] = useState<string>()
 
   const connect = async () => {
-    const initialUrl = await Linking.getInitialURL()
     const params = new URLSearchParams({
       dapp_encryption_public_key: bs58.encode(dappKeyPair.publicKey),
       cluster: Config.SOLANA_CLUSTER,
-      app_url: 'https://phantom.app',
+      app_url: 'https://airdrop.maiuspay.com',
       redirect_link: `${Config.IOS_APP_SCHEME}://onConnect`,
     })
 
