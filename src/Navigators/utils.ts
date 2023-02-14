@@ -20,11 +20,11 @@ type RootStackParamList = {
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
 
 export enum AppRoutes {
-  AUTHENTICATION_GATEWAY = 'AUTHENTICATION_GATEWAY',
   CONNECT_WALLET = 'CONNECT_WALLET',
   CHOOSE_FRAME = 'CHOOSE_FRAME',
   CAPTURE_PHOTO = 'CAPTURE_PHOTO',
   MINT_NFT = 'MINT_NFT',
+  AIRDROP_NFT = 'AIRDROP_NFT',
 }
 
 export function navigate(name: keyof RootStackParamList, params: any) {

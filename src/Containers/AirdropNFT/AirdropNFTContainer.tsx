@@ -1,29 +1,32 @@
-import React, { useEffect } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-import { useTheme } from '@/Hooks'
+import React from 'react'
+import { Alert, SafeAreaView, Share, Text, View } from 'react-native'
 import { windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
 import { Button } from '@ant-design/react-native'
-import { useMutation } from 'react-query'
-import { useWallet } from '@/Hooks/useWallet'
-import { useDispatch, useSelector } from 'react-redux'
-import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
-import { navigationRef } from '@/Navigators/utils'
 import { Config } from '@/Config'
+import { updateWalletPublicKey } from '@/Store/Wallet'
 import MockData from '@/Config/mock'
+import { useTheme } from '@/Hooks'
+import { useMutation } from 'react-query'
 
-const ConnectWalletContainer = () => {
-  const dispatch = useDispatch()
+const AirdropNFTContainer = () => {
   const { Images, Layout, Fonts, Gutters } = useTheme()
-  const wallet = useSelector(walletPublicKey)
-  const { connect } = useWallet()
-  const { isLoading, mutate } = useMutation(connect)
 
-  useEffect(() => {
-    if (wallet) {
-      navigationRef.goBack()
+  const { isLoading, mutateAsync } = useMutation(async () => {
+    try {
+      const result = await Share.share({
+        url: '',
+      })
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+        } else {
+        }
+      } else if (result.action === Share.dismissedAction) {
+      }
+    } catch (error: any) {
+      Alert.alert(error.message)
     }
-  }, [wallet])
+  })
 
   return (
     <SafeAreaView>
@@ -35,11 +38,11 @@ const ConnectWalletContainer = () => {
               width: windowWidth * 0.5,
             }}
           >
-            <Lottie source={Images.animations.wifi} autoPlay loop />
+            {/*<Lottie source={Images.animations.wifi} autoPlay loop />*/}
           </View>
           <View style={[Layout.center]}>
             <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
-              Welcome to Maius Airdrop!
+              Airdrop to people around you!
             </Text>
             <Text
               style={[
@@ -50,7 +53,7 @@ const ConnectWalletContainer = () => {
                 Gutters.smallTMargin,
               ]}
             >
-              Please connect your wallet to start using app
+              Let's share this with iOS or Android devices
             </Text>
           </View>
         </View>
@@ -58,19 +61,12 @@ const ConnectWalletContainer = () => {
           <Button
             loading={isLoading}
             onPress={() => {
-              if (Config.MOCKING_ENABLED) {
-                dispatch(
-                  updateWalletPublicKey({
-                    walletPublicKey: MockData.walletPublicKey,
-                  }),
-                )
-              }
-              mutate()
+              mutateAsync()
             }}
             type="primary"
           >
             <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
-              Connect with Phantom Wallet
+              Share with Airdrop
             </Text>
           </Button>
         </View>
@@ -79,4 +75,4 @@ const ConnectWalletContainer = () => {
   )
 }
 
-export default ConnectWalletContainer
+export default AirdropNFTContainer

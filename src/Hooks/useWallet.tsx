@@ -8,9 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
 import { decryptPayload } from '@/Utils/payload'
 import { NETWORK } from '../Config/solana'
-const buildUrl = (path: string, params: URLSearchParams) =>
-  `https://phantom.app/ul/v1/${path}?${params.toString()}`
-
+import { buildUrl } from '@/Utils/buildUrl'
 interface WalletContextState {
   connect: () => Promise<void>
   disconnect: () => Promise<void>

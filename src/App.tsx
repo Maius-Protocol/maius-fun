@@ -8,6 +8,7 @@ import './Translations'
 import enUS from '@ant-design/react-native/lib/locale-provider/en_US'
 import { Colors } from '@/Theme/Variables'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { SafeAreaView } from 'react-native'
 const queryClient = new QueryClient()
 const App = () => (
   <Provider store={store}>

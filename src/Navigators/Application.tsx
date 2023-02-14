@@ -12,6 +12,7 @@ import MintNFTContainer from '@/Containers/MintNFT/MintNFTContainer'
 import WalletProvider from '@/Hooks/useWallet'
 import ConnectWalletContainer from '@/Containers/ConnectWallet/ConnectWalletContainer'
 import ConnectedWalletAppBar from '@/Components/ConnectedWalletAppBar'
+import AirdropNFTContainer from '@/Containers/AirdropNFT/AirdropNFTContainer'
 
 const Stack = createStackNavigator()
 
@@ -71,6 +72,10 @@ const ApplicationNavigator = () => {
           <Stack.Screen
             name={AppRoutes.MINT_NFT}
             component={MintNFTContainer}
+          />
+          <Stack.Screen
+            name={AppRoutes.AIRDROP_NFT}
+            component={AirdropNFTContainer}
           />
           <Stack.Screen
             name={AppRoutes.CONNECT_WALLET}

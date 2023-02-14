@@ -18,7 +18,7 @@ const StartupContainer = () => {
       }, 300),
     )
     await setDefaultTheme({ theme: 'default', darkMode: null })
-    navigateAndSimpleReset(AppRoutes.MINT_NFT)
+    navigateAndSimpleReset(AppRoutes.CHOOSE_FRAME)
   }
 
   useEffect(() => {
