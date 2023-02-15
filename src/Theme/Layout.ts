@@ -1,5 +1,9 @@
 import { StyleSheet } from 'react-native'
 import { ThemeVariables } from './theme'
+import { wp } from '@/Theme/Variables'
+export const maxWidthTablet = 640
+
+export const isTablet = wp('100%') >= maxWidthTablet ? true : false
 
 export default function ({}: ThemeVariables) {
   return StyleSheet.create({
@@ -107,6 +111,11 @@ export default function ({}: ThemeVariables) {
     },
     backgroundColor: {
       backgroundColor: 'white',
+    },
+    borderRadius: { borderRadius: 4, overflow: 'hidden' },
+    maxWidthTablet: {
+      maxWidth: maxWidthTablet,
+      alignSelf: 'center',
     },
     shadow: {
       shadowColor: '#000',

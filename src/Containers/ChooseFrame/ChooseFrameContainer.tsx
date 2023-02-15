@@ -5,38 +5,73 @@ import Lottie from 'lottie-react-native'
 import { useTheme } from '@/Hooks'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { useMutation } from 'react-query'
-import { changeWizardStep, WizardSteps } from '@/Store/Wizard'
 import { useAppDispatch } from '@/Store'
-import { windowWidth } from '@/Config/dimensions'
+import { maximumRes, windowWidth } from '@/Config/dimensions'
 import { AppRoutes, navigate } from '@/Navigators/utils'
+import { changeFrame, selectedFrame } from '@/Store/Wizard'
+import { useSelector } from 'react-redux'
+import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 
 const ChooseFrameContainer = () => {
   const dispatch = useAppDispatch()
+  const _selectedFrame = useSelector(selectedFrame)
   const { Images, Layout, Fonts, Gutters } = useTheme()
   const { mutateAsync: pickFrame, isLoading } = useMutation(async () => {
     const result = await launchImageLibrary({
-      // presentationStyle: 'fullScreen',
       mediaType: 'photo',
     })
-    return result
+    const { assets } = result
+    const asset = assets?.[0]
+    if (asset) {
+      dispatch(
+        changeFrame({
+          selectedFrame: asset.uri,
+        }),
+      )
+    }
+    return asset
   })
 
-  const skip = () => {
-    // dispatch(
-    //   changeWizardStep({
-    //     step: WizardSteps.CAPTURE_PHOTO,
-    //   }),
-    // )
+  const nextStep = () => {
     navigate(AppRoutes.CAPTURE_PHOTO, {})
   }
 
   return (
-    <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+    <View
+      style={[
+        Layout.fullSize,
+        Layout.center,
+        Gutters.regularHPadding,
+        Layout.maxWidthTablet,
+      ]}
+    >
       <View style={[Layout.fill, Layout.center]}>
-        <View style={{ height: windowWidth * 0.5, width: windowWidth * 0.5 }}>
-          <Lottie source={Images.animations.image} autoPlay loop />
+        {_selectedFrame && (
+          <View style={[Layout.center, Gutters.smallBMargin]}>
+            <Text style={[Fonts.regular]}>Tap image to change</Text>
+          </View>
+        )}
+        <View
+          style={[
+            {
+              height: maximumRes(windowWidth * 0.5),
+              width: maximumRes(windowWidth * 0.5),
+            },
+          ]}
+        >
+          {!_selectedFrame && (
+            <Lottie source={Images.animations.image} autoPlay loop />
+          )}
+          {_selectedFrame && (
+            <SelectedFrameImage
+              imageUri={undefined}
+              onChange={pickFrame}
+              frameUri={_selectedFrame}
+            />
+          )}
         </View>
-        <View>
+
+        <View style={[Layout.center, Gutters.largeTMargin]}>
           <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
             Step 1: Choose your unique frame
           </Text>
@@ -49,22 +84,48 @@ const ChooseFrameContainer = () => {
               Fonts.textCenter,
             ]}
           >
-            Lorem ipsum
+            Please choose transparent photo (like *.png) to make your frame.
+            Square ratio is recommended
           </Text>
         </View>
       </View>
       <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
-        <Button
-          loading={isLoading}
+        <View>
+          {!_selectedFrame && (
+            <Button
+              loading={isLoading}
+              onPress={() => {
+                pickFrame()
+              }}
+              type="primary"
+            >
+              <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
+                Choose Frame
+              </Text>
+            </Button>
+          )}
+          {_selectedFrame && (
+            <Button onPress={nextStep} type="primary">
+              <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
+                Apply & Next Step
+              </Text>
+            </Button>
+          )}
+        </View>
+        <TouchableOpacity
           onPress={() => {
-            pickFrame()
+            nextStep()
+            dispatch(
+              changeFrame({
+                selectedFrame: undefined,
+              }),
+            )
           }}
-          type="primary"
+          style={[Gutters.regularVPadding]}
         >
-          <Text style={[Fonts.textWhite, Fonts.textCenter]}>Choose Frame</Text>
-        </Button>
-        <TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>
-          <Text style={[Fonts.textGray, Fonts.textCenter]}>Skip</Text>
+          <Text style={[Fonts.textGray, Fonts.textCenter, Fonts.bold]}>
+            Skip
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

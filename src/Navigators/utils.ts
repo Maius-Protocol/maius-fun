@@ -15,6 +15,8 @@ type RootStackParamList = {
   Home: undefined
   CHOOSE_FRAME: undefined
   CAPTURE_PHOTO: undefined
+  MINT_NFT: undefined
+  AIRDROP_NFT: undefined
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()

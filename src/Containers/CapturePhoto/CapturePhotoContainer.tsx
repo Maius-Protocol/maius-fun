@@ -4,38 +4,76 @@ import { useAppDispatch } from '@/Store'
 import { useTheme } from '@/Hooks'
 import { useMutation } from 'react-query'
 import { launchCamera } from 'react-native-image-picker'
-import { changeWizardStep, WizardSteps } from '@/Store/Wizard'
-import { windowWidth } from '@/Config/dimensions'
+import { changePhoto, selectedFrame, selectedPhoto } from '@/Store/Wizard'
+import { maximumRes, windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
 import { Text, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux'
+import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
+import { AppRoutes, navigate } from '@/Navigators/utils'
 
 const CapturePhotoContainer = () => {
   const dispatch = useAppDispatch()
+  const _selectedPhoto = useSelector(selectedPhoto)
+  const _selectedFrame = useSelector(selectedFrame)
+
   const { Images, Layout, Fonts, Gutters } = useTheme()
-  const { mutateAsync: pickFrame, isLoading } = useMutation(async () => {
+  const { mutateAsync: pickPhoto, isLoading } = useMutation(async () => {
     const result = await launchCamera({
-      // presentationStyle: 'fullScreen',
       mediaType: 'photo',
     })
-    console.log(result)
-    return result
+    const { assets } = result
+    const asset = assets?.[0]
+    if (asset) {
+      dispatch(
+        changePhoto({
+          selectedPhoto: asset.uri,
+        }),
+      )
+    }
+    return asset
   })
 
   const skip = () => {
-    dispatch(
-      changeWizardStep({
-        step: WizardSteps.CAPTURE_PHOTO,
-      }),
-    )
+    navigate(AppRoutes.MINT_NFT, {})
   }
 
+  console.log(selectedPhoto)
   return (
-    <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+    <View
+      style={[
+        Layout.fullSize,
+        Layout.center,
+        Gutters.regularHPadding,
+        Layout.maxWidthTablet,
+      ]}
+    >
       <View style={[Layout.fill, Layout.center]}>
-        <View style={{ height: windowWidth * 0.5, width: windowWidth * 0.5 }}>
-          <Lottie source={Images.animations.camera} autoPlay loop />
+        {_selectedFrame && (
+          <View style={[Layout.center, Gutters.smallBMargin]}>
+            <Text style={[Fonts.regular]}>Tap image to change</Text>
+          </View>
+        )}
+        <View
+          style={[
+            {
+              height: maximumRes(windowWidth * 0.5),
+              width: maximumRes(windowWidth * 0.5),
+            },
+          ]}
+        >
+          {!_selectedFrame && (
+            <Lottie source={Images.animations.camera} autoPlay loop />
+          )}
+          {_selectedFrame && (
+            <SelectedFrameImage
+              imageUri={_selectedPhoto}
+              onChange={pickPhoto}
+              frameUri={_selectedFrame}
+            />
+          )}
         </View>
-        <View>
+        <View style={[Layout.center, Gutters.largeTMargin]}>
           <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
             Step 2: Choose your photo
           </Text>
@@ -48,23 +86,43 @@ const CapturePhotoContainer = () => {
               Gutters.smallTMargin,
             ]}
           >
-            Lorem ipsum
+            Smileeee!
           </Text>
         </View>
       </View>
       <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
-        <Button
-          loading={isLoading}
-          onPress={() => {
-            pickFrame()
-          }}
-          type="primary"
-        >
-          <Text style={[Fonts.textWhite, Fonts.textCenter]}>Capture</Text>
-        </Button>
+        <View>
+          {!_selectedPhoto && (
+            <Button
+              loading={isLoading}
+              onPress={() => {
+                pickPhoto()
+              }}
+              type="primary"
+            >
+              <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
+                Capture
+              </Text>
+            </Button>
+          )}
+
+          {_selectedPhoto && (
+            <Button
+              loading={isLoading}
+              onPress={() => {
+                skip()
+              }}
+              type="primary"
+            >
+              <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
+                Done, Let's mint NFT!
+              </Text>
+            </Button>
+          )}
+        </View>
         <TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>
           <Text style={[Fonts.textGray, Fonts.textCenter]}>
-            or choose from Photos
+            or choose another from Photos
           </Text>
         </TouchableOpacity>
       </View>

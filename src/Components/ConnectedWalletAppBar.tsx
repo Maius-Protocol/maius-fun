@@ -8,9 +8,11 @@ import { Colors } from '@/Theme/Variables'
 import { sleepAwait } from 'sleep-await'
 import { useMutation } from 'react-query'
 import { ActivityIndicator } from '@ant-design/react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { navigationRef } from '@/Navigators/utils'
 
-const ConnectedWalletAppBar = () => {
-  const { Gutters, Fonts } = useTheme()
+const ConnectedWalletAppBar = ({ back }: { back?: boolean }) => {
+  const { Gutters, Fonts, Layout } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const dispatch = useDispatch()
   const { isLoading, mutateAsync } = useMutation(async () => {
@@ -28,12 +30,34 @@ const ConnectedWalletAppBar = () => {
 
   return (
     <SafeAreaView style={{ backgroundColor: Colors.background }}>
-      <View style={[Gutters.smallVPadding, Gutters.smallHPadding]}>
+      <View
+        style={[
+          Gutters.smallVPadding,
+          Gutters.smallHPadding,
+          Layout.center,
+          Layout.row,
+          Gutters.largeRPadding,
+          Layout.justifyContentBetween,
+        ]}
+      >
+        {back && (
+          <TouchableOpacity
+            onPress={() => {
+              navigationRef.goBack()
+            }}
+            style={[Gutters.largeRPadding, Layout.row, Layout.alignItemsCenter]}
+          >
+            <Icon name="chevron-back-outline" size={20} />
+            <Text style={[Fonts.bold]}>Back</Text>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
           style={[
             Gutters.smallVPadding,
             Gutters.smallHPadding,
             { borderRadius: 8, borderWidth: 1, borderColor: Colors.gray },
+            Layout.fill,
           ]}
           onPress={() => mutateAsync()}
         >

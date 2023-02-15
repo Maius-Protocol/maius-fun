@@ -27,7 +27,14 @@ const ConnectWalletContainer = () => {
 
   return (
     <SafeAreaView>
-      <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+      <View
+        style={[
+          Layout.fullSize,
+          Layout.center,
+          Gutters.regularHPadding,
+          Layout.maxWidthTablet,
+        ]}
+      >
         <View style={[Layout.fill, Layout.center]}>
           <View
             style={{
@@ -64,6 +71,7 @@ const ConnectWalletContainer = () => {
                     walletPublicKey: MockData.walletPublicKey,
                   }),
                 )
+                return
               }
               mutate()
             }}
