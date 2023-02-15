@@ -10,7 +10,7 @@ import { maximumRes, windowWidth } from '@/Config/dimensions'
 import { AppRoutes, navigate } from '@/Navigators/utils'
 import { changeFrame, selectedFrame } from '@/Store/Wizard'
 import { useSelector } from 'react-redux'
-import SelectedFrame from '@/Containers/ChooseFrame/components/SelectedFrame'
+import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 
 const ChooseFrameContainer = () => {
   const dispatch = useAppDispatch()
@@ -63,7 +63,11 @@ const ChooseFrameContainer = () => {
             <Lottie source={Images.animations.image} autoPlay loop />
           )}
           {_selectedFrame && (
-            <SelectedFrame onChange={pickFrame} frameUri={_selectedFrame} />
+            <SelectedFrameImage
+              imageUri={undefined}
+              onChange={pickFrame}
+              frameUri={_selectedFrame}
+            />
           )}
         </View>
 

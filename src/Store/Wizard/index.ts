@@ -34,10 +34,15 @@ const slice = createSlice({
         state.selectedFrame = selectedFrame
       }
     },
+    changePhoto: (state, { payload: { selectedPhoto } }: WizardPayload) => {
+      if (typeof selectedPhoto !== 'undefined') {
+        state.selectedPhoto = selectedPhoto
+      }
+    },
   },
 })
 
-export const { changeWizardStep, changeFrame } = slice.actions
+export const { changeWizardStep, changeFrame, changePhoto } = slice.actions
 
 export const currentStep = (state: RootState) => state.wizard.step
 export const selectedPhoto = (state: RootState) => state.wizard.selectedPhoto

@@ -1,11 +1,13 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@/Hooks'
 
-const SelectedFrame = ({
+const SelectedFrameImage = ({
+  imageUri,
   frameUri,
   onChange = async () => {},
 }: {
+  imageUri: string | undefined
   frameUri: string
   onChange: () => Promise<any>
 }) => {
@@ -25,7 +27,7 @@ const SelectedFrame = ({
           ]}
         >
           <Image
-            source={Images.placeholder}
+            source={imageUri ? { uri: imageUri } : Images.placeholder}
             resizeMode="cover"
             style={[Layout.fullSize, { zIndex: 2 }]}
           />
@@ -39,22 +41,5 @@ const SelectedFrame = ({
     </TouchableOpacity>
   )
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  text: {
-    color: 'white',
-    fontSize: 42,
-    lineHeight: 84,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    backgroundColor: '#000000c0',
-  },
-})
 
-export default SelectedFrame
+export default SelectedFrameImage

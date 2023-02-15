@@ -58,10 +58,7 @@ const ApplicationNavigator = () => {
             },
             headerLeftLabelVisible: false,
             header: ({ back }) => {
-              if (back) {
-                return <></>
-              }
-              return <ConnectedWalletAppBar />
+              return <ConnectedWalletAppBar back={back !== undefined} />
             },
           }}
         >

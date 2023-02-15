@@ -8,8 +8,10 @@ import { Colors } from '@/Theme/Variables'
 import { sleepAwait } from 'sleep-await'
 import { useMutation } from 'react-query'
 import { ActivityIndicator } from '@ant-design/react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { navigationRef } from '@/Navigators/utils'
 
-const ConnectedWalletAppBar = () => {
+const ConnectedWalletAppBar = ({ back }: { back?: boolean }) => {
   const { Gutters, Fonts, Layout } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const dispatch = useDispatch()
@@ -34,12 +36,22 @@ const ConnectedWalletAppBar = () => {
           Gutters.smallHPadding,
           Layout.center,
           Layout.row,
+          Gutters.largeRPadding,
           Layout.justifyContentBetween,
         ]}
       >
-        <TouchableOpacity style={[Gutters.largeRPadding]}>
-          <Text>Back</Text>
-        </TouchableOpacity>
+        {back && (
+          <TouchableOpacity
+            onPress={() => {
+              navigationRef.goBack()
+            }}
+            style={[Gutters.largeRPadding, Layout.row, Layout.alignItemsCenter]}
+          >
+            <Icon name="chevron-back-outline" size={20} />
+            <Text style={[Fonts.bold]}>Back</Text>
+          </TouchableOpacity>
+        )}
+
         <TouchableOpacity
           style={[
             Gutters.smallVPadding,
