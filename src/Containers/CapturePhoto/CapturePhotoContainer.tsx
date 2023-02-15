@@ -5,7 +5,7 @@ import { useTheme } from '@/Hooks'
 import { useMutation } from 'react-query'
 import { launchCamera } from 'react-native-image-picker'
 import { changeWizardStep, WizardSteps } from '@/Store/Wizard'
-import { windowWidth } from '@/Config/dimensions'
+import { maximumRes, windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
 import { Text, TouchableOpacity } from 'react-native'
 
@@ -30,9 +30,21 @@ const CapturePhotoContainer = () => {
   }
 
   return (
-    <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+    <View
+      style={[
+        Layout.fullSize,
+        Layout.center,
+        Gutters.regularHPadding,
+        Layout.maxWidthTablet,
+      ]}
+    >
       <View style={[Layout.fill, Layout.center]}>
-        <View style={{ height: windowWidth * 0.5, width: windowWidth * 0.5 }}>
+        <View
+          style={{
+            height: maximumRes(windowWidth * 0.5),
+            width: maximumRes(windowWidth * 0.5),
+          }}
+        >
           <Lottie source={Images.animations.camera} autoPlay loop />
         </View>
         <View>
@@ -48,7 +60,7 @@ const CapturePhotoContainer = () => {
               Gutters.smallTMargin,
             ]}
           >
-            Lorem ipsum
+            Smileeee!
           </Text>
         </View>
       </View>

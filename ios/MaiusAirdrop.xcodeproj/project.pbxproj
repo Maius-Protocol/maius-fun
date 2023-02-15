@@ -24,6 +24,8 @@
 		D51C857BE2834106B5C60447 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 274CE67E62184223B960BA98 /* DMSans-Medium.ttf */; };
 		D5FD5D03EE9A4451A47C5674 /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C2FEADB3A9F4A1D8E18CD5D /* DMSans-Italic.ttf */; };
 		D81632022997F63B00531BBA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D81632012997F63B00531BBA /* GoogleService-Info.plist */; };
+		D8DEB5A6299D511800D4A8E3 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D8DEB5A5299D511800D4A8E3 /* Fonts */; };
+		D8DEB5A8299D51A700D4A8E3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8DEB5A7299D51A700D4A8E3 /* Ionicons.ttf */; };
 		EC5FF9B75BE74D948EC8FA0D /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B68E1F52C934815AA52B6AC /* DMSans-BoldItalic.ttf */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +73,8 @@
 		A8A496B83138A0046DC1D49A /* Pods-MaiusAirdrop-MaiusAirdropTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MaiusAirdrop-MaiusAirdropTests.release.xcconfig"; path = "Target Support Files/Pods-MaiusAirdrop-MaiusAirdropTests/Pods-MaiusAirdrop-MaiusAirdropTests.release.xcconfig"; sourceTree = "<group>"; };
 		BD26DC1191A74FE6BD3D5B0B /* DMSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DMSans-Regular.ttf"; path = "../assets/fonts/DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		D81632012997F63B00531BBA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D8DEB5A5299D511800D4A8E3 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
+		D8DEB5A7299D51A700D4A8E3 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -129,6 +133,7 @@
 		13B07FAE1A68108700A75B9A /* MaiusAirdrop */ = {
 			isa = PBXGroup;
 			children = (
+				D8DEB5A5299D511800D4A8E3 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -173,6 +178,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D8DEB5A7299D51A700D4A8E3 /* Ionicons.ttf */,
 				13B07FAE1A68108700A75B9A /* MaiusAirdrop */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MaiusAirdropTests */,
@@ -359,10 +365,12 @@
 				D81632022997F63B00531BBA /* GoogleService-Info.plist in Resources */,
 				55E55A832073491F880C9BD3 /* DMSans-Bold.ttf in Resources */,
 				EC5FF9B75BE74D948EC8FA0D /* DMSans-BoldItalic.ttf in Resources */,
+				D8DEB5A6299D511800D4A8E3 /* Fonts in Resources */,
 				D5FD5D03EE9A4451A47C5674 /* DMSans-Italic.ttf in Resources */,
 				D51C857BE2834106B5C60447 /* DMSans-Medium.ttf in Resources */,
 				74D58217E2AE4FB189657DB7 /* DMSans-MediumItalic.ttf in Resources */,
 				44F85A8F351E448FA3DF29E7 /* DMSans-Regular.ttf in Resources */,
+				D8DEB5A8299D51A700D4A8E3 /* Ionicons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,6 +702,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MaiusAirdrop/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Maius Airdrop";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -722,6 +731,7 @@
 				DEVELOPMENT_TEAM = 679FU78457;
 				INFOPLIST_FILE = MaiusAirdrop/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Maius Airdrop";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

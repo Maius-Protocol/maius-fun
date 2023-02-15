@@ -1,3 +1,8 @@
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen'
+
 /**
  * This file contains the application's variables.
  *
@@ -47,6 +52,8 @@ export const MetricsSizes = {
   regular,
   large,
 }
+
+export { wp, hp }
 
 export default {
   Colors,

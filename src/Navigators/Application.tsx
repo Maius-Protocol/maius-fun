@@ -57,7 +57,12 @@ const ApplicationNavigator = () => {
               opacity: 0,
             },
             headerLeftLabelVisible: false,
-            header: () => <ConnectedWalletAppBar />,
+            header: ({ back }) => {
+              if (back) {
+                return <></>
+              }
+              return <ConnectedWalletAppBar />
+            },
           }}
         >
           <Stack.Screen name="Startup" component={StartupContainer} />

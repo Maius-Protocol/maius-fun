@@ -10,7 +10,7 @@ import { useMutation } from 'react-query'
 import { ActivityIndicator } from '@ant-design/react-native'
 
 const ConnectedWalletAppBar = () => {
-  const { Gutters, Fonts } = useTheme()
+  const { Gutters, Fonts, Layout } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const dispatch = useDispatch()
   const { isLoading, mutateAsync } = useMutation(async () => {
@@ -28,12 +28,24 @@ const ConnectedWalletAppBar = () => {
 
   return (
     <SafeAreaView style={{ backgroundColor: Colors.background }}>
-      <View style={[Gutters.smallVPadding, Gutters.smallHPadding]}>
+      <View
+        style={[
+          Gutters.smallVPadding,
+          Gutters.smallHPadding,
+          Layout.center,
+          Layout.row,
+          Layout.justifyContentBetween,
+        ]}
+      >
+        <TouchableOpacity style={[Gutters.largeRPadding]}>
+          <Text>Back</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[
             Gutters.smallVPadding,
             Gutters.smallHPadding,
             { borderRadius: 8, borderWidth: 1, borderColor: Colors.gray },
+            Layout.fill,
           ]}
           onPress={() => mutateAsync()}
         >
