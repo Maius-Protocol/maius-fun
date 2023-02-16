@@ -25,34 +25,42 @@ export default async function handler(
 
   const {errorParseFile, fields, files } = await parseForm(req);
   if (errorParseFile) {
-    return res.status(400).json({"error": errorParseFile})
+    return res.status(400).json({"error": errorParseFile.message})
   }
 
   const file = files.filename as any
   let fileStream = fs.createReadStream(file.filepath);
   let fileId = v4()
   let key = folderS3 + "/" + fileId
-  let type = file.mimetype
+  let typeImage = file.mimetype
 
 
   const params: PutObjectRequest = {
     Bucket: bucket,
     Key: key,
     Body: fileStream,
-    ContentType: type,
+    ContentType: typeImage,
   }
 
   await s3.upload(params, async function(err, res1) {
     if (err) {
       return res.status(400).json({"err": err})
     } else {
-      let url = "https://" + bucket + "." + "s3-" + region + ".amazonaws.com/" + key
+      let url = "https://" + bucket + "/" + key
       let nameJson = v4()
       let keyJson = folderS3 + "/" + nameJson + '.json'
       let type = "application/json"
       let data = {
         name: fields.name,
-        image: url
+        image: url,
+        attributes: [{trait_type:"team",value:"Maius"}],
+        properties:
+            {
+              files: [{
+                uri: url,
+                type: typeImage
+              }]
+            }
       }
       const paramsJson: PutObjectRequest = {
         Bucket: bucket,
@@ -65,7 +73,7 @@ export default async function handler(
         if (err) {
           return res.status(400).json({"err": err})
         } else {
-          let urlJson = "https://" + bucket + "." + "s3-" + region + ".amazonaws.com/" + keyJson
+          let urlJson = "https://" + bucket + "/" + keyJson
           return res.status(200).json({"url": urlJson})
         }
       })
@@ -80,7 +88,7 @@ export const parseForm = async (
   return new Promise(async (resolve, reject) => {
     const form = formidable({
       maxFiles: 2,
-      maxFileSize: 1024 * 1024, // 1mb
+      maxFileSize: 1024 * 1024 * 5, // 5mb
     });
     form.parse(req, function (errorParseFile, fields, files) {
       if (errorParseFile) resolve({errorParseFile, fields, files});
