@@ -21,7 +21,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const file = files.media
     console.log(fields, files)
-    let url = files.filename.filepath
+    // @ts-ignore
+    let url = files.filename?.filepath
 
     res.status(200).json({
       data: {
