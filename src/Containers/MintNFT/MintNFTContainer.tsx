@@ -5,17 +5,26 @@ import { maximumRes, windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
 import { Image, Text, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
-import { selectedPhoto } from '@/Store/Wizard'
+import { selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
 import { useMutation } from 'react-query'
+import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 // import useMintInstruction from '@/Services/mutations/useMintInstruction'
 const MintNFTContainer = () => {
-  const photo = useSelector(selectedPhoto)
+  const _selectedPhoto = useSelector(selectedPhoto)
+  const _selectedFrame = useSelector(selectedFrame)
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
   // const {} = useMintInstruction()
 
   return (
-    <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+    <View
+      style={[
+        Layout.fullSize,
+        Layout.center,
+        Gutters.regularHPadding,
+        Layout.maxWidthTablet,
+      ]}
+    >
       <View style={[Layout.fill, Layout.center]}>
         <View style={[Layout.shadow]}>
           <View
@@ -29,17 +38,12 @@ const MintNFTContainer = () => {
               Gutters.largeBMargin,
             ]}
           >
-            <Image
-              source={{
-                uri: 'https://source.unsplash.com/random',
-              }}
-              style={[
-                Layout.fullSize,
-                {
-                  borderRadius: MetricsSizes.small,
-                },
-              ]}
+            <SelectedFrameImage
+              onChange={() => {}}
+              imageUri={_selectedPhoto}
+              frameUri={_selectedFrame}
             />
+            {/*// @ts-ignore*/}
             <AnimatedScanner progress={100} duration={6000} />
           </View>
         </View>
@@ -62,7 +66,7 @@ const MintNFTContainer = () => {
         </View>
       </View>
       <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
-        <Button loading={false} onPress={() => {}} type="primary">
+        <Button loading={false} type="primary">
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>
             Mint NFT with Phantom
           </Text>

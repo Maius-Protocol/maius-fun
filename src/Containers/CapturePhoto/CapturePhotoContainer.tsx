@@ -49,7 +49,7 @@ const CapturePhotoContainer = () => {
       ]}
     >
       <View style={[Layout.fill, Layout.center]}>
-        {_selectedFrame && (
+        {_selectedPhoto && (
           <View style={[Layout.center, Gutters.smallBMargin]}>
             <Text style={[Fonts.regular]}>Tap image to change</Text>
           </View>
@@ -62,10 +62,10 @@ const CapturePhotoContainer = () => {
             },
           ]}
         >
-          {!_selectedFrame && (
+          {!_selectedPhoto && (
             <Lottie source={Images.animations.camera} autoPlay loop />
           )}
-          {_selectedFrame && (
+          {_selectedPhoto && (
             <SelectedFrameImage
               imageUri={_selectedPhoto}
               onChange={pickPhoto}

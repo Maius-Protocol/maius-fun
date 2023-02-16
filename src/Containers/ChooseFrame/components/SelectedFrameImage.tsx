@@ -8,8 +8,8 @@ const SelectedFrameImage = ({
   onChange = async () => {},
 }: {
   imageUri: string | undefined
-  frameUri: string
-  onChange: () => Promise<any>
+  frameUri: string | undefined
+  onChange: () => Promise<any> | undefined
 }) => {
   const { Images, Layout, Colors } = useTheme()
 
@@ -31,11 +31,13 @@ const SelectedFrameImage = ({
             resizeMode="cover"
             style={[Layout.fullSize, { zIndex: 2 }]}
           />
-          <Image
-            source={{ uri: frameUri }}
-            resizeMode="cover"
-            style={[Layout.fullSize, { zIndex: 4, position: 'absolute' }]}
-          />
+          {frameUri && (
+            <Image
+              source={{ uri: frameUri }}
+              resizeMode="cover"
+              style={[Layout.fullSize, { zIndex: 4, position: 'absolute' }]}
+            />
+          )}
         </View>
       </View>
     </TouchableOpacity>
