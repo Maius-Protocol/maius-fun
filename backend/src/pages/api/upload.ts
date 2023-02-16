@@ -1,4 +1,5 @@
 import S3 from 'aws-sdk/clients/s3'
+import { PutObjectRequest } from 'aws-sdk/clients/s3'
 import { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import { v4 } from "uuid";
@@ -11,7 +12,7 @@ export default async function handler(
 ) {
   const accessKeyId = process.env.ACCESS_KEY
   const secretAccessKey = process.env.SECRET_KEY
-  const bucket = process.env.BUCKET
+  const bucket = process.env.BUCKET || "maius"
   const region = process.env.REGION
   const folderS3 = process.env.FOLDER_S3
 
@@ -27,17 +28,18 @@ export default async function handler(
     return res.status(400).json({"error": errorParseFile})
   }
 
-  let fileStream = fs.createReadStream(files.filename.filepath);
+  const file = files.filename as any
+  let fileStream = fs.createReadStream(file.filepath);
   let fileId = v4()
   let key = folderS3 + "/" + fileId
-  let type = files.filename.mimetype
+  let type = file.mimetype
 
-  const params = {
+
+  const params: PutObjectRequest = {
     Bucket: bucket,
     Key: key,
     Body: fileStream,
     ContentType: type,
-    Expires: 600
   }
 
   await s3.upload(params, async function(err, res1) {
@@ -52,12 +54,11 @@ export default async function handler(
         name: fields.name,
         image: url
       }
-      const paramsJson = {
+      const paramsJson: PutObjectRequest = {
         Bucket: bucket,
         Key: keyJson,
         Body: JSON.stringify(data),
         ContentType: type,
-        Expires: 600
       }
 
       await s3.upload(paramsJson, async function(err, res2) {
