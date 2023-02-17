@@ -9,10 +9,13 @@ import { selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
 import { useMutation } from 'react-query'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
+import useUploadImage from '@/Services/mutations/useUploadImage'
 // import useMintInstruction from '@/Services/mutations/useMintInstruction'
 const MintNFTContainer = () => {
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
+  const { mutateAsync: uploadImage, isLoading: isUploadingImage } =
+    useUploadImage()
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
   // const {} = useMintInstruction()
 
@@ -66,11 +69,12 @@ const MintNFTContainer = () => {
         </View>
       </View>
       <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
-        <Button loading={false} type="primary">
+        <Button loading={isUploadingImage} onPress={uploadImage} type="primary">
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>
-            Mint NFT with Phantom
+            Processing Image
           </Text>
         </Button>
+
         {/*<TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>*/}
         {/*  <Text style={[Fonts.textGray, Fonts.textCenter]}>Skip</Text>*/}
         {/*</TouchableOpacity>*/}

@@ -41,7 +41,7 @@ export const parseForm = async (
       },
       filter: part => {
         return (
-          part.name === 'filename' &&
+          (part.name === 'background' || part.name === 'front') &&
           (part.mimetype?.includes('image') || false)
         )
       },
