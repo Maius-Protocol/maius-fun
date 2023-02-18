@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import { FormidableError, parseForm } from '@/lib/parse-form'
-import uploadToStorage from '@/lib/upload-to-storage'
-import processImage from '@/lib/processImage'
+import fs from 'fs'
+import { bucket, folderS3, s3 } from '@/config/s3'
+import { v4 } from 'uuid'
+import mime from 'mime'
+import { ConvertS3UrlToCDN } from '@/config/constants'
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,28 +20,28 @@ export default async function handler(
     return
   }
 
-  let background: formidable.File | undefined
-  let front: formidable.File | undefined
+  let frame: formidable.File | undefined
 
   try {
     const { files } = await parseForm(req)
     // @ts-ignore
-    background = files?.background
-    // @ts-ignore
-    front = files?.front
-    // @ts-ignore
-    const finalImage = await processImage(front.filepath, background.filepath)
-
-    const { uploadImageCdnUrl, uploadJsonCdnUrl } = await uploadToStorage(
-      finalImage!,
-      {
-        name: 'Event',
-        attributes: [{ trait_type: 'team', value: 'Maius' }],
-      },
-    )
+    frame = files?.frame
+    const fileStream = fs.createReadStream(frame?.filepath!)
+    const mimetype = frame?.mimetype
+    const fileName = `${folderS3}/frames/${v4()}`
+    const fileExtension = mime.getExtension(mimetype!)
+    const uploadImageResponse = await s3
+      .upload({
+        Bucket: bucket!,
+        Key: `${fileName}${fileExtension ? '.' + fileExtension : ''}`,
+        Body: fileStream,
+        ContentType: mimetype!,
+      })
+      .promise()
+    const url = ConvertS3UrlToCDN(uploadImageResponse.Key)
 
     return res.status(200).json({
-      data: { image: uploadImageCdnUrl, json: uploadJsonCdnUrl },
+      data: { url },
       error: null,
     })
   } catch (e) {

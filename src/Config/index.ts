@@ -20,4 +20,5 @@ export const Config = {
 
 export const ApiRoutes = {
   UPLOAD_IMAGE: '/upload',
+  UPLOAD_FRAME: '/upload-frame',
 }

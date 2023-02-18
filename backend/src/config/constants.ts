@@ -4,9 +4,9 @@ const Constants = {
 }
 
 export const ConvertS3UrlToCDN = (key: string) => {
-  if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3000/' + key
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   return 'http://localhost:3000/' + key
+  // }
   return Constants.CDN_URL + key
 }
 

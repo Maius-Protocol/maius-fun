@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from '@/Hooks'
 import Divider from '@/Components/Divider'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AppRoutes, navigate } from '@/Navigators/utils'
 
 const EventContainer = () => {
   const { top } = useSafeAreaInsets()
@@ -23,6 +24,9 @@ const EventContainer = () => {
             Events
           </Text>
           <TouchableOpacity
+            onPress={() => {
+              navigate(AppRoutes.ADD_NEW_EVENT, {})
+            }}
             style={[
               Layout.row,
               Layout.alignItemsCenter,

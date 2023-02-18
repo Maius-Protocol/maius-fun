@@ -12,7 +12,9 @@ export const parseForm = async (
       maxFileSize: 1024 * 1024 * 100,
       filter: part => {
         return (
-          (part.name === 'background' || part.name === 'front') &&
+          (part.name === 'background' ||
+            part.name === 'front' ||
+            part.name === 'frame') &&
           (part.mimetype?.includes('image') || false)
         )
       },

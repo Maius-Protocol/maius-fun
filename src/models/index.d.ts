@@ -19,7 +19,6 @@ type EagerEvent = {
   readonly status: EventStatus | keyof typeof EventStatus;
   readonly host_pk: string;
   readonly frame_url?: string | null;
-  readonly created_at: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -34,7 +33,6 @@ type LazyEvent = {
   readonly status: EventStatus | keyof typeof EventStatus;
   readonly host_pk: string;
   readonly frame_url?: string | null;
-  readonly created_at: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

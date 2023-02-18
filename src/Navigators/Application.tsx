@@ -1,6 +1,6 @@
 import React from 'react'
-import { StatusBar, View } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { StatusBar, TouchableOpacity, View } from 'react-native'
+import { createStackNavigator, Header } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { StartupContainer } from '@/Containers'
 import { useTheme } from '@/Hooks'
@@ -14,11 +14,13 @@ import ConnectWalletContainer from '@/Containers/ConnectWallet/ConnectWalletCont
 import ConnectedWalletAppBar from '@/Components/ConnectedWalletAppBar'
 import AirdropNFTContainer from '@/Containers/AirdropNFT/AirdropNFTContainer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import EventContainer from '@/Containers/Dashboard/EventContainer'
 import AccountContainer from '@/Containers/Account/AccountContainer'
+import EventContainer from '@/Containers/Dashboard/EventContainer'
+import AddNewEventContainer from '@/Containers/AddNewEvent/AddNewEventContainer'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { Colors } from '@/Theme/Variables'
 
 const Stack = createStackNavigator()
-
 const Tab = createBottomTabNavigator()
 
 const Home = () => {
@@ -78,33 +80,20 @@ const ApplicationNavigator = () => {
             },
             headerBackgroundContainerStyle: {
               opacity: 0,
+              backgroundColor: Colors.background,
             },
-            headerLeftLabelVisible: false,
-            header: ({ back }) => {
+            headerBackTitle: 'Back',
+            header: props => {
+              if (props.back) {
+                return <Header {...props} />
+              }
               return null
-              return <ConnectedWalletAppBar back={back !== undefined} />
             },
           }}
         >
           <Stack.Screen name={AppRoutes.STARTUP} component={StartupContainer} />
           <Stack.Screen name={AppRoutes.HOME} component={Home} />
 
-          <Stack.Screen
-            name={AppRoutes.CHOOSE_FRAME}
-            component={ChooseFrameContainer}
-          />
-          <Stack.Screen
-            name={AppRoutes.CAPTURE_PHOTO}
-            component={CapturePhotoContainer}
-          />
-          <Stack.Screen
-            name={AppRoutes.MINT_NFT}
-            component={MintNFTContainer}
-          />
-          <Stack.Screen
-            name={AppRoutes.AIRDROP_NFT}
-            component={AirdropNFTContainer}
-          />
           <Stack.Screen
             name={AppRoutes.CONNECT_WALLET}
             component={ConnectWalletContainer}
@@ -113,6 +102,30 @@ const ApplicationNavigator = () => {
               headerLeft: () => null,
             }}
           />
+          <Stack.Group>
+            <Stack.Screen
+              name={AppRoutes.CHOOSE_FRAME}
+              component={ChooseFrameContainer}
+            />
+            <Stack.Screen
+              name={AppRoutes.CAPTURE_PHOTO}
+              component={CapturePhotoContainer}
+            />
+            <Stack.Screen
+              name={AppRoutes.MINT_NFT}
+              component={MintNFTContainer}
+            />
+            <Stack.Screen
+              name={AppRoutes.AIRDROP_NFT}
+              component={AirdropNFTContainer}
+            />
+          </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen
+              name={AppRoutes.ADD_NEW_EVENT}
+              component={AddNewEventContainer}
+            />
+          </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     </WalletProvider>
