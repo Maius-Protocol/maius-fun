@@ -5,6 +5,7 @@ import formidable from 'formidable'
 import { v4 } from 'uuid'
 import { FormidableError, parseForm } from '@/lib/parse-form'
 import uploadToStorage from '@/lib/upload-to-storage'
+import processImage from '@/lib/processImage'
 
 export default async function handler(
   req: NextApiRequest,
@@ -28,9 +29,11 @@ export default async function handler(
     background = files?.background
     // @ts-ignore
     front = files?.front
+    // @ts-ignore
+    const finalImage = await processImage(front.filepath, background.filepath)
 
     const { uploadImageCdnUrl, uploadJsonCdnUrl } = await uploadToStorage(
-      background!,
+      finalImage!,
       {
         name: 'Event',
         attributes: [{ trait_type: 'team', value: 'Maius' }],
@@ -38,7 +41,7 @@ export default async function handler(
     )
 
     return res.status(200).json({
-      data: { uploadImageCdnUrl, uploadJsonCdnUrl },
+      data: { image: uploadImageCdnUrl, json: uploadJsonCdnUrl },
       error: null,
     })
   } catch (e) {

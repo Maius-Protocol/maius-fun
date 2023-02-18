@@ -1,8 +1,8 @@
 import * as fs from 'fs'
-import formidable from 'formidable'
 import { v4 } from 'uuid'
 import { bucket, folderS3, s3 } from '@/config/s3'
 import { ConvertS3UrlToCDN } from '@/config/constants'
+import mime from 'mime'
 
 interface IUploadToStorageResponse {
   uploadImageCdnUrl: string
@@ -10,20 +10,21 @@ interface IUploadToStorageResponse {
 }
 
 const uploadToStorage = async (
-  file: formidable.File,
+  file: string,
   params?: any,
 ): Promise<IUploadToStorageResponse> => {
   // @ts-ignore
-  const fileStream = fs.createReadStream(file.filepath)
+  const fileStream = fs.createReadStream(file)
+  const mimetype = 'image/jpeg'
   const fileName = `${folderS3}/${v4()}`
-  const mimetype = file.mimetype
+  const fileExtension = mime.getExtension(mimetype)
   try {
     const uploadImageResponse = await s3
       .upload({
         Bucket: bucket!,
-        Key: fileName,
+        Key: `${fileName}${fileExtension ? '.' + fileExtension : ''}`,
         Body: fileStream,
-        ContentType: file.mimetype!,
+        ContentType: mimetype,
       })
       .promise()
     const uploadImageCdnUrl = ConvertS3UrlToCDN(uploadImageResponse.Key)
