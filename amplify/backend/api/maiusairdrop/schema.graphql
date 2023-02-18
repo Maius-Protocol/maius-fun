@@ -1,0 +1,13 @@
+enum EventStatus {
+  OPENED
+  CLOSED
+}
+
+type Event @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  status: EventStatus!
+  host_pk: String!
+  frame_url: String
+  created_at: AWSTimestamp!
+}

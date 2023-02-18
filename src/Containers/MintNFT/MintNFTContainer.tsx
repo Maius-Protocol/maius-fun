@@ -2,12 +2,10 @@ import React from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { useTheme } from '@/Hooks'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
-import Lottie from 'lottie-react-native'
-import { Image, Text, TouchableOpacity } from 'react-native'
+import { Text } from 'react-native'
 import { useSelector } from 'react-redux'
 import { selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
-import { useMutation } from 'react-query'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import useUploadImage from '@/Services/mutations/useUploadImage'
 // import useMintInstruction from '@/Services/mutations/useMintInstruction'
@@ -69,7 +67,17 @@ const MintNFTContainer = () => {
         </View>
       </View>
       <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
-        <Button loading={isUploadingImage} onPress={uploadImage} type="primary">
+        <Button
+          loading={isUploadingImage}
+          onPress={() => {
+            // TODO: Ensure if front image is selected && background image is selected
+            uploadImage({
+              front: _selectedPhoto!,
+              background: _selectedFrame!,
+            })
+          }}
+          type="primary"
+        >
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>
             Processing Image
           </Text>

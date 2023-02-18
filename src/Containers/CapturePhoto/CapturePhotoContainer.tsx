@@ -3,7 +3,7 @@ import { Button, View } from '@ant-design/react-native'
 import { useAppDispatch } from '@/Store'
 import { useTheme } from '@/Hooks'
 import { useMutation } from 'react-query'
-import { launchCamera } from 'react-native-image-picker'
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { changePhoto, selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
@@ -18,27 +18,35 @@ const CapturePhotoContainer = () => {
   const _selectedFrame = useSelector(selectedFrame)
 
   const { Images, Layout, Fonts, Gutters } = useTheme()
-  const { mutateAsync: pickPhoto, isLoading } = useMutation(async () => {
-    const result = await launchCamera({
-      mediaType: 'photo',
-    })
-    const { assets } = result
-    const asset = assets?.[0]
-    if (asset) {
-      dispatch(
-        changePhoto({
-          selectedPhoto: asset.uri,
-        }),
-      )
-    }
-    return asset
-  })
+  const { mutateAsync: pickPhoto, isLoading } = useMutation(
+    async ({ from }: { from: string }) => {
+      let result
+      if (from === 'camera') {
+        result = await launchCamera({
+          mediaType: 'photo',
+        })
+      } else {
+        result = await launchImageLibrary({
+          mediaType: 'photo',
+        })
+      }
+      const { assets } = result
+      const asset = assets?.[0]
+      if (asset) {
+        dispatch(
+          changePhoto({
+            selectedPhoto: asset.uri,
+          }),
+        )
+      }
+      return asset
+    },
+  )
 
   const skip = () => {
     navigate(AppRoutes.MINT_NFT, {})
   }
 
-  console.log(selectedPhoto)
   return (
     <View
       style={[
@@ -96,7 +104,9 @@ const CapturePhotoContainer = () => {
             <Button
               loading={isLoading}
               onPress={() => {
-                pickPhoto()
+                pickPhoto({
+                  from: 'camera',
+                })
               }}
               type="primary"
             >
@@ -120,7 +130,12 @@ const CapturePhotoContainer = () => {
             </Button>
           )}
         </View>
-        <TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>
+        <TouchableOpacity
+          onPress={() => {
+            pickPhoto({ from: 'gallery' })
+          }}
+          style={[Gutters.regularVPadding]}
+        >
           <Text style={[Fonts.textGray, Fonts.textCenter]}>
             or choose another from Photos
           </Text>
