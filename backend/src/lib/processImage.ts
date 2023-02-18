@@ -7,9 +7,9 @@ const sharp = require('sharp')
 const processImage = async (front: string, background: string) => {
   try {
     const key = v4()
-    const resizedBackgroundName = `resized_background_${key}`
-    const resizedForegroundName = `resized_foreground_${key}`
-    const finalImageName = `${key}.jpeg`
+    const resizedBackgroundName = `/tmp/resized_background_${key}`
+    const resizedForegroundName = `/tmp/resized_foreground_${key}`
+    const finalImageName = `/tmp/${key}.jpeg`
     await sharp(background)
       .resize({
         width: Constants.IMAGE_SIZE,
