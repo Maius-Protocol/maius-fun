@@ -13,8 +13,31 @@ import WalletProvider from '@/Hooks/useWallet'
 import ConnectWalletContainer from '@/Containers/ConnectWallet/ConnectWalletContainer'
 import ConnectedWalletAppBar from '@/Components/ConnectedWalletAppBar'
 import AirdropNFTContainer from '@/Containers/AirdropNFT/AirdropNFTContainer'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import EventContainer from '@/Containers/Dashboard/EventContainer'
+import AccountContainer from '@/Containers/Account/AccountContainer'
 
 const Stack = createStackNavigator()
+
+const Tab = createBottomTabNavigator()
+
+const Home = () => {
+  const { Colors } = useTheme()
+
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        header: () => null,
+        tabBarStyle: {
+          backgroundColor: Colors.inputBackground,
+        },
+      }}
+    >
+      <Tab.Screen name={AppRoutes.EVENTS} component={EventContainer} />
+      <Tab.Screen name={AppRoutes.ACCOUNT} component={AccountContainer} />
+    </Tab.Navigator>
+  )
+}
 
 // @refresh reset
 const ApplicationNavigator = () => {
@@ -58,11 +81,14 @@ const ApplicationNavigator = () => {
             },
             headerLeftLabelVisible: false,
             header: ({ back }) => {
+              return null
               return <ConnectedWalletAppBar back={back !== undefined} />
             },
           }}
         >
-          <Stack.Screen name="Startup" component={StartupContainer} />
+          <Stack.Screen name={AppRoutes.STARTUP} component={StartupContainer} />
+          <Stack.Screen name={AppRoutes.HOME} component={Home} />
+
           <Stack.Screen
             name={AppRoutes.CHOOSE_FRAME}
             component={ChooseFrameContainer}

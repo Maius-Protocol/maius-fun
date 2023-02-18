@@ -22,6 +22,10 @@ type RootStackParamList = {
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
 
 export enum AppRoutes {
+  STARTUP = 'STARTUP',
+  HOME = 'HOME',
+  EVENTS = 'EVENTS',
+  ACCOUNT = 'ACCOUNT',
   CONNECT_WALLET = 'CONNECT_WALLET',
   CHOOSE_FRAME = 'CHOOSE_FRAME',
   CAPTURE_PHOTO = 'CAPTURE_PHOTO',
