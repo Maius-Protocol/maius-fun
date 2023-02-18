@@ -35,4 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/tmp
+/public/tmp/
+!/public/tmp/.keep

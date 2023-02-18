@@ -13,6 +13,13 @@ const uploadToStorage = async (
   file: string,
   params?: any,
 ): Promise<IUploadToStorageResponse> => {
+  if (process.env.NODE_ENV === 'development') {
+    return {
+      uploadImageCdnUrl: ConvertS3UrlToCDN(file),
+      uploadJsonCdnUrl: ConvertS3UrlToCDN(file),
+    }
+  }
+
   // @ts-ignore
   const fileStream = fs.createReadStream(file)
   const mimetype = 'image/jpeg'

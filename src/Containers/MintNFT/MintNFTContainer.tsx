@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { useTheme } from '@/Hooks'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
@@ -8,14 +8,33 @@ import { selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import useUploadImage from '@/Services/mutations/useUploadImage'
-// import useMintInstruction from '@/Services/mutations/useMintInstruction'
 const MintNFTContainer = () => {
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
-  const { mutateAsync: uploadImage, isLoading: isUploadingImage } =
-    useUploadImage()
+  const {
+    data,
+    mutateAsync: uploadImage,
+    isLoading: isUploadingImage,
+  } = useUploadImage()
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
-  // const {} = useMintInstruction()
+
+  const progress = useMemo(() => {
+    if (data) {
+      return 100
+    }
+    if (isUploadingImage) {
+      return 50
+    }
+    return 0
+  }, [data, isUploadingImage])
+
+  useEffect(() => {
+    // TODO: Ensure if front image is selected && background image is selected
+    uploadImage({
+      front: _selectedPhoto!,
+      background: _selectedFrame!,
+    })
+  }, [])
 
   return (
     <View
@@ -45,7 +64,7 @@ const MintNFTContainer = () => {
               frameUri={_selectedFrame}
             />
             {/*// @ts-ignore*/}
-            <AnimatedScanner progress={100} duration={6000} />
+            <AnimatedScanner progress={progress} duration={3000} />
           </View>
         </View>
 
@@ -68,19 +87,12 @@ const MintNFTContainer = () => {
       </View>
       <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
         <Button
+          // disabled
           loading={isUploadingImage}
-          onPress={() => {
-            // TODO: Ensure if front image is selected && background image is selected
-            uploadImage({
-              front: _selectedPhoto!,
-              background: _selectedFrame!,
-            })
-          }}
+          onPress={() => {}}
           type="primary"
         >
-          <Text style={[Fonts.textWhite, Fonts.textCenter]}>
-            Processing Image
-          </Text>
+          <Text style={[Fonts.textWhite, Fonts.textCenter]}>Mint NFT</Text>
         </Button>
 
         {/*<TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>*/}

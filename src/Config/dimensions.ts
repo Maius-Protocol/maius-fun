@@ -4,8 +4,8 @@ export const windowWidth = Dimensions.get('window').width
 export const windowHeight = Dimensions.get('window').height
 
 export const maximumRes = (res: number) => {
-  if (res > 360) {
-    return 360
+  if (res > 420) {
+    return 420
   }
   return res
 }
