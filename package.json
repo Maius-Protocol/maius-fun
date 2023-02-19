@@ -53,6 +53,7 @@
     "react-redux": "^8.0.2",
     "redux-flipper": "^2.0.2",
     "redux-persist": "^6.0.0",
+    "sharp": "^0.31.3",
     "sleep-await": "^1.0.2",
     "tweetnacl": "^1.0.3"
   },
