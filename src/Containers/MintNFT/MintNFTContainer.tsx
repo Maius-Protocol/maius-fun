@@ -4,7 +4,7 @@ import { useTheme } from '@/Hooks'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
 import { Alert, Linking, Text } from 'react-native'
 import { useSelector } from 'react-redux'
-import { selectedFrame, selectedPhoto } from '@/Store/Wizard'
+import { selectedEvent, selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import useUploadImage from '@/Services/mutations/useUploadImage'
@@ -14,6 +14,7 @@ const MintNFTContainer = () => {
   const { bottom } = useSafeAreaInsets()
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
+  const _selectedEvent = useSelector(selectedEvent)
   const {
     // data,
     mutateAsync: uploadImage,
@@ -37,8 +38,13 @@ const MintNFTContainer = () => {
 
   const startMint = async () => {
     const url = buildSolanaPayUrl({
-      image,
-      json,
+      // image,
+      // json,
+      recipient: '5P6KbkdP2GpUdkuHi1tnbC2meToMxy52zZTiZnVzce4GJ',
+      amount: '2',
+      'spl-token': 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr',
+      reference: 'J39sdi85YKWpxPVMJR4xL5vrDL4T8E7TWsQfLjyvNp7S',
+      message: `Event: ${_selectedEvent?.name}`,
     })
     console.log(url)
     const supported = await Linking.canOpenURL(url)

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Button, View } from '@ant-design/react-native'
-import { Text, TouchableOpacity } from 'react-native'
+import { Text } from 'react-native'
 import Lottie from 'lottie-react-native'
 import { useTheme } from '@/Hooks'
 import { launchImageLibrary } from 'react-native-image-picker'
@@ -8,7 +8,7 @@ import { useMutation } from 'react-query'
 import { useAppDispatch } from '@/Store'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
 import { AppRoutes, navigate } from '@/Navigators/utils'
-import { changeFrame, selectedFrame } from '@/Store/Wizard'
+import { changeFrame, changeSelectedEvent, selectedFrame } from '@/Store/Wizard'
 import { useSelector } from 'react-redux'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import { useRoute } from '@react-navigation/native'
@@ -46,6 +46,11 @@ const ChooseFrameContainer = () => {
     dispatch(
       changeFrame({
         selectedFrame: params?.frame_url!,
+      }),
+    )
+    dispatch(
+      changeSelectedEvent({
+        selectedEvent: { ...params } as LazyEvent,
       }),
     )
   }, [])
