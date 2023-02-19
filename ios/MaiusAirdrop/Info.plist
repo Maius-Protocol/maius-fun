@@ -80,5 +80,10 @@
 				</array>
 			</dict>
 		</array>
+		<key>LSApplicationQueriesSchemes</key>
+        <array>
+            <string>solana</string>
+            <string>phantom</string>
+        </array>
 	</dict>
 </plist>

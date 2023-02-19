@@ -65,8 +65,8 @@ const CapturePhotoContainer = () => {
         <View
           style={[
             {
-              height: maximumRes(windowWidth * 0.5),
-              width: maximumRes(windowWidth * 0.5),
+              height: maximumRes(windowWidth * 0.6),
+              width: maximumRes(windowWidth * 0.6),
             },
           ]}
         >

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { Text, TouchableOpacity } from 'react-native'
 import Lottie from 'lottie-react-native'
@@ -11,8 +11,14 @@ import { AppRoutes, navigate } from '@/Navigators/utils'
 import { changeFrame, selectedFrame } from '@/Store/Wizard'
 import { useSelector } from 'react-redux'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
+import { useRoute } from '@react-navigation/native'
+import { LazyEvent } from '@/models'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const ChooseFrameContainer = () => {
+  const { bottom } = useSafeAreaInsets()
+  const route = useRoute()
+  const params = route.params as Partial<LazyEvent>
   const dispatch = useAppDispatch()
   const _selectedFrame = useSelector(selectedFrame)
   const { Images, Layout, Fonts, Gutters } = useTheme()
@@ -36,6 +42,14 @@ const ChooseFrameContainer = () => {
     navigate(AppRoutes.CAPTURE_PHOTO, {})
   }
 
+  useEffect(() => {
+    dispatch(
+      changeFrame({
+        selectedFrame: params?.frame_url!,
+      }),
+    )
+  }, [])
+
   return (
     <View
       style={[
@@ -54,8 +68,8 @@ const ChooseFrameContainer = () => {
         <View
           style={[
             {
-              height: maximumRes(windowWidth * 0.5),
-              width: maximumRes(windowWidth * 0.5),
+              height: maximumRes(windowWidth * 0.6),
+              width: maximumRes(windowWidth * 0.6),
             },
           ]}
         >
@@ -84,8 +98,8 @@ const ChooseFrameContainer = () => {
               Fonts.textCenter,
             ]}
           >
-            Please choose transparent photo (like *.png) to make your frame.
-            Square ratio is recommended
+            Your host set the frame for this event. You can start taking photo
+            with this frame or choose another frame if you want.
           </Text>
         </View>
       </View>
@@ -105,28 +119,32 @@ const ChooseFrameContainer = () => {
             </Button>
           )}
           {_selectedFrame && (
-            <Button onPress={nextStep} type="primary">
+            <Button
+              onPress={nextStep}
+              style={{ marginBottom: bottom }}
+              type="primary"
+            >
               <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
                 Apply & Next Step
               </Text>
             </Button>
           )}
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            nextStep()
-            dispatch(
-              changeFrame({
-                selectedFrame: undefined,
-              }),
-            )
-          }}
-          style={[Gutters.regularVPadding]}
-        >
-          <Text style={[Fonts.textGray, Fonts.textCenter, Fonts.bold]}>
-            Skip
-          </Text>
-        </TouchableOpacity>
+        {/*<TouchableOpacity*/}
+        {/*  onPress={() => {*/}
+        {/*    nextStep()*/}
+        {/*    dispatch(*/}
+        {/*      changeFrame({*/}
+        {/*        selectedFrame: undefined,*/}
+        {/*      }),*/}
+        {/*    )*/}
+        {/*  }}*/}
+        {/*  style={[Gutters.regularVPadding]}*/}
+        {/*>*/}
+        {/*  <Text style={[Fonts.textGray, Fonts.textCenter, Fonts.bold]}>*/}
+        {/*    Skip*/}
+        {/*  </Text>*/}
+        {/*</TouchableOpacity>*/}
       </View>
     </View>
   )

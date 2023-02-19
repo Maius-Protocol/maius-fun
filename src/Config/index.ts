@@ -3,7 +3,7 @@ import { Cluster } from '@solana/web3.js'
 const isDev = process.env.NODE_ENV === 'development'
 
 const DevConfig = {
-  API_URL: 'http://localhost:3000/api',
+  API_URL: 'https://e461-113-22-33-112.ap.ngrok.io/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: true,
 }

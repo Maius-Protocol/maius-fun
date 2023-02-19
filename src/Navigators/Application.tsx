@@ -1,5 +1,5 @@
 import React from 'react'
-import { StatusBar, TouchableOpacity, View } from 'react-native'
+import { StatusBar } from 'react-native'
 import { createStackNavigator, Header } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { StartupContainer } from '@/Containers'
@@ -11,11 +11,10 @@ import CapturePhotoContainer from '@/Containers/CapturePhoto/CapturePhotoContain
 import MintNFTContainer from '@/Containers/MintNFT/MintNFTContainer'
 import WalletProvider from '@/Hooks/useWallet'
 import ConnectWalletContainer from '@/Containers/ConnectWallet/ConnectWalletContainer'
-import ConnectedWalletAppBar from '@/Components/ConnectedWalletAppBar'
 import AirdropNFTContainer from '@/Containers/AirdropNFT/AirdropNFTContainer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import AccountContainer from '@/Containers/Account/AccountContainer'
-import EventContainer from '@/Containers/Dashboard/EventContainer'
+import EventContainer from '@/Containers/Event/EventContainer'
 import AddNewEventContainer from '@/Containers/AddNewEvent/AddNewEventContainer'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '@/Theme/Variables'
@@ -35,8 +34,32 @@ const Home = () => {
         },
       }}
     >
-      <Tab.Screen name={AppRoutes.EVENTS} component={EventContainer} />
-      <Tab.Screen name={AppRoutes.ACCOUNT} component={AccountContainer} />
+      <Tab.Screen
+        options={{
+          tabBarLabel: 'Events',
+          tabBarStyle: {
+            marginTop: 8,
+          },
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="home" color={color} size={size} />
+          ),
+        }}
+        name={AppRoutes.EVENTS}
+        component={EventContainer}
+      />
+      <Tab.Screen
+        options={{
+          tabBarLabel: 'Account',
+          tabBarStyle: {
+            marginTop: 8,
+          },
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="wallet" color={color} size={size} />
+          ),
+        }}
+        name={AppRoutes.ACCOUNT}
+        component={AccountContainer}
+      />
     </Tab.Navigator>
   )
 }
