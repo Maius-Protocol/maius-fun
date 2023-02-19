@@ -36,7 +36,6 @@ const ConnectedWalletAppBar = ({ back }: { back?: boolean }) => {
           Gutters.smallHPadding,
           Layout.center,
           Layout.row,
-          Gutters.largeRPadding,
           Layout.justifyContentBetween,
         ]}
       >

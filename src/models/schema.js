@@ -40,13 +40,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "created_at": {
-                    "name": "created_at",
-                    "isArray": false,
-                    "type": "AWSTimestamp",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -101,5 +94,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "14c543c1ebb8ba2c4107def493278787"
+    "version": "03341030a2c73b79c521aa566c83f240"
 };

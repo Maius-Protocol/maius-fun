@@ -17,6 +17,8 @@ const MintNFTContainer = () => {
     isLoading: isUploadingImage,
   } = useUploadImage()
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
+  const image = data?.data?.data?.image
+  const json = data?.data?.data?.json
 
   const progress = useMemo(() => {
     if (data) {
@@ -28,6 +30,16 @@ const MintNFTContainer = () => {
     return 0
   }, [data, isUploadingImage])
 
+  const currentStatusText = useMemo(() => {
+    if (isUploadingImage) {
+      return "We're processing your image. Please wait a moment."
+    }
+    if (data) {
+      return 'Your NFT is ready to be minted!'
+    }
+    return ''
+  }, [isUploadingImage, data])
+
   useEffect(() => {
     // TODO: Ensure if front image is selected && background image is selected
     uploadImage({
@@ -35,6 +47,8 @@ const MintNFTContainer = () => {
       background: _selectedFrame!,
     })
   }, [])
+
+  console.log(data?.data?.data)
 
   return (
     <View
@@ -64,7 +78,7 @@ const MintNFTContainer = () => {
               frameUri={_selectedFrame}
             />
             {/*// @ts-ignore*/}
-            <AnimatedScanner progress={progress} duration={3000} />
+            <AnimatedScanner progress={progress} duration={2000} />
           </View>
         </View>
 
@@ -81,7 +95,7 @@ const MintNFTContainer = () => {
               Fonts.textCenter,
             ]}
           >
-            Lorem ipsum
+            {currentStatusText}
           </Text>
         </View>
       </View>

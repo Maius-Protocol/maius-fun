@@ -20,7 +20,6 @@ const SelectedFrameImage = ({
           style={[
             {
               position: 'absolute',
-              borderWidth: 0.3,
               borderColor: Colors.gray,
             },
             Layout.fullSize,
