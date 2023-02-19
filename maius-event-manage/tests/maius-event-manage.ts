@@ -89,4 +89,21 @@ describe('maius-event-manage', async () => {
     console.log('[event] Create result: ', data)
     await getLamportBalance(program, executor.publicKey, 'executor after')
   })
+
+  it('close event!', async () => {
+    await getLamportBalance(program, executor.publicKey, 'executor before')
+    await getLamportBalance(program, vaultAccount, 'vault before')
+    await program.methods
+      .closeEvent()
+      .accounts({
+        event: eventAccount,
+        vault: vaultAccount,
+        host: host.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([host])
+      .rpc()
+    await getLamportBalance(program, vaultAccount, 'vault after')
+    await getLamportBalance(program, executor.publicKey, 'executor after')
+  })
 })

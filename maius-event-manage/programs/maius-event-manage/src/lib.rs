@@ -27,5 +27,9 @@ pub mod maius_event_manage {
         transfer_fee::handler(ctx)
     }
 
+    pub fn close_event(ctx: Context<CloseEvent>) -> Result<()> {
+        close_event::handler(ctx)
+    }
+
 }
 
