@@ -9,7 +9,6 @@ import {
   createNavigationContainerRef,
 } from '@react-navigation/native'
 import { store } from '@/Store'
-import { LazyEvent } from '@/models'
 
 type RootStackParamList = {
   Startup: undefined

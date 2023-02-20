@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from '@/Store'
-import { LazyEvent } from '@/models'
 
 export enum WizardSteps {
   CHOOSE_FRAME = 'CHOOSE_FRAME',

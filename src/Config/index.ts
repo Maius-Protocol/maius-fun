@@ -18,6 +18,7 @@ const ProductionConfig = {
 export const Config = {
   ...(isDev ? DevConfig : ProductionConfig),
   IOS_APP_SCHEME: 'mairdrop',
+  APP_URL: 'https://airdrop.maiuspay.com',
 }
 
 export const ApiRoutes = {

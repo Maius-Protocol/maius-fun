@@ -5,17 +5,17 @@ import { useTheme } from '@/Hooks'
 import Divider from '@/Components/Divider'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppRoutes, navigate } from '@/Navigators/utils'
-import { Event, LazyEvent } from '@/models'
 import useEvents from '@/Services/queries/useEvents'
 import { Colors, wp } from '@/Theme/Variables'
 import { maximumRes } from '@/Config/dimensions'
+import { Event } from '@/types/schema'
 
 const EventContainer = () => {
   const { top } = useSafeAreaInsets()
   const { Gutters, Layout, Fonts, Images } = useTheme()
   const { data, refetch, isRefetching: isLoading } = useEvents()
 
-  const selectEvent = (event: LazyEvent) => {
+  const selectEvent = (event: Event) => {
     navigate(AppRoutes.CHOOSE_FRAME, event)
   }
 
@@ -29,6 +29,7 @@ const EventContainer = () => {
     // }
   }, [])
 
+  console.log(data)
   return (
     <View style={[Layout.fill, { marginTop: top }]}>
       <Image
@@ -72,7 +73,8 @@ const EventContainer = () => {
         onRefresh={() => refetch()}
         data={data}
         refreshing={isLoading}
-        renderItem={({ item, index }) => {
+        renderItem={({ item: _item, index }) => {
+          const item = _item.account
           return (
             <TouchableOpacity
               onPress={() => {
@@ -121,10 +123,10 @@ const EventContainer = () => {
                           { fontSize: 14, width: maximumRes(wp('40%')) },
                         ]}
                       >
-                        Host: {item?.host_pk}
+                        Host: {item?.host?.toBase58()}
                       </Text>
                       <Text style={[Fonts.regular, { fontSize: 14 }]}>
-                        Remaining: 100 NFTs
+                        Remaining: {item?.numberOfNft?.toNumber()} NFTs
                       </Text>
                     </View>
                     <View
@@ -151,7 +153,7 @@ const EventContainer = () => {
             </TouchableOpacity>
           )
         }}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item?.publicKey?.toBase58()}
         contentContainerStyle={[
           Gutters.regularHPadding,
           Gutters.regularVPadding,

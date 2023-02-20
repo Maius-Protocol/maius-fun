@@ -12,7 +12,6 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import useUploadFrame from '@/Services/mutations/useUploadFrame'
 import { useMutation } from 'react-query'
-import { Event } from '@/models'
 // import { DataStore } from 'aws-amplify'
 import { navigationRef } from '@/Navigators/utils'
 import useCreateEvent from '@/Services/mutations/events/useCreateEvent'
@@ -56,8 +55,7 @@ const AddNewEventContainer = () => {
       // frame_url: frameUrl?.data?.data?.url,
     })
     await sendInstruction([transaction])
-    console.log(transaction)
-    // navigationRef.goBack()
+    navigationRef.goBack()
   }
 
   const textStyle = [Fonts.bold, { fontSize: 16 }, Gutters.smallBMargin]

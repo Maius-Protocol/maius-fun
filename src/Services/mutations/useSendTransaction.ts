@@ -18,7 +18,7 @@ function useSendTransaction() {
     const serialized = transaction.serialize({
       requireAllSignatures: false,
     })
-    await signAndSendTransaction(serialized)
+    return await signAndSendTransaction(serialized)
   })
 }
 
