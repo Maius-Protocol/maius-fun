@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { clusterApiUrl, Connection } from '@solana/web3.js'
+import { clusterApiUrl, Connection, Transaction } from '@solana/web3.js'
 import nacl from 'tweetnacl'
 import bs58 from 'bs58'
 import { Linking } from 'react-native'
 import { Config } from '@/Config'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
-import { decryptPayload } from '@/Utils/payload'
+import { decryptPayload, encryptPayload } from '@/Utils/payload'
 import { NETWORK } from '../Config/solana'
 import { buildUrl } from '@/Utils/buildUrl'
 interface WalletContextState {
@@ -49,6 +49,30 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     await Linking.openURL(url)
   }
 
+  const handleDeepLink = ({ url }: { url: string }) => {
+    setDeepLink(url)
+  }
+
+  const signAndSendTransaction = async serializedTransaction => {
+    const payload = {
+      session,
+      transaction: bs58.encode(serializedTransaction),
+    }
+    const [nonce, encryptedPayload] = encryptPayload(payload, sharedSecret)
+
+    const params = new URLSearchParams({
+      dapp_encryption_public_key: bs58.encode(dappKeyPair.publicKey),
+      nonce: bs58.encode(nonce),
+      redirect_link: `${Config.IOS_APP_SCHEME}://onSignAndSendTransaction`,
+      payload: bs58.encode(encryptedPayload),
+    })
+
+    addLog('Sending transaction...')
+    const url = buildUrl('signAndSendTransaction', params)
+    console.log(url)
+    await Linking.openURL(url)
+  }
+
   const disconnect = async () => {
     dispatch(
       updateWalletPublicKey({
@@ -56,6 +80,7 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       }),
     )
   }
+  console.log(logs)
 
   useEffect(() => {
     if (!deepLink) return
@@ -63,11 +88,11 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     const url = new URL(deepLink)
     const params = url.searchParams
 
+    if (params.get('errorCode')) {
+      addLog(JSON.stringify(Object.fromEntries([...params]), null, 2))
+      return
+    }
     if (url.toString()?.includes('onConnect')) {
-      if (params.get('errorCode')) {
-        addLog(JSON.stringify(Object.fromEntries([...params]), null, 2))
-        return
-      }
       const sharedSecretDapp = nacl.box.before(
         bs58.decode(params.get('phantom_encryption_public_key')!),
         dappKeyPair.secretKey,
@@ -88,6 +113,15 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       )
 
       addLog(JSON.stringify(connectData, null, 2))
+    }
+    if (url.toString()?.includes('onSignAndSendTransaction')) {
+      const signAndSendTransactionData = decryptPayload(
+        params.get('data')!,
+        params.get('nonce')!,
+        sharedSecret,
+      )
+
+      addLog(JSON.stringify(signAndSendTransactionData, null, 2))
     }
     // if (/onConnect/.test(url.pathname)) {
     //   const sharedSecretDapp = nacl.box.before(
@@ -151,10 +185,6 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     // }
   }, [deepLink])
 
-  const handleDeepLink = ({ url }: { url: string }) => {
-    setDeepLink(url)
-  }
-
   useEffect(() => {
     const myHandler = async () => {
       const initialUrl = await Linking.getInitialURL()
@@ -174,6 +204,7 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       value={{
         connect,
         disconnect,
+        signAndSendTransaction,
       }}
     >
       {children}

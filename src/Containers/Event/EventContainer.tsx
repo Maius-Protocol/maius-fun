@@ -5,7 +5,6 @@ import { useTheme } from '@/Hooks'
 import Divider from '@/Components/Divider'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppRoutes, navigate } from '@/Navigators/utils'
-import { DataStore } from 'aws-amplify'
 import { Event, LazyEvent } from '@/models'
 import useEvents from '@/Services/queries/useEvents'
 import { Colors, wp } from '@/Theme/Variables'
@@ -21,13 +20,13 @@ const EventContainer = () => {
   }
 
   useEffect(() => {
-    const subscription = DataStore.observe(Event).subscribe(msg => {
-      console.log(msg)
-      refetch()
-    })
-    return () => {
-      subscription.unsubscribe()
-    }
+    // const subscription = DataStore.observe(Event).subscribe(msg => {
+    //   console.log(msg)
+    //   refetch()
+    // })
+    // return () => {
+    //   subscription.unsubscribe()
+    // }
   }, [])
 
   return (

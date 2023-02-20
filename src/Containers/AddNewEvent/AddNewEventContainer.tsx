@@ -13,8 +13,10 @@ import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFram
 import useUploadFrame from '@/Services/mutations/useUploadFrame'
 import { useMutation } from 'react-query'
 import { Event } from '@/models'
-import { DataStore } from 'aws-amplify'
+// import { DataStore } from 'aws-amplify'
 import { navigationRef } from '@/Navigators/utils'
+import useCreateEvent from '@/Services/mutations/events/useCreateEvent'
+import useSendTransaction from '@/Services/mutations/useSendTransaction'
 
 const AddNewEventContainer = () => {
   const { Gutters, Layout, Fonts } = useTheme()
@@ -22,15 +24,10 @@ const AddNewEventContainer = () => {
   const { bottom } = useSafeAreaInsets()
   const { mutateAsync: uploadFrame, isLoading: isUploadFrame } =
     useUploadFrame()
-  const { mutateAsync: createEvent, isLoading: isCreateEvent } = useMutation(
-    async (params: any) => {
-      return await DataStore.save(
-        new Event({
-          ...params,
-        }),
-      )
-    },
-  )
+  const { mutateAsync: createEvent, isLoading: isCreateEvent } =
+    useCreateEvent()
+  const { mutateAsync: sendInstruction, isLoading: isSendingInstruction } =
+    useSendTransaction()
 
   const {
     control,
@@ -51,14 +48,16 @@ const AddNewEventContainer = () => {
 
   const onSubmit = async (data: any) => {
     const { frame, host_pk, status, name } = data
-    const frameUrl = await uploadFrame({ frame })
-    await createEvent({
+    // const frameUrl = await uploadFrame({ frame })
+    const transaction = await createEvent({
       host_pk,
       status,
       name,
-      frame_url: frameUrl?.data?.data?.url,
+      // frame_url: frameUrl?.data?.data?.url,
     })
-    navigationRef.goBack()
+    await sendInstruction([transaction])
+    console.log(transaction)
+    // navigationRef.goBack()
   }
 
   const textStyle = [Fonts.bold, { fontSize: 16 }, Gutters.smallBMargin]

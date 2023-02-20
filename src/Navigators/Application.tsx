@@ -18,6 +18,7 @@ import EventContainer from '@/Containers/Event/EventContainer'
 import AddNewEventContainer from '@/Containers/AddNewEvent/AddNewEventContainer'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '@/Theme/Variables'
+import ProgramProvider from '@/Hooks/useProgram'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -72,85 +73,92 @@ const ApplicationNavigator = () => {
 
   return (
     <WalletProvider>
-      <NavigationContainer
-        onReady={() => {
-          if (routeNameRef.current) {
+      <ProgramProvider>
+        <NavigationContainer
+          onReady={() => {
+            if (routeNameRef.current) {
+              // @ts-ignore
+              routeNameRef.current =
+                navigationRef.current.getCurrentRoute().name
+            }
+          }}
+          theme={NavigationTheme}
+          ref={navigationRef}
+          onStateChange={async () => {
+            const previousRouteName = routeNameRef.current
             // @ts-ignore
-            routeNameRef.current = navigationRef.current.getCurrentRoute().name
-          }
-        }}
-        theme={NavigationTheme}
-        ref={navigationRef}
-        onStateChange={async () => {
-          const previousRouteName = routeNameRef.current
-          // @ts-ignore
-          const currentRouteName = navigationRef.current.getCurrentRoute().name
-          if (previousRouteName !== currentRouteName) {
-            await analytics().logScreenView({
-              screen_name: currentRouteName,
-              screen_class: currentRouteName,
-            })
-          }
-          // @ts-ignore
-          routeNameRef.current = currentRouteName
-        }}
-      >
-        <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
-        <Stack.Navigator
-          screenOptions={{
-            headerTitleStyle: {
-              opacity: 0,
-            },
-            headerBackgroundContainerStyle: {
-              opacity: 0,
-              backgroundColor: Colors.background,
-            },
-            headerBackTitle: 'Back',
-            header: props => {
-              if (props.back) {
-                return <Header {...props} />
-              }
-              return null
-            },
+            const currentRouteName =
+              navigationRef.current.getCurrentRoute().name
+            if (previousRouteName !== currentRouteName) {
+              await analytics().logScreenView({
+                screen_name: currentRouteName,
+                screen_class: currentRouteName,
+              })
+            }
+            // @ts-ignore
+            routeNameRef.current = currentRouteName
           }}
         >
-          <Stack.Screen name={AppRoutes.STARTUP} component={StartupContainer} />
-          <Stack.Screen name={AppRoutes.HOME} component={Home} />
-
-          <Stack.Screen
-            name={AppRoutes.CONNECT_WALLET}
-            component={ConnectWalletContainer}
-            options={{
-              presentation: 'modal',
-              headerLeft: () => null,
+          <StatusBar barStyle={darkMode ? 'light-content' : 'dark-content'} />
+          <Stack.Navigator
+            screenOptions={{
+              headerTitleStyle: {
+                opacity: 0,
+              },
+              headerBackgroundContainerStyle: {
+                opacity: 0,
+                backgroundColor: Colors.background,
+              },
+              headerBackTitle: 'Back',
+              header: props => {
+                if (props.back) {
+                  return <Header {...props} />
+                }
+                return null
+              },
             }}
-          />
-          <Stack.Group>
+          >
             <Stack.Screen
-              name={AppRoutes.CHOOSE_FRAME}
-              component={ChooseFrameContainer}
+              name={AppRoutes.STARTUP}
+              component={StartupContainer}
             />
+            <Stack.Screen name={AppRoutes.HOME} component={Home} />
+
             <Stack.Screen
-              name={AppRoutes.CAPTURE_PHOTO}
-              component={CapturePhotoContainer}
+              name={AppRoutes.CONNECT_WALLET}
+              component={ConnectWalletContainer}
+              options={{
+                presentation: 'modal',
+                headerLeft: () => null,
+              }}
             />
-            <Stack.Screen
-              name={AppRoutes.MINT_NFT}
-              component={MintNFTContainer}
-            />
-            <Stack.Screen
-              name={AppRoutes.AIRDROP_NFT}
-              component={AirdropNFTContainer}
-            />
-          </Stack.Group>
-          <Stack.Group>
-            <Stack.Screen
-              name={AppRoutes.ADD_NEW_EVENT}
-              component={AddNewEventContainer}
-            />
-          </Stack.Group>
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Group>
+              <Stack.Screen
+                name={AppRoutes.CHOOSE_FRAME}
+                component={ChooseFrameContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.CAPTURE_PHOTO}
+                component={CapturePhotoContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.MINT_NFT}
+                component={MintNFTContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.AIRDROP_NFT}
+                component={AirdropNFTContainer}
+              />
+            </Stack.Group>
+            <Stack.Group>
+              <Stack.Screen
+                name={AppRoutes.ADD_NEW_EVENT}
+                component={AddNewEventContainer}
+              />
+            </Stack.Group>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ProgramProvider>
     </WalletProvider>
   )
 }
