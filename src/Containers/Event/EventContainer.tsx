@@ -28,6 +28,7 @@ const EventContainer = () => {
       amount: event.amount.toNumber(),
       index: event.index.toNumber(),
       collection: event.collection?.toBase58(),
+      frameUrl: event.frameUrl,
       eventAddress,
     }
     dispatch(

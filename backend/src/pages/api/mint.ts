@@ -2,7 +2,7 @@ import { cors } from '@/middleware/cors'
 import { rateLimit } from '@/middleware/rateLimit'
 import { Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { NextApiHandler } from 'next'
-
+const bs58 = require('bs58')
 import {
   createAssociatedTokenAccountInstruction,
   createInitializeMintInstruction,
@@ -26,7 +26,7 @@ interface GetResponse {
 
 const get: NextApiHandler<GetResponse> = async (request, response) => {
   const label = 'Maius Airdrop: Mint NFT 🔥'
-  const icon = `https://${request.headers.host}/maius_pay.png`
+  const icon = `https://${request.headers.host}/ms-icon-310x310.png`
 
   response.status(200).send({
     label,
@@ -50,8 +50,12 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   }
 
   const applicantWallet = {
-    publicKey: new PublicKey(JSON.parse(request.body).account),
+    publicKey: new PublicKey(request.body.account),
   }
+
+  const maiusWallet = Keypair.fromSecretKey(
+    bs58.decode(process.env.MAIUS_WALLET_PRIVATE_KEY),
+  )
 
   let mint = Keypair.generate()
   console.log(`mint: ${mint.publicKey.toBase58()}`)
@@ -66,7 +70,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
   let tx = new Transaction().add(
     SystemProgram.createAccount({
-      fromPubkey: applicantWallet.publicKey,
+      fromPubkey: maiusWallet.publicKey,
       newAccountPubkey: mint.publicKey,
       lamports: await getMinimumBalanceForRentExemptMint(connection),
       space: MINT_SIZE,
@@ -79,7 +83,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
       applicantWallet.publicKey,
     ),
     createAssociatedTokenAccountInstruction(
-      applicantWallet.publicKey,
+      maiusWallet.publicKey,
       ata,
       mint1.publicKey,
       mint.publicKey,
@@ -96,21 +100,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         metadata: tokenMetadataPubkey,
         mint: mint.publicKey,
         mintAuthority: applicantWallet.publicKey,
-        payer: applicantWallet.publicKey,
+        payer: maiusWallet.publicKey,
         updateAuthority: applicantWallet.publicKey,
       },
       {
         createMetadataAccountArgsV2: {
           data: {
-            name: 'Test 123',
+            name: 'Test 123-',
             symbol: 'FSMB',
-            uri: 'https://34c7ef24f4v2aejh75xhxy5z6ars4xv47gpsdrei6fiowptk2nqq.arweave.net/3wXyF1wvK6ARJ_9ue-O58CMuXrz5nyHEiPFQ6z5q02E',
-            sellerFeeBasisPoints: 100,
+            uri: json as string,
+            sellerFeeBasisPoints: 0,
             creators: [
               {
                 address: applicantWallet.publicKey,
                 verified: true,
-                share: 100,
+                share: 0,
               },
             ],
             collection: null,
@@ -120,26 +124,27 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         },
       },
     ),
-    createCreateMasterEditionV3Instruction(
-      {
-        edition: masterEditionPubkey,
-        mint: mint.publicKey,
-        updateAuthority: applicantWallet.publicKey,
-        mintAuthority: applicantWallet.publicKey,
-        payer: applicantWallet.publicKey,
-        metadata: tokenMetadataPubkey,
-      },
-      {
-        createMasterEditionArgs: {
-          maxSupply: 0,
-        },
-      },
-    ),
+    // createCreateMasterEditionV3Instruction(
+    //   {
+    //     edition: masterEditionPubkey,
+    //     mint: mint.publicKey,
+    //     updateAuthority: applicantWallet.publicKey,
+    //     mintAuthority: applicantWallet.publicKey,
+    //     payer: maiusWallet.publicKey,
+    //     metadata: tokenMetadataPubkey,
+    //   },
+    //   {
+    //     createMasterEditionArgs: {
+    //       maxSupply: 0,
+    //     },
+    //   },
+    // ),
   )
   tx.recentBlockhash = (
     await connection.getLatestBlockhash('confirmed')
   ).blockhash
-  tx.feePayer = applicantWallet.publicKey
+  tx.feePayer = maiusWallet.publicKey
+  tx.partialSign(maiusWallet)
   const serialized = tx.serialize({
     verifySignatures: false,
     requireAllSignatures: false,
