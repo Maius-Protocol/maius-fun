@@ -13,7 +13,8 @@ pub struct SetEvent<'info> {
         seeds = [
             b"v1",
             EVENT_SEED.as_ref(),
-            host.key().as_ref(),
+            event.index.to_le_bytes().as_ref(),
+            host.key().as_ref()
         ],
         bump
     )]
@@ -25,9 +26,12 @@ pub struct SetEvent<'info> {
         seeds = [
         b"v1",
         VAULT_SEED.as_ref(),
-        host.key().as_ref(),
+        event.index.to_le_bytes().as_ref(),
+        host.key().as_ref()
         ],
         bump,
+        constraint = *vault.key == event.vault
+        @ ErrorCodes::InvalidAccount
     )]
     pub vault: AccountInfo<'info>,
 

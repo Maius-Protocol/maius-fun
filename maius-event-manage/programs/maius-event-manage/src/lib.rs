@@ -9,11 +9,15 @@ use crate::error::*;
 
 use instructions::*;
 
-declare_id!("3vBYZPmCC55YWUcz994AMDqh6hakWnEFxd9vnFPgdyVi");
+declare_id!("7BuFchofb9XSxdFmQRTdr8px2jywDcDgnBEGoDPXs55n");
 
 #[program]
 pub mod maius_event_manage {
     use super::*;
+
+    pub fn create_identifier(ctx: Context<CreateIdentifier>) -> Result<()> {
+        create_identifier::handler(ctx)
+    }
 
     pub fn init_event(ctx: Context<InitEvent>, executor: Pubkey) -> Result<()> {
         init_event::handler(ctx, executor)

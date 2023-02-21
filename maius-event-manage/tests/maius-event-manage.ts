@@ -2,8 +2,8 @@ import * as anchor from '@project-serum/anchor'
 import { AnchorProvider, Program } from '@project-serum/anchor'
 import { MaiusEventManage } from '../target/types/maius_event_manage'
 import { SystemProgram } from '@solana/web3.js'
-import { findPDA } from './helper/setup'
-import { EventSeed, VaultSeed } from './constants'
+import { findIdentifierPDA, findPDA} from './helper/setup'
+import { EventSeed, IdentifierSeed, VaultSeed } from './constants'
 import { airdrop } from './helper/airdrop'
 import BN from 'bn.js'
 import { getLamportBalance } from './helper/helper'
@@ -17,31 +17,38 @@ describe('maius-event-manage', async () => {
 
   const program = anchor.workspace.MaiusEventManage as Program<MaiusEventManage>
 
-  const airdropSolAmount = 3
+  const airdropSolAmount = 2
 
   let host = anchor.web3.Keypair.generate()
   let executor = anchor.web3.Keypair.generate()
-  let eventAccount, vaultAccount: anchor.web3.PublicKey
+  let eventAccount, vaultAccount, identifierAccount: anchor.web3.PublicKey
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let eventBump, vaultBump: number
+  let eventBump, vaultBump, identifierBump: number
   const delay = ms => new Promise(res => setTimeout(res, ms))
 
   before('Boilerplates', async () => {
     // airdrop
-
-    await delay(1000)
-
+    await delay(1000 * 2)
     await airdrop(provider, host.publicKey, airdropSolAmount)
   })
   it('Init event!', async () => {
-    [eventAccount, eventBump] = await findPDA(
+    [identifierAccount, identifierBump] = await findIdentifierPDA(
+      host.publicKey,
+      IdentifierSeed,
+      program,
+    )
+    const identifier = await program.account.identifier.fetch(identifierAccount)
+    console.log('[identifier] Create result: ', identifier)
+    ;[eventAccount, eventBump] = await findPDA(
       host.publicKey,
       EventSeed,
+      identifier.count,
       program,
     )
     ;[vaultAccount, vaultBump] = await findPDA(
       host.publicKey,
       VaultSeed,
+      identifier.count,
       program,
     )
     await program.methods
@@ -49,6 +56,7 @@ describe('maius-event-manage', async () => {
       .accounts({
         event: eventAccount,
         vault: vaultAccount,
+        identifier: identifierAccount,
         host: host.publicKey,
         systemProgram: SystemProgram.programId,
       })

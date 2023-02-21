@@ -9,7 +9,9 @@ pub struct Event {
     pub vault: Pubkey,
     pub executor: Pubkey,
     pub number_of_nft: u64,
-    pub amount: u64
+    pub amount: u64,
+    pub index: u64,
+    pub collection: Option<Pubkey>,
 }
 
 impl Event {
@@ -20,7 +22,9 @@ impl Event {
         PUBKEY_SIZE + // vault
         PUBKEY_SIZE + // executor
         8 + // number_of_nft
-        8  // amount
+        8 + // amount
+        8 + // index
+        1 + 32 // collection
     }
 }
 

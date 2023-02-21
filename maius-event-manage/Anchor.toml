@@ -2,7 +2,9 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-maius_event_manage = "3vBYZPmCC55YWUcz994AMDqh6hakWnEFxd9vnFPgdyVi"
+maius_event_manage = "7BuFchofb9XSxdFmQRTdr8px2jywDcDgnBEGoDPXs55n"
+[programs.devnet]
+maius_event_manage = "7BuFchofb9XSxdFmQRTdr8px2jywDcDgnBEGoDPXs55n"
 
 [registry]
 url = "https://api.apr.dev"

@@ -1,5 +1,4 @@
-import { PublicKey} from "@solana/web3.js";
-
+import { PublicKey } from '@solana/web3.js'
 
 export async function getLamportBalance(
   program,
