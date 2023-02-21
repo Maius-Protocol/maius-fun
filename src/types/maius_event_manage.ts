@@ -3,6 +3,27 @@ export type MaiusEventManage = {
   "name": "maius_event_manage",
   "instructions": [
     {
+      "name": "createIdentifier",
+      "accounts": [
+        {
+          "name": "identifier",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "host",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initEvent",
       "accounts": [
         {
@@ -19,6 +40,11 @@ export type MaiusEventManage = {
           ]
         },
         {
+          "name": "identifier",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "host",
           "isMut": true,
           "isSigner": true
@@ -33,6 +59,18 @@ export type MaiusEventManage = {
         {
           "name": "executor",
           "type": "publicKey"
+        },
+        {
+          "name": "opened",
+          "type": "bool"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "frameUrl",
+          "type": "string"
         }
       ]
     },
@@ -127,6 +165,77 @@ export type MaiusEventManage = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "claimVault",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "CHECK"
+          ]
+        },
+        {
+          "name": "host",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "updateEvent",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "CHECK"
+          ]
+        },
+        {
+          "name": "host",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nftMore",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "collection",
+          "type": {
+            "option": "publicKey"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -135,6 +244,18 @@ export type MaiusEventManage = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "opened",
+            "type": "bool"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "frameUrl",
+            "type": "string"
+          },
           {
             "name": "host",
             "type": "publicKey"
@@ -153,6 +274,32 @@ export type MaiusEventManage = {
           },
           {
             "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "collection",
+            "type": {
+              "option": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "identifier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "host",
+            "type": "publicKey"
+          },
+          {
+            "name": "count",
             "type": "u64"
           }
         ]
@@ -178,6 +325,27 @@ export const IDL: MaiusEventManage = {
   "name": "maius_event_manage",
   "instructions": [
     {
+      "name": "createIdentifier",
+      "accounts": [
+        {
+          "name": "identifier",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "host",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initEvent",
       "accounts": [
         {
@@ -194,6 +362,11 @@ export const IDL: MaiusEventManage = {
           ]
         },
         {
+          "name": "identifier",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "host",
           "isMut": true,
           "isSigner": true
@@ -208,6 +381,18 @@ export const IDL: MaiusEventManage = {
         {
           "name": "executor",
           "type": "publicKey"
+        },
+        {
+          "name": "opened",
+          "type": "bool"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "frameUrl",
+          "type": "string"
         }
       ]
     },
@@ -302,6 +487,77 @@ export const IDL: MaiusEventManage = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "claimVault",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "CHECK"
+          ]
+        },
+        {
+          "name": "host",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "updateEvent",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "CHECK"
+          ]
+        },
+        {
+          "name": "host",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nftMore",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "collection",
+          "type": {
+            "option": "publicKey"
+          }
+        }
+      ]
     }
   ],
   "accounts": [
@@ -310,6 +566,18 @@ export const IDL: MaiusEventManage = {
       "type": {
         "kind": "struct",
         "fields": [
+          {
+            "name": "opened",
+            "type": "bool"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "frameUrl",
+            "type": "string"
+          },
           {
             "name": "host",
             "type": "publicKey"
@@ -328,6 +596,32 @@ export const IDL: MaiusEventManage = {
           },
           {
             "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "index",
+            "type": "u64"
+          },
+          {
+            "name": "collection",
+            "type": {
+              "option": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "identifier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "host",
+            "type": "publicKey"
+          },
+          {
+            "name": "count",
             "type": "u64"
           }
         ]

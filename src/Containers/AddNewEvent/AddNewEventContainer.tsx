@@ -14,13 +14,19 @@ import useUploadFrame from '@/Services/mutations/useUploadFrame'
 import { useMutation } from 'react-query'
 // import { DataStore } from 'aws-amplify'
 import { navigationRef } from '@/Navigators/utils'
-import useCreateEvent from '@/Services/mutations/events/useCreateEvent'
+import useCreateEvent from '@/Services/modules/events/useCreateEvent'
 import useSendTransaction from '@/Services/mutations/useSendTransaction'
+import useIdentifier from '@/Services/modules/identifier/useIdentifier'
+import useCreateIdentifier from '@/Services/modules/identifier/useCreateIdentifier'
 
 const AddNewEventContainer = () => {
   const { Gutters, Layout, Fonts } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const { bottom } = useSafeAreaInsets()
+  const { data: identifier, isRefetching: isLoadingIdentifier } =
+    useIdentifier()
+  const { mutateAsync: createIdentifier, isLoading: isCreatingIdentifier } =
+    useCreateIdentifier()
   const { mutateAsync: uploadFrame, isLoading: isUploadFrame } =
     useUploadFrame()
   const { mutateAsync: createEvent, isLoading: isCreateEvent } =
@@ -28,6 +34,7 @@ const AddNewEventContainer = () => {
   const { mutateAsync: sendInstruction, isLoading: isSendingInstruction } =
     useSendTransaction()
 
+  console.log('identifier', identifier?.count?.toNumber())
   const {
     control,
     handleSubmit,
@@ -42,19 +49,25 @@ const AddNewEventContainer = () => {
     },
   })
 
-  const enabled = errors.name === undefined && errors.frame === undefined
-  const isLoading = isUploadFrame || isCreateEvent
+  const isLoading =
+    isUploadFrame ||
+    isCreateEvent ||
+    isLoadingIdentifier ||
+    isSendingInstruction ||
+    isCreatingIdentifier
 
+  const enabled = errors.name === undefined && errors.frame === undefined
   const onSubmit = async (data: any) => {
     const { frame, host_pk, status, name } = data
     // const frameUrl = await uploadFrame({ frame })
-    const transaction = await createEvent({
-      host_pk,
-      status,
-      name,
-      // frame_url: frameUrl?.data?.data?.url,
-    })
-    await sendInstruction([transaction])
+    const identifier = await createIdentifier()
+    // const event = await createEvent({
+    //   host_pk,
+    //   status,
+    //   name,
+    //   frame_url: frameUrl?.data?.data?.url,
+    // })
+    await sendInstruction([identifier])
     navigationRef.goBack()
   }
 

@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from '@/Hooks'
 import Divider from '@/Components/Divider'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppRoutes, navigate } from '@/Navigators/utils'
-import useEvents from '@/Services/queries/useEvents'
+import useEvents from '@/Services/modules/events/useEvents'
 import { Colors, wp } from '@/Theme/Variables'
 import { maximumRes } from '@/Config/dimensions'
 import { Event } from '@/types/schema'
@@ -19,17 +19,6 @@ const EventContainer = () => {
     navigate(AppRoutes.CHOOSE_FRAME, event)
   }
 
-  useEffect(() => {
-    // const subscription = DataStore.observe(Event).subscribe(msg => {
-    //   console.log(msg)
-    //   refetch()
-    // })
-    // return () => {
-    //   subscription.unsubscribe()
-    // }
-  }, [])
-
-  console.log(data)
   return (
     <View style={[Layout.fill, { marginTop: top }]}>
       <Image
@@ -97,9 +86,9 @@ const EventContainer = () => {
                 ]}
               >
                 <View style={[Layout.row]}>
-                  {item?.frame_url && (
+                  {item?.frameUrl && (
                     <Image
-                      source={{ uri: item?.frame_url }}
+                      source={{ uri: item?.frameUrl }}
                       style={[
                         {
                           width: 96,
@@ -141,7 +130,7 @@ const EventContainer = () => {
                       ]}
                     >
                       <Text style={[Fonts.bold, { fontSize: 16 }]}>
-                        {item?.status}
+                        {item?.opened ? 'Opened' : 'Closed'}
                       </Text>
                     </View>
                   </View>

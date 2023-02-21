@@ -46,10 +46,13 @@ pub struct InitEvent<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn handler(ctx: Context<InitEvent>, executor: Pubkey) -> Result<()> {
+pub fn handler(ctx: Context<InitEvent>, executor: Pubkey, opened: bool, name: String, frame_url: String) -> Result<()> {
     let event = &mut ctx.accounts.event;
     let identifier = &mut ctx.accounts.identifier;
 
+    event.opened = opened;
+    event.name = name;
+    event.frame_url = frame_url;
     event.host = ctx.accounts.host.key();
     event.vault = ctx.accounts.vault.key();
     event.executor = executor;

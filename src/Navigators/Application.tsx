@@ -19,6 +19,7 @@ import AddNewEventContainer from '@/Containers/AddNewEvent/AddNewEventContainer'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '@/Theme/Variables'
 import ProgramProvider from '@/Hooks/useProgram'
+import { routingInstrumentation } from '@/..'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -81,6 +82,7 @@ const ApplicationNavigator = () => {
               routeNameRef.current =
                 navigationRef.current.getCurrentRoute().name
             }
+            routingInstrumentation.registerNavigationContainer(navigationRef)
           }}
           theme={NavigationTheme}
           ref={navigationRef}

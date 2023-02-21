@@ -5,6 +5,9 @@ use crate::constants::*;
 #[account]
 #[derive(Default)]
 pub struct Event {
+    pub opened: bool,
+    pub name: String,
+    pub frame_url: String,
     pub host: Pubkey,
     pub vault: Pubkey,
     pub executor: Pubkey,
@@ -18,6 +21,9 @@ impl Event {
     // FYI: https://github.com/coral-xyz/anchor/blob/master/lang/syn/src/codegen/program/handlers.rs#L98
     pub fn space() -> usize {
         8 +  // discriminator
+        1 + // opened
+        4 + 96 +
+        4 + 150 +
         PUBKEY_SIZE + // host
         PUBKEY_SIZE + // vault
         PUBKEY_SIZE + // executor
