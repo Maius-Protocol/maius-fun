@@ -19,15 +19,17 @@ import * as Sentry from '@sentry/react-native'
 export const routingInstrumentation =
   new Sentry.ReactNavigationInstrumentation()
 
-Sentry.init({
-  dsn: 'https://cdbb8b5c254840a584b1d67dacd6f333@o4504016049668096.ingest.sentry.io/4504718638710784',
-  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-  // We recommend adjusting this value in production.
-  tracesSampleRate: 1.0,
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      routingInstrumentation,
-    }),
-  ],
-})
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: 'https://cdbb8b5c254840a584b1d67dacd6f333@o4504016049668096.ingest.sentry.io/4504718638710784',
+    // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+    // We recommend adjusting this value in production.
+    tracesSampleRate: 1.0,
+    integrations: [
+      new Sentry.ReactNativeTracing({
+        routingInstrumentation,
+      }),
+    ],
+  })
+}
 AppRegistry.registerComponent(appName, () => Sentry.wrap(App))

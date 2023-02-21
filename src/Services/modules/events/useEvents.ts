@@ -4,7 +4,11 @@ import { useQuery } from 'react-query'
 function useEvents() {
   const { program } = useProgram()
   return useQuery(['events'], async () => {
-    return await program.account.event.all()
+    try {
+      return await program.account.event.all()
+    } catch (e) {
+      console.log(e)
+    }
   })
 }
 

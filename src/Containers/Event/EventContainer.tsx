@@ -15,6 +15,7 @@ const EventContainer = () => {
   const { Gutters, Layout, Fonts, Images } = useTheme()
   const { data, refetch, isRefetching: isLoading } = useEvents()
 
+  console.log(data)
   const selectEvent = (event: Event) => {
     navigate(AppRoutes.CHOOSE_FRAME, event)
   }

@@ -33,8 +33,7 @@ const AddNewEventContainer = () => {
     useCreateEvent()
   const { mutateAsync: sendInstruction, isLoading: isSendingInstruction } =
     useSendTransaction()
-
-  console.log('identifier', identifier?.count?.toNumber())
+  const eventCount = identifier?.count?.toNumber() || 0
   const {
     control,
     handleSubmit,
@@ -60,17 +59,20 @@ const AddNewEventContainer = () => {
   const onSubmit = async (data: any) => {
     const { frame, host_pk, status, name } = data
     // const frameUrl = await uploadFrame({ frame })
-    const identifier = await createIdentifier()
-    // const event = await createEvent({
-    //   host_pk,
-    //   status,
-    //   name,
-    //   frame_url: frameUrl?.data?.data?.url,
-    // })
-    await sendInstruction([identifier])
+    const { transaction: identifierTransaction, address: identifierAddress } =
+      await createIdentifier()
+    const { transaction: eventTransaction, address: eventAddress } =
+      await createEvent({
+        name: name,
+        opened: true,
+        frame_url: '',
+        count: eventCount,
+      })
+    await sendInstruction([identifierTransaction, eventTransaction])
     navigationRef.goBack()
   }
 
+  console.log(identifier, eventCount)
   const textStyle = [Fonts.bold, { fontSize: 16 }, Gutters.smallBMargin]
   return (
     <View style={[Layout.fill]}>

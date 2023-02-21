@@ -49,7 +49,6 @@ const ProgramProvider: React.FunctionComponent<ProgramContextProps> = ({
     programID,
     provider,
   )
-
   useEffect(() => {
     if (provider) {
       setProvider(provider)

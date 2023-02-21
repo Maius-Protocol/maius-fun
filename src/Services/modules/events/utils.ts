@@ -1,18 +1,29 @@
 import { PublicKey } from '@solana/web3.js'
+import { BN } from '@project-serum/anchor'
 
 export const EventSeed = 'event'
 export const VaultSeed = 'vault'
 
-export function findEventAddress(host: PublicKey, program: any) {
+export function findEventAddress(host: PublicKey, count: number, program: any) {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from('v1'), Buffer.from(EventSeed), host.toBuffer()],
+    [
+      Buffer.from('v1'),
+      Buffer.from(EventSeed),
+      new BN(count).toArrayLike(Buffer, 'le', 8),
+      host.toBuffer(),
+    ],
     program.programId,
   )
 }
 
-export function findVaultAddress(host: PublicKey, program: any) {
+export function findVaultAddress(host: PublicKey, count: number, program: any) {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from('v1'), Buffer.from(VaultSeed), host.toBuffer()],
+    [
+      Buffer.from('v1'),
+      Buffer.from(VaultSeed),
+      new BN(count).toArrayLike(Buffer, 'le', 8),
+      host.toBuffer(),
+    ],
     program.programId,
   )
 }

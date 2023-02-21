@@ -19,7 +19,10 @@ function useCreateIdentifier() {
       systemProgram: SystemProgram.programId,
     })
 
-    return await initIdentifier.transaction()
+    return {
+      address: identifierAccount,
+      transaction: await initIdentifier.transaction(),
+    }
   })
 }
 
