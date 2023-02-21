@@ -13,7 +13,7 @@ import { store } from '@/Store'
 type RootStackParamList = {
   Startup: undefined
   Home: undefined
-  CHOOSE_FRAME: undefined
+  CHOOSE_FRAME: Partial<LazyEvent>
   CAPTURE_PHOTO: undefined
   MINT_NFT: undefined
   AIRDROP_NFT: undefined

@@ -1,3 +1,3 @@
-export const EventSeed = 'event'
-export const VaultSeed = 'vault'
-export const IdentifierSeed = 'identifier'
+export const EventSeed: String = 'event'
+export const VaultSeed: String = 'vault'
+export const IdentifierSeed: String = 'identifier'

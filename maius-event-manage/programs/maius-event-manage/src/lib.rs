@@ -1,15 +1,15 @@
 use anchor_lang::prelude::*;
 
-pub mod state;
-pub mod instructions;
 pub mod constants;
 pub mod error;
+pub mod instructions;
+pub mod state;
 
 use crate::error::*;
 
 use instructions::*;
 
-declare_id!("7BuFchofb9XSxdFmQRTdr8px2jywDcDgnBEGoDPXs55n");
+declare_id!("FGjBr55BjGmDrmzu6Sp7BdJBch13zrfWsyDWvdzb7S23");
 
 #[program]
 pub mod maius_event_manage {
@@ -35,5 +35,15 @@ pub mod maius_event_manage {
         close_event::handler(ctx)
     }
 
-}
+    pub fn claim_vault(ctx: Context<ClaimVault>) -> Result<()> {
+        claim_vault::handler(ctx)
+    }
 
+    pub fn update_event(
+        ctx: Context<UpdateEvent>,
+        nft_more: Option<u64>,
+        collection: Option<Pubkey>,
+    ) -> Result<()> {
+        update_event::handler(ctx, nft_more, collection)
+    }
+}

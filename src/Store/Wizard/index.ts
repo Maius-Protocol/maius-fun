@@ -10,6 +10,7 @@ export type WizardState = {
   step: WizardSteps
   selectedPhoto?: string
   selectedFrame?: string
+  selectedEvent?: LazyEvent
 }
 
 type WizardPayload = {
@@ -22,6 +23,7 @@ const slice = createSlice({
     step: WizardSteps.CHOOSE_FRAME,
     selectedFrame: undefined,
     selectedPhoto: undefined,
+    selectedEvent: undefined,
   } as WizardState,
   reducers: {
     changeWizardStep: (state, { payload: { step } }: WizardPayload) => {
@@ -39,13 +41,27 @@ const slice = createSlice({
         state.selectedPhoto = selectedPhoto
       }
     },
+    changeSelectedEvent: (
+      state,
+      { payload: { selectedEvent } }: WizardPayload,
+    ) => {
+      if (typeof selectedEvent !== 'undefined') {
+        state.selectedEvent = selectedEvent
+      }
+    },
   },
 })
 
-export const { changeWizardStep, changeFrame, changePhoto } = slice.actions
+export const {
+  changeWizardStep,
+  changeSelectedEvent,
+  changeFrame,
+  changePhoto,
+} = slice.actions
 
 export const currentStep = (state: RootState) => state.wizard.step
 export const selectedPhoto = (state: RootState) => state.wizard.selectedPhoto
 export const selectedFrame = (state: RootState) => state.wizard.selectedFrame
+export const selectedEvent = (state: RootState) => state.wizard.selectedEvent
 
 export default slice.reducer

@@ -2,15 +2,15 @@
  * @format
  */
 
+import './shim.js'
 import { AppRegistry } from 'react-native'
-import { Amplify } from 'aws-amplify'
 import { Buffer } from 'buffer'
-import awsconfig from './src/aws-exports'
 import 'react-native-gesture-handler'
 import 'react-native-get-random-values'
 import 'react-native-url-polyfill/auto'
+import { AnchorProvider, setProvider } from '@project-serum/anchor'
 
-Amplify.configure(awsconfig)
+setProvider(AnchorProvider.defaultOptions())
 global.Buffer = global.Buffer || Buffer
 import App from './src/App'
 import { name as appName } from './app.json'

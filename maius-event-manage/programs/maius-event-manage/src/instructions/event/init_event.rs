@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
-use crate::state::{Event, Identifier};
 use crate::constants::*;
+use crate::state::{Event, Identifier};
 
 #[derive(Accounts)]
 pub struct InitEvent<'info> {
@@ -44,13 +44,9 @@ pub struct InitEvent<'info> {
     pub host: Signer<'info>,
 
     pub system_program: Program<'info, System>,
-
 }
 
-pub fn handler(
-    ctx: Context<InitEvent>,
-    executor: Pubkey
-) -> Result<()> {
+pub fn handler(ctx: Context<InitEvent>, executor: Pubkey) -> Result<()> {
     let event = &mut ctx.accounts.event;
     let identifier = &mut ctx.accounts.identifier;
 

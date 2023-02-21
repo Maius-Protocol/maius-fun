@@ -2,8 +2,8 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program::invoke_signed;
 use anchor_lang::solana_program::system_instruction;
 
-use crate::state::Event;
 use crate::constants::*;
+use crate::state::Event;
 use crate::ErrorCodes;
 
 #[derive(Accounts)]
@@ -43,19 +43,13 @@ pub struct CloseEvent<'info> {
     )]
     pub host: Signer<'info>,
     pub system_program: Program<'info, System>,
-
 }
 
-pub fn handler(
-    ctx: Context<CloseEvent>,
-) -> Result<()> {
+pub fn handler(ctx: Context<CloseEvent>) -> Result<()> {
     let event = &mut ctx.accounts.event;
     let balance: u64 = ctx.accounts.vault.to_account_info().lamports();
-    let ix = system_instruction::transfer(
-        &ctx.accounts.vault.key(),
-        &ctx.accounts.host.key(),
-        balance,
-    );
+    let ix =
+        system_instruction::transfer(&ctx.accounts.vault.key(), &ctx.accounts.host.key(), balance);
     invoke_signed(
         &ix,
         &[
@@ -63,7 +57,13 @@ pub fn handler(
             ctx.accounts.host.to_account_info(),
             ctx.accounts.system_program.to_account_info(),
         ],
-        &[&[b"v1", VAULT_SEED, event.index.to_le_bytes().as_ref(), event.host.key().as_ref(), &[*ctx.bumps.get("vault").unwrap()]]],
+        &[&[
+            b"v1",
+            VAULT_SEED,
+            event.index.to_le_bytes().as_ref(),
+            event.host.key().as_ref(),
+            &[*ctx.bumps.get("vault").unwrap()],
+        ]],
     )?;
     Ok(())
 }

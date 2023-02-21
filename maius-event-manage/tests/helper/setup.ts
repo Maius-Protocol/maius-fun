@@ -4,7 +4,7 @@ import BN from 'bn.js'
 export async function findIdentifierPDA(
   host: PublicKey,
   seed: String,
-  program: any,
+  program: any
 ) {
   return await PublicKey.findProgramAddress(
     [Buffer.from('v1'), Buffer.from(seed), host.toBuffer()],

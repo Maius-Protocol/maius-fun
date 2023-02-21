@@ -2,23 +2,59 @@ import React, { useEffect, useMemo } from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { useTheme } from '@/Hooks'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
-import { Text } from 'react-native'
+import { Alert, Linking, Text } from 'react-native'
 import { useSelector } from 'react-redux'
-import { selectedFrame, selectedPhoto } from '@/Store/Wizard'
+import { selectedEvent, selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import useUploadImage from '@/Services/mutations/useUploadImage'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { buildSolanaPayUrl } from '@/Utils/buildUrl'
 const MintNFTContainer = () => {
+  const { bottom } = useSafeAreaInsets()
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
+  const _selectedEvent = useSelector(selectedEvent)
   const {
-    data,
+    // data,
     mutateAsync: uploadImage,
     isLoading: isUploadingImage,
   } = useUploadImage()
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
+
+  const data = {
+    data: {
+      data: {
+        image:
+          'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.jpeg',
+        json: 'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.json',
+      },
+    },
+  }
   const image = data?.data?.data?.image
   const json = data?.data?.data?.json
+
+  console.log(image, json)
+
+  const startMint = async () => {
+    const url = buildSolanaPayUrl({
+      // image,
+      // json,
+      recipient: '5P6KbkdP2GpUdkuHi1tnbC2meToMxy52zZTiZnVzce4GJ',
+      amount: '2',
+      'spl-token': 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr',
+      reference: 'J39sdi85YKWpxPVMJR4xL5vrDL4T8E7TWsQfLjyvNp7S',
+      message: `Event: ${_selectedEvent?.name}`,
+    })
+    console.log(url)
+    const supported = await Linking.canOpenURL(url)
+
+    if (supported) {
+      await Linking.openURL(url)
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`)
+    }
+  }
 
   const progress = useMemo(() => {
     if (data) {
@@ -42,10 +78,10 @@ const MintNFTContainer = () => {
 
   useEffect(() => {
     // TODO: Ensure if front image is selected && background image is selected
-    uploadImage({
-      front: _selectedPhoto!,
-      background: _selectedFrame!,
-    })
+    // uploadImage({
+    //   front: _selectedPhoto!,
+    //   background: _selectedFrame!,
+    // })
   }, [])
 
   console.log(data?.data?.data)
@@ -99,11 +135,11 @@ const MintNFTContainer = () => {
           </Text>
         </View>
       </View>
-      <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
+      <View style={[Layout.fullWidth, { marginBottom: bottom + 24 }]}>
         <Button
           // disabled
           loading={isUploadingImage}
-          onPress={() => {}}
+          onPress={startMint}
           type="primary"
         >
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>Mint NFT</Text>

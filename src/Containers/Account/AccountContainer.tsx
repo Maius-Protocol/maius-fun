@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
@@ -10,10 +10,12 @@ import { maximumRes, windowWidth } from '@/Config/dimensions'
 import { SvgUri } from 'react-native-svg'
 import Divider from '@/Components/Divider'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { Colors } from '@/Theme/Variables'
 
 const AccountContainer = () => {
   const { top } = useSafeAreaInsets()
-  const { Gutters, Layout, Fonts } = useTheme()
+  const { Gutters, Layout, Fonts, Images } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const dispatch = useDispatch()
   const { mutateAsync } = useMutation(async () => {
@@ -27,6 +29,11 @@ const AccountContainer = () => {
   })
   return (
     <View style={[Layout.fill, { marginTop: top }]}>
+      <Image
+        source={Images.blur_1}
+        style={[{ position: 'absolute' }, Layout.fullSize]}
+        resizeMode="cover"
+      />
       <View style={[Gutters.regularHPadding, Gutters.regularTPadding]}>
         <Text style={[Fonts.textLarge, Fonts.bold, Fonts.textBlack]}>
           Your Wallet
@@ -37,6 +44,7 @@ const AccountContainer = () => {
         contentContainerStyle={[
           Gutters.regularHPadding,
           Gutters.regularVPadding,
+          Layout.maxWidthTablet,
         ]}
       >
         <View
@@ -70,19 +78,36 @@ const AccountContainer = () => {
             >
               {wallet}
             </Text>
-            <Text
+            <View
               style={[
-                Fonts.regular,
-                Fonts.textGray,
-                Fonts.textCenter,
+                Layout.row,
+                Layout.justifyContentCenter,
                 Gutters.smallTMargin,
-                { fontSize: 18 },
+                Layout.alignItemsCenter,
               ]}
             >
-              Tap to disconnect
-            </Text>
+              <Text
+                style={[
+                  Fonts.regular,
+                  Fonts.textGray,
+                  Fonts.textCenter,
+                  { fontSize: 18 },
+                ]}
+              >
+                Tap to disconnect
+              </Text>
+              <Icon name="chevron-forward" size={24} color={Colors.text} />
+            </View>
           </View>
         </TouchableOpacity>
+
+        <View style={[Gutters.largeTMargin]}>
+          <Text style={[Fonts.textRegular, Fonts.bold, Fonts.textBlack]}>
+            List of minted NFTs
+          </Text>
+          <Divider />
+        </View>
+        <Text style={[Gutters.smallTMargin]}>Coming Soon</Text>
       </ScrollView>
 
       {/*<TouchableOpacity*/}
