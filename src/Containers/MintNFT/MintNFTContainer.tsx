@@ -38,11 +38,8 @@ const MintNFTContainer = () => {
 
   const startMint = async () => {
     const url = buildSolanaPayUrl({
-      // image,
-      // json,
-      recipient: '5P6KbkdP2GpUdkuHi1tnbC2meToMxy52zZTiZnVzce4GJ',
-      amount: '2',
-      'spl-token': 'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr',
+      image,
+      json,
       reference: 'J39sdi85YKWpxPVMJR4xL5vrDL4T8E7TWsQfLjyvNp7S',
       message: `Event: ${_selectedEvent?.name}`,
     })

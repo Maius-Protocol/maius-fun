@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "mirror": "git push --tags --force --prune mirror \"refs/remotes/origin/*:refs/heads/*\"",
     "prepare": "node copyIdl.js",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
