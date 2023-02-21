@@ -3,9 +3,10 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-maius_event_manage = "FGjBr55BjGmDrmzu6Sp7BdJBch13zrfWsyDWvdzb7S23"
+maius_event_manage = "3vBYZPmCC55YWUcz994AMDqh6hakWnEFxd9vnFPgdyVi"
+
 [programs.devnet]
-maius_event_manage = "FGjBr55BjGmDrmzu6Sp7BdJBch13zrfWsyDWvdzb7S23"
+maius_event_manage = "3vBYZPmCC55YWUcz994AMDqh6hakWnEFxd9vnFPgdyVi"
 
 
 [registry]
@@ -13,7 +14,7 @@ url = "https://api.apr.dev"
 
 [provider]
 cluster = "devnet"
-wallet = "/Users/quanghuy/.config/solana/id.json"
+wallet = "../keypair/keypair.secret.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
