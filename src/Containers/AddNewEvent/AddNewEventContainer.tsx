@@ -65,14 +65,14 @@ const AddNewEventContainer = () => {
       await createEvent({
         name: name,
         opened: true,
-        frame_url: '',
+        frame_url:
+          'https://cdn.maiuspay.com/maius-airdrop/940423cc-09e5-4949-8bf4-ed57cef3a03e',
         count: eventCount,
       })
     await sendInstruction([identifierTransaction, eventTransaction])
     navigationRef.goBack()
   }
 
-  console.log(identifier, eventCount)
   const textStyle = [Fonts.bold, { fontSize: 16 }, Gutters.smallBMargin]
   return (
     <View style={[Layout.fill]}>

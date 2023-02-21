@@ -9,15 +9,33 @@ import useEvents from '@/Services/modules/events/useEvents'
 import { Colors, wp } from '@/Theme/Variables'
 import { maximumRes } from '@/Config/dimensions'
 import { Event } from '@/types/schema'
+import { changeSelectedEvent } from '@/Store/Wizard'
+import { useAppDispatch } from '@/Store'
 
 const EventContainer = () => {
   const { top } = useSafeAreaInsets()
   const { Gutters, Layout, Fonts, Images } = useTheme()
   const { data, refetch, isRefetching: isLoading } = useEvents()
-
-  console.log(data)
-  const selectEvent = (event: Event) => {
-    navigate(AppRoutes.CHOOSE_FRAME, event)
+  const dispatch = useAppDispatch()
+  const selectEvent = (event: Event, eventAddress: string) => {
+    const serialized = {
+      name: event.name,
+      opened: event.opened,
+      host: event.host.toBase58(),
+      vault: event.vault.toBase58(),
+      executor: event.executor.toBase58(),
+      number_of_nft: event.numberOfNft.toNumber(),
+      amount: event.amount.toNumber(),
+      index: event.index.toNumber(),
+      collection: event.collection?.toBase58(),
+      eventAddress,
+    }
+    dispatch(
+      changeSelectedEvent({
+        selectedEvent: serialized,
+      }),
+    )
+    navigate(AppRoutes.CHOOSE_FRAME, serialized)
   }
 
   return (
@@ -68,7 +86,7 @@ const EventContainer = () => {
           return (
             <TouchableOpacity
               onPress={() => {
-                selectEvent(item)
+                selectEvent(item, _item.publicKey.toBase58())
               }}
             >
               <View
@@ -147,6 +165,7 @@ const EventContainer = () => {
         contentContainerStyle={[
           Gutters.regularHPadding,
           Gutters.regularVPadding,
+          Layout.fullWidth,
           Layout.maxWidthTablet,
         ]}
       />

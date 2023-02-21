@@ -45,12 +45,7 @@ const ChooseFrameContainer = () => {
   useEffect(() => {
     dispatch(
       changeFrame({
-        selectedFrame: params?.frame_url!,
-      }),
-    )
-    dispatch(
-      changeSelectedEvent({
-        selectedEvent: { ...params } as LazyEvent,
+        selectedFrame: params?.frameUrl!,
       }),
     )
   }, [])
