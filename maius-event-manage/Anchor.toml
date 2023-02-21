@@ -12,7 +12,7 @@ maius_event_manage = "FGjBr55BjGmDrmzu6Sp7BdJBch13zrfWsyDWvdzb7S23"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/Users/quanghuy/.config/solana/id.json"
 
 [scripts]

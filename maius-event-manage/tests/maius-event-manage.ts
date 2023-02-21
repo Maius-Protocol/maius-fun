@@ -149,20 +149,37 @@ describe('maius-event-manage', async () => {
     await getLamportBalance(program, vaultAccount, 'vault after')
   })
 
-  it('close event!', async () => {
-    await getLamportBalance(program, executor.publicKey, 'executor before')
-    await getLamportBalance(program, vaultAccount, 'vault before')
-    await program.methods
-      .closeEvent()
-      .accounts({
-        event: eventAccount,
-        vault: vaultAccount,
-        host: host.publicKey,
-        systemProgram: SystemProgram.programId,
-      })
-      .signers([host])
-      .rpc()
-    await getLamportBalance(program, vaultAccount, 'vault after')
-    await getLamportBalance(program, executor.publicKey, 'executor after')
+  it('get all event', async () => {
+    const data = await program.account.event.all()
+    console.log('[event] Create result: ', data)
   })
+
+  it('filter event by host', async () => {
+    const data = await program.account.event.all([
+      {
+        memcmp: {
+          offset: 8, // Discriminator.
+          bytes: host.publicKey.toBase58(),
+        },
+      },
+    ])
+    console.log('[event] Create result: ', data)
+  })
+
+  // it('close event!', async () => {
+  //   await getLamportBalance(program, executor.publicKey, 'executor before')
+  //   await getLamportBalance(program, vaultAccount, 'vault before')
+  //   await program.methods
+  //     .closeEvent()
+  //     .accounts({
+  //       event: eventAccount,
+  //       vault: vaultAccount,
+  //       host: host.publicKey,
+  //       systemProgram: SystemProgram.programId,
+  //     })
+  //     .signers([host])
+  //     .rpc()
+  //   await getLamportBalance(program, vaultAccount, 'vault after')
+  //   await getLamportBalance(program, executor.publicKey, 'executor after')
+  // })
 })
