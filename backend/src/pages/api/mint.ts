@@ -49,18 +49,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
     throw new Error('missing json')
   }
 
-  const applicantWallet = {
-    publicKey: new PublicKey(request.body.account),
-  }
-
-  const maiusWallet = Keypair.fromSecretKey(
+  const applicantWallet = Keypair.fromSecretKey(
     bs58.decode(process.env.MAIUS_WALLET_PRIVATE_KEY),
   )
 
+  // const applicantWallet = {
+  //   publicKey: new PublicKey(request.body.account),
+  // }
+
   let mint = Keypair.generate()
   console.log(`mint: ${mint.publicKey.toBase58()}`)
-  let mint1 = Keypair.generate()
-  console.log(`mint1: ${mint1.publicKey.toBase58()}`)
+  let mint1 = {
+    publicKey: new PublicKey(request.body.account),
+  }
+  // let mint1 = Keypair.generate()
+  console.log(`mint: ${mint.publicKey.toBase58()}`)
 
   let ata = await getAssociatedTokenAddress(mint.publicKey, mint1.publicKey)
 
@@ -68,9 +71,11 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
   let masterEditionPubkey = await getMasterEditionPDA(mint.publicKey)
 
+  // let freezeNft = await FreezeNft(applicantWallet, mint.publicKey)
+
   let tx = new Transaction().add(
     SystemProgram.createAccount({
-      fromPubkey: maiusWallet.publicKey,
+      fromPubkey: applicantWallet.publicKey,
       newAccountPubkey: mint.publicKey,
       lamports: await getMinimumBalanceForRentExemptMint(connection),
       space: MINT_SIZE,
@@ -83,7 +88,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
       applicantWallet.publicKey,
     ),
     createAssociatedTokenAccountInstruction(
-      maiusWallet.publicKey,
+      applicantWallet.publicKey,
       ata,
       mint1.publicKey,
       mint.publicKey,
@@ -100,21 +105,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         metadata: tokenMetadataPubkey,
         mint: mint.publicKey,
         mintAuthority: applicantWallet.publicKey,
-        payer: maiusWallet.publicKey,
+        payer: applicantWallet.publicKey,
         updateAuthority: applicantWallet.publicKey,
       },
       {
         createMetadataAccountArgsV2: {
           data: {
-            name: 'Test 123-',
-            symbol: 'FSMB',
+            name: (request.query.name as string) || 'Maius Airdrop',
+            symbol: 'MAIRDROP',
             uri: json as string,
-            sellerFeeBasisPoints: 0,
+            sellerFeeBasisPoints: 100,
             creators: [
               {
                 address: applicantWallet.publicKey,
                 verified: true,
-                share: 0,
+                share: 100,
               },
             ],
             collection: null,
@@ -124,27 +129,29 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         },
       },
     ),
-    // createCreateMasterEditionV3Instruction(
-    //   {
-    //     edition: masterEditionPubkey,
-    //     mint: mint.publicKey,
-    //     updateAuthority: applicantWallet.publicKey,
-    //     mintAuthority: applicantWallet.publicKey,
-    //     payer: maiusWallet.publicKey,
-    //     metadata: tokenMetadataPubkey,
-    //   },
-    //   {
-    //     createMasterEditionArgs: {
-    //       maxSupply: 0,
-    //     },
-    //   },
-    // ),
+    createCreateMasterEditionV3Instruction(
+      {
+        edition: masterEditionPubkey,
+        mint: mint.publicKey,
+        updateAuthority: applicantWallet.publicKey,
+        mintAuthority: applicantWallet.publicKey,
+        payer: applicantWallet.publicKey,
+        metadata: tokenMetadataPubkey,
+      },
+      {
+        createMasterEditionArgs: {
+          maxSupply: 0,
+        },
+      },
+    ),
   )
-  tx.recentBlockhash = (
-    await connection.getLatestBlockhash('confirmed')
-  ).blockhash
-  tx.feePayer = maiusWallet.publicKey
-  tx.partialSign(maiusWallet)
+
+  tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
+  tx.feePayer = applicantWallet.publicKey
+  tx.setSigners(applicantWallet.publicKey, mint.publicKey, mint1.publicKey)
+  tx.partialSign(mint)
+  tx.partialSign(applicantWallet)
+  // tx.partialSign(mint1)
   const serialized = tx.serialize({
     verifySignatures: false,
     requireAllSignatures: false,
