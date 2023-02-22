@@ -6,13 +6,30 @@ import Slider from '@react-native-community/slider'
 import { Config } from '@/Config'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
-import { useMutation } from 'react-query'
 import { useRoute } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { selectedEvent } from '@/Store/Wizard'
+import useTopUp from '@/Services/modules/events/useTopUp'
+import useSendTransaction from '@/Services/mutations/useSendTransaction'
+import useEvents from '@/Services/modules/events/useEvents'
+import { navigationRef } from '@/Navigators/utils'
 
 const TopUpNFTContainer = () => {
-  const route = useRoute()
-  const params = route.params as any
-  const eventAccountAddress = params?.eventAccountAddress
+  const _selectedEvent = useSelector(selectedEvent)
+  const eventAccountAddress = _selectedEvent?.eventAccountAddress
+  const vaultAddress = _selectedEvent?.vault
+  const {
+    mutateAsync: mutateAsyncTopupTransaction,
+    isLoading: isBuildingTransaction,
+  } = useTopUp({
+    eventAccountAddress: eventAccountAddress!,
+    vaultAccountAddress: vaultAddress,
+  })
+  const { refetch } = useEvents()
+
+  const { mutateAsync: sendTransaction, isLoading: isSending } =
+    useSendTransaction()
+  const isLoading = isBuildingTransaction || isSending
   const [numberOfNFTs, setNumberOfNFTs] = React.useState(0)
   const { Gutters, Layout, Fonts, Colors } = useTheme()
   const { bottom } = useSafeAreaInsets()
@@ -21,6 +38,13 @@ const TopUpNFTContainer = () => {
   const totalEst = (Config.FEE_PER_NFT * numberOfNFTs)?.toFixed(2)
 
   const disabled = numberOfNFTs <= 0
+
+  const submit = async () => {
+    const transactions = await mutateAsyncTopupTransaction(numberOfNFTs)
+    await sendTransaction([transactions!])
+    refetch()
+    navigationRef.goBack()
+  }
 
   return (
     <View style={[Layout.fill]}>
@@ -71,7 +95,12 @@ const TopUpNFTContainer = () => {
           Gutters.smallTMargin,
         ]}
       >
-        <Button type="primary" disabled={disabled}>
+        <Button
+          onPress={submit}
+          type="primary"
+          loading={isLoading}
+          disabled={disabled}
+        >
           <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
             Pay {totalEst} SOL
           </Text>

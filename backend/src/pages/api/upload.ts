@@ -32,8 +32,8 @@ export default async function handler(
     const { uploadImageCdnUrl, uploadJsonCdnUrl } = await uploadToStorage(
       finalImage!,
       {
-        name: 'Event',
-        attributes: [{ trait_type: 'team', value: 'Maius' }],
+        name: 'My NFT',
+        attributes: [{ trait_type: 'Capture Date', value: new Date() }],
       },
     )
 

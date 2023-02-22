@@ -3,10 +3,10 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-maius_event_manage = "5AZ9k8mebnbngMhcJJb2tJuAPN5AncnGAH5UJDhBdWXB"
+maius_event_manage = "2QkLoXJsqvgaXQ7hEW1yXqVaToj8DVFU8tLfm8tKYiKD"
 
 [programs.devnet]
-maius_event_manage = "5AZ9k8mebnbngMhcJJb2tJuAPN5AncnGAH5UJDhBdWXB"
+maius_event_manage = "2QkLoXJsqvgaXQ7hEW1yXqVaToj8DVFU8tLfm8tKYiKD"
 
 
 [registry]

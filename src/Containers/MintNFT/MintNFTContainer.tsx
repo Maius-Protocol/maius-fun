@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { useTheme } from '@/Hooks'
 import { maximumRes, windowWidth } from '@/Config/dimensions'
-import { Alert, Linking, Text } from 'react-native'
+import { Alert, Linking, Text, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { selectedEvent, selectedFrame, selectedPhoto } from '@/Store/Wizard'
 import AnimatedScanner from '@/Components/AnimatedScanner'
@@ -10,6 +10,7 @@ import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFram
 import useUploadImage from '@/Services/mutations/useUploadImage'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { buildSolanaPayUrl } from '@/Utils/buildUrl'
+import { AppRoutes, navigate } from '@/Navigators/utils'
 const MintNFTContainer = () => {
   const { bottom } = useSafeAreaInsets()
   const _selectedPhoto = useSelector(selectedPhoto)
@@ -36,12 +37,16 @@ const MintNFTContainer = () => {
 
   console.log(image, json)
 
-  const startMint = async () => {
-    const url = buildSolanaPayUrl({
+  const buildUrl = () => {
+    return buildSolanaPayUrl({
       image,
       json,
       message: `${_selectedEvent?.name}`,
     })
+  }
+
+  const startMint = async () => {
+    const url = buildUrl()
     console.log(url)
     const supported = await Linking.canOpenURL(url)
 
@@ -140,6 +145,18 @@ const MintNFTContainer = () => {
         >
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>Mint NFT</Text>
         </Button>
+
+        <TouchableOpacity
+          onPress={() => {
+            const url = buildUrl()
+            navigate(AppRoutes.AIRDROP_NFT, { url })
+          }}
+          style={[Gutters.regularVPadding]}
+        >
+          <Text style={[Fonts.textGray, Fonts.textCenter]}>
+            Share with your Friends!
+          </Text>
+        </TouchableOpacity>
 
         {/*<TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>*/}
         {/*  <Text style={[Fonts.textGray, Fonts.textCenter]}>Skip</Text>*/}

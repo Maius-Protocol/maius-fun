@@ -9,7 +9,7 @@ use crate::error::*;
 
 use instructions::*;
 
-declare_id!("5AZ9k8mebnbngMhcJJb2tJuAPN5AncnGAH5UJDhBdWXB");
+declare_id!("2QkLoXJsqvgaXQ7hEW1yXqVaToj8DVFU8tLfm8tKYiKD");
 
 #[program]
 pub mod maius_event_manage {

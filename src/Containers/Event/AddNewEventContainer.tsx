@@ -17,6 +17,7 @@ import useSendTransaction from '@/Services/mutations/useSendTransaction'
 import useIdentifier from '@/Services/modules/identifier/useIdentifier'
 import useCreateIdentifier from '@/Services/modules/identifier/useCreateIdentifier'
 import useEvents from '@/Services/modules/events/useEvents'
+import { Transaction } from '@solana/web3.js'
 
 const AddNewEventContainer = () => {
   const { Gutters, Layout, Fonts } = useTheme()
@@ -52,8 +53,6 @@ const AddNewEventContainer = () => {
     },
   })
 
-  console.log('identifier', eventCount)
-
   const isLoading =
     isUploadFrame ||
     isCreateEvent ||
@@ -63,19 +62,22 @@ const AddNewEventContainer = () => {
 
   const enabled = errors.name === undefined && errors.frame === undefined
   const onSubmit = async (data: any) => {
+    let instructions: Transaction[] = []
     const { frame, host_pk, status, name } = data
     const _frameUrl = await uploadFrame({ frame })
     const frameUrl = _frameUrl?.data?.data?.url
-    // const frameUrl = 'sdfsdf'
-    const { transaction: identifierTransaction } = await createIdentifier()
-
+    if (!identifier) {
+      const { transaction: identifierTransaction } = await createIdentifier()
+      instructions = [identifierTransaction]
+    }
     const { transaction: eventTransaction } = await createEvent({
       name: name,
       opened: status === 'OPENED',
       frame_url: frameUrl,
       count: eventCount,
     })
-    await sendInstruction([identifierTransaction, eventTransaction])
+    instructions = [...instructions, eventTransaction]
+    await sendInstruction(instructions)
     refetchIdentifier()
     refetch()
     navigationRef.goBack()

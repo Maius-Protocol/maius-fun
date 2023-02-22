@@ -1,21 +1,21 @@
 import React from 'react'
 import { Alert, SafeAreaView, Share, Text, View } from 'react-native'
 import { windowWidth } from '@/Config/dimensions'
-import Lottie from 'lottie-react-native'
 import { Button } from '@ant-design/react-native'
-import { Config } from '@/Config'
-import { updateWalletPublicKey } from '@/Store/Wallet'
-import MockData from '@/Config/mock'
 import { useTheme } from '@/Hooks'
 import { useMutation } from 'react-query'
+import { useRoute } from '@react-navigation/native'
 
 const AirdropNFTContainer = () => {
   const { Images, Layout, Fonts, Gutters } = useTheme()
+  const route = useRoute()
+  const params = route.params as any
+  const url = params?.url
 
   const { isLoading, mutateAsync } = useMutation(async () => {
     try {
       const result = await Share.share({
-        url: '',
+        url: url,
       })
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -30,7 +30,15 @@ const AirdropNFTContainer = () => {
 
   return (
     <SafeAreaView>
-      <View style={[Layout.fullSize, Layout.center, Gutters.regularHPadding]}>
+      <View
+        style={[
+          Layout.fullSize,
+          Layout.center,
+          Gutters.regularHPadding,
+          Layout.maxWidthTablet,
+          Layout.fullWidth,
+        ]}
+      >
         <View style={[Layout.fill, Layout.center]}>
           <View
             style={{
@@ -53,7 +61,7 @@ const AirdropNFTContainer = () => {
                 Gutters.smallTMargin,
               ]}
             >
-              Let's share this with iOS or Android devices
+              Let's share this moment with iOS via Airdrop or Android devices
             </Text>
           </View>
         </View>

@@ -5,16 +5,16 @@ use crate::constants::*;
 #[account]
 #[derive(Default)]
 pub struct Event {
-    pub opened: bool,
-    pub name: String,
-    pub frame_url: String,
     pub host: Pubkey,
+    pub opened: bool,
     pub vault: Pubkey,
     pub executor: Pubkey,
     pub number_of_nft: u64,
     pub amount: u64,
     pub index: u64,
     pub collection: Option<Pubkey>,
+    pub name: String,
+    pub frame_url: String,
 }
 
 impl Event {

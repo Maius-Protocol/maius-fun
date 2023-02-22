@@ -55,13 +55,11 @@ const EventContainer = () => {
         [
           {
             text: 'Top-up NFTs',
-            onPress: () =>
-              navigate(AppRoutes.TOP_UP_NFTS, { eventAccountAddress }),
+            onPress: () => navigate(AppRoutes.TOP_UP_NFTS, {}),
           },
           {
             text: 'Update event information',
-            onPress: () =>
-              navigate(AppRoutes.UPDATE_EVENT, { eventAccountAddress }),
+            onPress: () => navigate(AppRoutes.UPDATE_EVENT, {}),
           },
           {
             text: 'Capture & Mint',

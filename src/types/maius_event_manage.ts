@@ -245,20 +245,12 @@ export type MaiusEventManage = {
         "kind": "struct",
         "fields": [
           {
-            "name": "opened",
-            "type": "bool"
-          },
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "frameUrl",
-            "type": "string"
-          },
-          {
             "name": "host",
             "type": "publicKey"
+          },
+          {
+            "name": "opened",
+            "type": "bool"
           },
           {
             "name": "vault",
@@ -285,6 +277,14 @@ export type MaiusEventManage = {
             "type": {
               "option": "publicKey"
             }
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "frameUrl",
+            "type": "string"
           }
         ]
       }
@@ -567,20 +567,12 @@ export const IDL: MaiusEventManage = {
         "kind": "struct",
         "fields": [
           {
-            "name": "opened",
-            "type": "bool"
-          },
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "frameUrl",
-            "type": "string"
-          },
-          {
             "name": "host",
             "type": "publicKey"
+          },
+          {
+            "name": "opened",
+            "type": "bool"
           },
           {
             "name": "vault",
@@ -607,6 +599,14 @@ export const IDL: MaiusEventManage = {
             "type": {
               "option": "publicKey"
             }
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "frameUrl",
+            "type": "string"
           }
         ]
       }
