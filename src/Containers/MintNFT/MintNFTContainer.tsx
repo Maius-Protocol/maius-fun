@@ -16,21 +16,21 @@ const MintNFTContainer = () => {
   const _selectedFrame = useSelector(selectedFrame)
   const _selectedEvent = useSelector(selectedEvent)
   const {
-    // data,
+    data,
     mutateAsync: uploadImage,
     isLoading: isUploadingImage,
   } = useUploadImage()
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
 
-  const data = {
-    data: {
-      data: {
-        image:
-          'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.jpeg',
-        json: 'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.json',
-      },
-    },
-  }
+  // const data = {
+  //   data: {
+  //     data: {
+  //       image:
+  //         'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.jpeg',
+  //       json: 'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.json',
+  //     },
+  //   },
+  // }
   const image = data?.data?.data?.image
   const json = data?.data?.data?.json
 
@@ -40,8 +40,7 @@ const MintNFTContainer = () => {
     const url = buildSolanaPayUrl({
       image,
       json,
-      reference: 'J39sdi85YKWpxPVMJR4xL5vrDL4T8E7TWsQfLjyvNp7S',
-      message: `Event: ${_selectedEvent?.name}`,
+      message: `${_selectedEvent?.name}`,
     })
     console.log(url)
     const supported = await Linking.canOpenURL(url)
@@ -75,10 +74,10 @@ const MintNFTContainer = () => {
 
   useEffect(() => {
     // TODO: Ensure if front image is selected && background image is selected
-    // uploadImage({
-    //   front: _selectedPhoto!,
-    //   background: _selectedFrame!,
-    // })
+    uploadImage({
+      front: _selectedPhoto!,
+      background: _selectedFrame!,
+    })
   }, [])
 
   console.log(data?.data?.data)

@@ -1,5 +1,12 @@
 import React from 'react'
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Alert,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTheme } from '@/Hooks'
 import Divider from '@/Components/Divider'
@@ -11,13 +18,18 @@ import { maximumRes } from '@/Config/dimensions'
 import { Event } from '@/types/schema'
 import { changeSelectedEvent } from '@/Store/Wizard'
 import { useAppDispatch } from '@/Store'
+import { useSelector } from 'react-redux'
+import { walletPublicKey } from '@/Store/Wallet'
+import { useFocusEffect } from '@react-navigation/native'
 
 const EventContainer = () => {
   const { top } = useSafeAreaInsets()
+  const wallet = useSelector(walletPublicKey)
   const { Gutters, Layout, Fonts, Images } = useTheme()
   const { data, refetch, isRefetching: isLoading } = useEvents()
   const dispatch = useAppDispatch()
-  const selectEvent = (event: Event, eventAddress: string) => {
+
+  const selectEvent = (event: Event, eventAccountAddress: string) => {
     const serialized = {
       name: event.name,
       opened: event.opened,
@@ -29,13 +41,41 @@ const EventContainer = () => {
       index: event.index.toNumber(),
       collection: event.collection?.toBase58(),
       frameUrl: event.frameUrl,
-      eventAddress,
+      eventAccountAddress,
     }
     dispatch(
       changeSelectedEvent({
         selectedEvent: serialized,
       }),
     )
+    if (wallet === event.host.toBase58()) {
+      Alert.alert(
+        'We detected that you are owner of this event',
+        'Please choose action below',
+        [
+          {
+            text: 'Top-up NFTs',
+            onPress: () =>
+              navigate(AppRoutes.TOP_UP_NFTS, { eventAccountAddress }),
+          },
+          {
+            text: 'Update event information',
+            onPress: () =>
+              navigate(AppRoutes.UPDATE_EVENT, { eventAccountAddress }),
+          },
+          {
+            text: 'Capture & Mint',
+            onPress: () => navigate(AppRoutes.CHOOSE_FRAME, serialized),
+          },
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+        ],
+      )
+      return
+    }
     navigate(AppRoutes.CHOOSE_FRAME, serialized)
   }
 
@@ -144,6 +184,7 @@ const EventContainer = () => {
                           backgroundColor: '#edecf0',
                           paddingVertical: 4,
                           borderRadius: 24,
+                          maxWidth: 128,
                         },
                         Layout.center,
                         Gutters.smallTMargin,

@@ -2,7 +2,13 @@ import React from 'react'
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
+import {
+  updateKeypairSecret,
+  updateSession,
+  updateSharedSecret,
+  updateWalletPublicKey,
+  walletPublicKey,
+} from '@/Store/Wallet'
 import { useMutation } from 'react-query'
 import { sleepAwait } from 'sleep-await'
 import RNRestart from 'react-native-restart'
@@ -12,19 +18,35 @@ import Divider from '@/Components/Divider'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '@/Theme/Variables'
+import { ActivityIndicator } from '@ant-design/react-native'
 
 const AccountContainer = () => {
   const { top } = useSafeAreaInsets()
   const { Gutters, Layout, Fonts, Images } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const dispatch = useDispatch()
-  const { mutateAsync } = useMutation(async () => {
+  const { mutateAsync, isLoading } = useMutation(async () => {
     dispatch(
       updateWalletPublicKey({
         walletPublicKey: undefined,
       }),
     )
-    await sleepAwait(1000)
+    dispatch(
+      updateSharedSecret({
+        sharedSecret: undefined,
+      }),
+    )
+    dispatch(
+      updateKeypairSecret({
+        dappKeypairSecret: undefined,
+      }),
+    )
+    dispatch(
+      updateSession({
+        session: undefined,
+      }),
+    )
+    await sleepAwait(2000)
     RNRestart.restart()
   })
   return (
@@ -45,6 +67,7 @@ const AccountContainer = () => {
           Gutters.regularHPadding,
           Gutters.regularVPadding,
           Layout.maxWidthTablet,
+          Layout.fullWidth,
         ]}
       >
         <View
@@ -65,41 +88,48 @@ const AccountContainer = () => {
           />
         </View>
 
-        <TouchableOpacity onPress={() => mutateAsync()}>
-          <View style={[Gutters.largeTMargin]}>
-            <Text
-              style={[
-                Fonts.bold,
-                Fonts.textGray,
-                Fonts.textCenter,
-                { fontSize: 24 },
-              ]}
-              numberOfLines={2}
-            >
-              {wallet}
-            </Text>
-            <View
-              style={[
-                Layout.row,
-                Layout.justifyContentCenter,
-                Gutters.smallTMargin,
-                Layout.alignItemsCenter,
-              ]}
-            >
+        {isLoading && (
+          <View style={[Gutters.smallTMargin]}>
+            <ActivityIndicator />
+          </View>
+        )}
+        {!isLoading && (
+          <TouchableOpacity onPress={() => mutateAsync()}>
+            <View style={[Gutters.largeTMargin]}>
               <Text
                 style={[
-                  Fonts.regular,
+                  Fonts.bold,
                   Fonts.textGray,
                   Fonts.textCenter,
-                  { fontSize: 18 },
+                  { fontSize: 24 },
+                ]}
+                numberOfLines={2}
+              >
+                {wallet}
+              </Text>
+              <View
+                style={[
+                  Layout.row,
+                  Layout.justifyContentCenter,
+                  Gutters.smallTMargin,
+                  Layout.alignItemsCenter,
                 ]}
               >
-                Tap to disconnect
-              </Text>
-              <Icon name="chevron-forward" size={24} color={Colors.text} />
+                <Text
+                  style={[
+                    Fonts.regular,
+                    Fonts.textGray,
+                    Fonts.textCenter,
+                    { fontSize: 18 },
+                  ]}
+                >
+                  Tap to disconnect
+                </Text>
+                <Icon name="chevron-forward" size={24} color={Colors.text} />
+              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
 
         <View style={[Gutters.largeTMargin]}>
           <Text style={[Fonts.textRegular, Fonts.bold, Fonts.textBlack]}>

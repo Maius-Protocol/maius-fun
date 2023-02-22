@@ -1,10 +1,24 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import nacl from 'tweetnacl'
 import bs58 from 'bs58'
-import { Linking } from 'react-native'
+import { Alert, Linking } from 'react-native'
 import { Config } from '@/Config'
-import { useDispatch } from 'react-redux'
-import { updateWalletPublicKey } from '@/Store/Wallet'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  keypairSecretSelector,
+  sessionSelector,
+  sharedSecretSelector,
+  updateKeypairSecret,
+  updateSession,
+  updateSharedSecret,
+  updateWalletPublicKey,
+} from '@/Store/Wallet'
 import { decryptPayload, encryptPayload } from '@/Utils/payload'
 import { buildUrl } from '@/Utils/buildUrl'
 import { Buffer } from 'buffer'
@@ -26,17 +40,29 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   children,
 }): JSX.Element => {
   const dispatch = useDispatch()
+  const dappKeyPairSecret = useSelector(keypairSecretSelector)
+  const sharedSecretStr = useSelector(sharedSecretSelector)
+  const session = useSelector(sessionSelector)
+  const sharedSecret = bs58.decode(sharedSecretStr || '')
   const [deepLink, setDeepLink] = useState<string>('')
   const [logs, setLogs] = useState<string[]>([])
-  const addLog = useCallback(
-    (log: string) => setLogs(logs => [...logs, '> ' + log]),
-    [],
-  )
-  const [dappKeyPair] = useState(nacl.box.keyPair())
-  const [sharedSecret, setSharedSecret] = useState<Uint8Array>()
-  const [session, setSession] = useState<string>()
+  const addLog = useCallback((log: string) => {
+    if (log?.includes('errorMessage')) {
+      Alert.alert('Error', log)
+    }
+    setLogs(logs => [...logs, '> ' + log])
+  }, [])
+  const dappKeyPair = useMemo(() => {
+    if (dappKeyPairSecret) {
+      return nacl.box.keyPair.fromSecretKey(bs58.decode(dappKeyPairSecret))
+    }
+    return undefined
+  }, [dappKeyPairSecret])
 
   const connect = async () => {
+    if (!dappKeyPair) {
+      return
+    }
     const params = new URLSearchParams({
       dapp_encryption_public_key: bs58.encode(dappKeyPair.publicKey),
       cluster: Config.SOLANA_CLUSTER,
@@ -53,6 +79,9 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   }
 
   const signAndSendTransaction = async (serializedTransaction: Buffer) => {
+    if (!dappKeyPair) {
+      return
+    }
     const payload = {
       session,
       transaction: bs58.encode(serializedTransaction),
@@ -82,7 +111,9 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   console.log(logs)
 
   useEffect(() => {
-    if (!deepLink) return
+    if (!dappKeyPair || !deepLink) {
+      return
+    }
 
     const url = new URL(deepLink)
     const params = url.searchParams
@@ -103,8 +134,10 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
         sharedSecretDapp,
       )
 
-      setSharedSecret(sharedSecretDapp)
-      setSession(connectData.session)
+      dispatch(
+        updateSharedSecret({ sharedSecret: bs58.encode(sharedSecretDapp) }),
+      )
+      dispatch(updateSession({ session: connectData.session }))
       dispatch(
         updateWalletPublicKey({
           walletPublicKey: connectData.public_key,
@@ -135,6 +168,16 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     const listener = Linking.addEventListener('url', handleDeepLink)
     return () => {
       Linking.removeSubscription(listener)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!dappKeyPairSecret) {
+      dispatch(
+        updateKeypairSecret({
+          dappKeypairSecret: bs58.encode(nacl.box.keyPair()?.secretKey),
+        }),
+      )
     }
   }, [])
 

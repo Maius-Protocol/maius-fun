@@ -3,7 +3,7 @@ import { Cluster } from '@solana/web3.js'
 const isDev = process.env.NODE_ENV === 'development'
 
 const DevConfig = {
-  API_URL: 'https://e970-42-115-94-181.ap.ngrok.io/api',
+  API_URL: 'https://c1fd-42-115-114-173.ap.ngrok.io/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_CONNECTION: {},
@@ -19,6 +19,7 @@ export const Config = {
   ...(isDev ? DevConfig : ProductionConfig),
   IOS_APP_SCHEME: 'mairdrop',
   APP_URL: 'https://airdrop.maiuspay.com',
+  FEE_PER_NFT: 0.02,
 }
 
 export const ApiRoutes = {

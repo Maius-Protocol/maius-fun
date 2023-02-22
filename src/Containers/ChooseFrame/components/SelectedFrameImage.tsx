@@ -9,7 +9,7 @@ const SelectedFrameImage = ({
 }: {
   imageUri: string | undefined
   frameUri: string | undefined
-  onChange: () => Promise<any> | undefined
+  onChange: any
 }) => {
   const { Images, Layout, Colors } = useTheme()
 

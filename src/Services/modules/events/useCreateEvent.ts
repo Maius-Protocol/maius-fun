@@ -20,8 +20,8 @@ interface useCreateEventProps {
 function useCreateEvent() {
   const { program } = useProgram()
   const wallet = useSelector(walletPublicKey)
-  return useMutation<unknown, unknown, useCreateEventProps, unknown>(
-    async ({ count = 0, opened, name, frame_url }) => {
+  return useMutation(
+    async ({ count = 0, opened, name, frame_url }: useCreateEventProps) => {
       const [eventAccountAddress, eventBump] = findEventAddress(
         new PublicKey(wallet!),
         count,

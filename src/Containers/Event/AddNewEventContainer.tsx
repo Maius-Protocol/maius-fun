@@ -11,20 +11,24 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { launchImageLibrary } from 'react-native-image-picker'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import useUploadFrame from '@/Services/mutations/useUploadFrame'
-import { useMutation } from 'react-query'
-// import { DataStore } from 'aws-amplify'
 import { navigationRef } from '@/Navigators/utils'
 import useCreateEvent from '@/Services/modules/events/useCreateEvent'
 import useSendTransaction from '@/Services/mutations/useSendTransaction'
 import useIdentifier from '@/Services/modules/identifier/useIdentifier'
 import useCreateIdentifier from '@/Services/modules/identifier/useCreateIdentifier'
+import useEvents from '@/Services/modules/events/useEvents'
 
 const AddNewEventContainer = () => {
   const { Gutters, Layout, Fonts } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const { bottom } = useSafeAreaInsets()
-  const { data: identifier, isRefetching: isLoadingIdentifier } =
-    useIdentifier()
+  const {
+    data: identifier,
+    refetch: refetchIdentifier,
+    isRefetching: isLoadingIdentifier,
+  } = useIdentifier()
+
+  const { refetch } = useEvents()
   const { mutateAsync: createIdentifier, isLoading: isCreatingIdentifier } =
     useCreateIdentifier()
   const { mutateAsync: uploadFrame, isLoading: isUploadFrame } =
@@ -48,6 +52,8 @@ const AddNewEventContainer = () => {
     },
   })
 
+  console.log('identifier', eventCount)
+
   const isLoading =
     isUploadFrame ||
     isCreateEvent ||
@@ -58,18 +64,20 @@ const AddNewEventContainer = () => {
   const enabled = errors.name === undefined && errors.frame === undefined
   const onSubmit = async (data: any) => {
     const { frame, host_pk, status, name } = data
-    // const frameUrl = await uploadFrame({ frame })
-    const { transaction: identifierTransaction, address: identifierAddress } =
-      await createIdentifier()
-    const { transaction: eventTransaction, address: eventAddress } =
-      await createEvent({
-        name: name,
-        opened: true,
-        frame_url:
-          'https://cdn.maiuspay.com/maius-airdrop/940423cc-09e5-4949-8bf4-ed57cef3a03e',
-        count: eventCount,
-      })
+    const _frameUrl = await uploadFrame({ frame })
+    const frameUrl = _frameUrl?.data?.data?.url
+    // const frameUrl = 'sdfsdf'
+    const { transaction: identifierTransaction } = await createIdentifier()
+
+    const { transaction: eventTransaction } = await createEvent({
+      name: name,
+      opened: status === 'OPENED',
+      frame_url: frameUrl,
+      count: eventCount,
+    })
     await sendInstruction([identifierTransaction, eventTransaction])
+    refetchIdentifier()
+    refetch()
     navigationRef.goBack()
   }
 
@@ -205,7 +213,7 @@ const AddNewEventContainer = () => {
       <View
         style={[
           Gutters.regularHPadding,
-          { marginBottom: bottom },
+          { marginBottom: bottom + 32 },
           Gutters.smallTMargin,
         ]}
       >

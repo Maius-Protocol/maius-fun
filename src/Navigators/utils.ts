@@ -18,10 +18,11 @@ type RootStackParamList = {
   CAPTURE_PHOTO: undefined
   MINT_NFT: undefined
   AIRDROP_NFT: undefined
-
   ADD_NEW_EVENT: undefined
   ACCOUNT: undefined
   CONNECT_WALLET: undefined
+  TOP_UP_NFTS: undefined
+  UPDATE_EVENT: undefined
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
@@ -31,6 +32,8 @@ export enum AppRoutes {
   HOME = 'HOME',
   EVENTS = 'EVENTS',
   ADD_NEW_EVENT = 'ADD_NEW_EVENT',
+  TOP_UP_NFTS = 'TOP_UP_NFTS',
+  UPDATE_EVENT = 'UPDATE_EVENT',
   ACCOUNT = 'ACCOUNT',
   CONNECT_WALLET = 'CONNECT_WALLET',
   CHOOSE_FRAME = 'CHOOSE_FRAME',

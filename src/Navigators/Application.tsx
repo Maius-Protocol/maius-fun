@@ -15,11 +15,13 @@ import AirdropNFTContainer from '@/Containers/AirdropNFT/AirdropNFTContainer'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import AccountContainer from '@/Containers/Account/AccountContainer'
 import EventContainer from '@/Containers/Event/EventContainer'
-import AddNewEventContainer from '@/Containers/AddNewEvent/AddNewEventContainer'
+import AddNewEventContainer from '@/Containers/Event/AddNewEventContainer'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '@/Theme/Variables'
 import ProgramProvider from '@/Hooks/useProgram'
 import { routingInstrumentation } from '@/..'
+import TopUpNFTContainer from '@/Containers/TopUpNFT/TopUpNFTContainer'
+import EditEventContainer from '@/Containers/Event/EditEventContainer'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -69,8 +71,7 @@ const Home = () => {
 // @refresh reset
 const ApplicationNavigator = () => {
   const routeNameRef = React.useRef()
-  const { Layout, darkMode, NavigationTheme } = useTheme()
-  const { colors } = NavigationTheme
+  const { darkMode, NavigationTheme } = useTheme()
 
   return (
     <WalletProvider>
@@ -80,6 +81,7 @@ const ApplicationNavigator = () => {
             if (routeNameRef.current) {
               // @ts-ignore
               routeNameRef.current =
+                // @ts-ignore
                 navigationRef.current.getCurrentRoute().name
             }
             routingInstrumentation.registerNavigationContainer(navigationRef)
@@ -88,8 +90,8 @@ const ApplicationNavigator = () => {
           ref={navigationRef}
           onStateChange={async () => {
             const previousRouteName = routeNameRef.current
-            // @ts-ignore
             const currentRouteName =
+              // @ts-ignore
               navigationRef.current.getCurrentRoute().name
             if (previousRouteName !== currentRouteName) {
               await analytics().logScreenView({
@@ -156,6 +158,14 @@ const ApplicationNavigator = () => {
               <Stack.Screen
                 name={AppRoutes.ADD_NEW_EVENT}
                 component={AddNewEventContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.TOP_UP_NFTS}
+                component={TopUpNFTContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.UPDATE_EVENT}
+                component={EditEventContainer}
               />
             </Stack.Group>
           </Stack.Navigator>

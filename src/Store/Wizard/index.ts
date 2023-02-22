@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from '@/Store'
+import { Event } from '@/types/schema'
 
 export enum WizardSteps {
   CHOOSE_FRAME = 'CHOOSE_FRAME',
@@ -10,7 +11,7 @@ export type WizardState = {
   step: WizardSteps
   selectedPhoto?: string
   selectedFrame?: string
-  selectedEvent?: LazyEvent
+  selectedEvent?: Event
 }
 
 type WizardPayload = {
