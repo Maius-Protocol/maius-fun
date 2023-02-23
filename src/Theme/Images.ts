@@ -10,6 +10,8 @@ export default function ({}: ThemeVariables) {
       image: require('@/Assets/Animations/5856-image-picture.json'),
       camera: require('@/Assets/Animations/9948-camera-pop-up.json'),
       wifi: require('@/Assets/Animations/75488-wifi-bounce.json'),
+      share: require('@/Assets/Animations/113973-share.json'),
+      scan: require('@/Assets/Animations/45696-scan.json'),
     },
   }
 }

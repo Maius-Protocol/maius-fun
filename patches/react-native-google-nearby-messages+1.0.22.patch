@@ -1,0 +1,43 @@
+diff --git a/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessages.swift b/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessages.swift
+index 8035174..06dbe6f 100644
+--- a/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessages.swift
++++ b/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessages.swift
+@@ -231,7 +231,7 @@ class NearbyMessages: RCTEventEmitter {
+
+ 	// Called when the UIView gets destroyed (e.g. App reload)
+ 	@objc
+-	func invalidate() {
++    override func invalidate() {
+ 		print("GNM_BLE: invalidate")
+ 		disconnect()
+ 	}
+diff --git a/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.h b/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.h
+index ce3c532..b0ca220 100644
+--- a/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.h
++++ b/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.h
+@@ -3,8 +3,8 @@
+ //
+
+ #import <Foundation/Foundation.h>
+-#import "RCTBridgeModule.h"
+-#import "RCTEventEmitter.h"
++#import <React/RCTBridgeModule.h>
++#import <React/RCTEventEmitter.h>
+ #import "GNSMessages.h"
+
+ @interface GoogleNearbyMessagesBridge: NSObject
+diff --git a/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.m b/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.m
+index 17c67f8..a56f633 100644
+--- a/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.m
++++ b/node_modules/react-native-google-nearby-messages/ios/GoogleNearbyMessagesBridge.m
+@@ -7,8 +7,8 @@
+ //
+
+ #import "GoogleNearbyMessagesBridge.h"
+-#import "RCTBridgeModule.h"
+-#import "RCTEventEmitter.h"
++#import <React/RCTBridgeModule.h>
++#import <React/RCTEventEmitter.h>
+
+ @interface RCT_EXTERN_REMAP_MODULE(GoogleNearbyMessages, NearbyMessages, NSObject)
+

@@ -18,10 +18,16 @@ import {
   updateSession,
   updateSharedSecret,
   updateWalletPublicKey,
+  walletPublicKey,
 } from '@/Store/Wallet'
 import { decryptPayload, encryptPayload } from '@/Utils/payload'
 import { buildUrl } from '@/Utils/buildUrl'
 import { Buffer } from 'buffer'
+import {
+  useNearbyPublication,
+  useNearbySubscription,
+} from 'react-native-google-nearby-messages'
+import { NearbyConfig } from 'react-native-google-nearby-messages'
 
 interface WalletContextState {
   connect: () => Promise<void>
@@ -39,6 +45,16 @@ const WalletContext = React.createContext<WalletContextState | undefined>(
 const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   children,
 }): JSX.Element => {
+  const wallet = useSelector(walletPublicKey)
+  const nearbyConfig = useMemo<NearbyConfig>(
+    () => ({ apiKey: Config.NEARBY_MESSAGES_API_KEY }),
+    [],
+  )
+  const { nearbyMessages } = useNearbySubscription(nearbyConfig)
+  const nearbyStatus = useNearbyPublication(
+    nearbyConfig,
+    `Hello from: ${wallet}`,
+  )
   const dispatch = useDispatch()
   const dappKeyPairSecret = useSelector(keypairSecretSelector)
   const sharedSecretStr = useSelector(sharedSecretSelector)
@@ -180,6 +196,12 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       )
     }
   }, [])
+
+  useEffect(() => {
+    if (nearbyMessages) {
+      console.log(nearbyMessages)
+    }
+  }, [nearbyMessages])
 
   return (
     <WalletContext.Provider

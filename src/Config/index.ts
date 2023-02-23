@@ -1,4 +1,5 @@
 import { Cluster } from '@solana/web3.js'
+import EnvConfig from 'react-native-config'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -20,6 +21,7 @@ export const Config = {
   IOS_APP_SCHEME: 'mairdrop',
   APP_URL: 'https://airdrop.maiuspay.com',
   FEE_PER_NFT: 0.02,
+  NEARBY_MESSAGES_API_KEY: EnvConfig.NEARBY_MESSAGES_API_KEY,
 }
 
 export const ApiRoutes = {

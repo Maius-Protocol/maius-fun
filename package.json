@@ -10,7 +10,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@ant-design/react-native": "^5.0.3",
@@ -49,7 +50,9 @@
     "i18next": "^21.8.14",
     "lodash": "^4.17.21",
     "lottie-react-native": "^5.1.5",
+    "patch-package": "^6.5.1",
     "path-browserify": "0.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "process": "^0.11.0",
     "prop-types": "^15.8.1",
     "punycode": "^1.2.4",
@@ -64,9 +67,12 @@
     "react-native-crypto": "^2.1.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-get-random-values": "^1.8.0",
+    "react-native-google-nearby-messages": "^1.0.22",
     "react-native-image-picker": "^5.0.1",
     "react-native-level-fs": "^3.0.0",
     "react-native-os": "^1.0.1",
+    "react-native-pager-view": "^6.1.4",
+    "react-native-qrcode-svg": "^6.2.0",
     "react-native-randombytes": "^3.0.0",
     "react-native-reanimated": "^2.9.1",
     "react-native-responsive-screen": "^1.4.2",

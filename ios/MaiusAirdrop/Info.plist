@@ -85,5 +85,12 @@
             <string>solana</string>
             <string>phantom</string>
         </array>
+        <key>NSBluetoothAlwaysUsageDescription</key>
+        	<string>We using bluetooth to detect nearby devices</string>
+        	<key>NSBluetoothPeripheralUsageDescription</key>
+        	<string>We using bluetooth to detect nearby devices</string>
+        	<key>NSLocationWhenInUseUsageDescription</key>
+        	<string>lWe using location to detect nearby devices
+        	</string>
 	</dict>
 </plist>
