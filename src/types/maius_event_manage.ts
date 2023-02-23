@@ -234,6 +234,24 @@ export type MaiusEventManage = {
           "type": {
             "option": "publicKey"
           }
+        },
+        {
+          "name": "opened",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "name",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "frameUrl",
+          "type": {
+            "option": "string"
+          }
         }
       ]
     }
@@ -555,6 +573,24 @@ export const IDL: MaiusEventManage = {
           "name": "collection",
           "type": {
             "option": "publicKey"
+          }
+        },
+        {
+          "name": "opened",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "name",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "frameUrl",
+          "type": {
+            "option": "string"
           }
         }
       ]

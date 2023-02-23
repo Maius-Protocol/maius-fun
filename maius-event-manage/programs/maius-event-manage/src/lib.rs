@@ -43,7 +43,10 @@ pub mod maius_event_manage {
         ctx: Context<UpdateEvent>,
         nft_more: Option<u64>,
         collection: Option<Pubkey>,
+        opened: Option<bool>,
+        name: Option<String>,
+        frame_url: Option<String>
     ) -> Result<()> {
-        update_event::handler(ctx, nft_more, collection)
+        update_event::handler(ctx, nft_more, collection, opened, name, frame_url)
     }
 }

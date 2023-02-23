@@ -45,6 +45,9 @@ pub fn handler(
     ctx: Context<UpdateEvent>,
     nft_more: Option<u64>,
     collection: Option<Pubkey>,
+    opened: Option<bool>,
+    name: Option<String>,
+    frame_url: Option<String>
 ) -> Result<()> {
     let event = &mut ctx.accounts.event;
     if nft_more != None {
@@ -67,6 +70,15 @@ pub fn handler(
     }
     if collection != None {
         event.collection = collection
+    }
+    if opened != None {
+        event.opened = opened.unwrap();
+    }
+    if name != None {
+        event.name = name.unwrap();
+    }
+    if frame_url != None {
+        event.frame_url = frame_url.unwrap();
     }
 
     Ok(())

@@ -18,6 +18,7 @@ import useIdentifier from '@/Services/modules/identifier/useIdentifier'
 import useCreateIdentifier from '@/Services/modules/identifier/useCreateIdentifier'
 import useEvents from '@/Services/modules/events/useEvents'
 import { Transaction } from '@solana/web3.js'
+import EventForm from '@/Containers/Event/components/EventForm'
 
 const AddNewEventContainer = () => {
   const { Gutters, Layout, Fonts } = useTheme()
@@ -29,7 +30,6 @@ const AddNewEventContainer = () => {
     isRefetching: isLoadingIdentifier,
   } = useIdentifier()
 
-  const { refetch } = useEvents()
   const { mutateAsync: createIdentifier, isLoading: isCreatingIdentifier } =
     useCreateIdentifier()
   const { mutateAsync: uploadFrame, isLoading: isUploadFrame } =
@@ -39,11 +39,7 @@ const AddNewEventContainer = () => {
   const { mutateAsync: sendInstruction, isLoading: isSendingInstruction } =
     useSendTransaction()
   const eventCount = identifier?.count?.toNumber() || 0
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const formProps = useForm({
     reValidateMode: 'onChange',
     defaultValues: {
       status: 'OPENED',
@@ -52,6 +48,10 @@ const AddNewEventContainer = () => {
       host_pk: wallet,
     },
   })
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = formProps
 
   const isLoading =
     isUploadFrame ||
@@ -63,7 +63,7 @@ const AddNewEventContainer = () => {
   const enabled = errors.name === undefined && errors.frame === undefined
   const onSubmit = async (data: any) => {
     let instructions: Transaction[] = []
-    const { frame, host_pk, status, name } = data
+    const { frame, status, name } = data
     const _frameUrl = await uploadFrame({ frame })
     const frameUrl = _frameUrl?.data?.data?.url
     if (!identifier) {
@@ -79,11 +79,9 @@ const AddNewEventContainer = () => {
     instructions = [...instructions, eventTransaction]
     await sendInstruction(instructions)
     refetchIdentifier()
-    refetch()
     navigationRef.goBack()
   }
 
-  const textStyle = [Fonts.bold, { fontSize: 16 }, Gutters.smallBMargin]
   return (
     <View style={[Layout.fill]}>
       <ScrollView
@@ -98,119 +96,7 @@ const AddNewEventContainer = () => {
           </Text>
         </View>
         <Divider />
-
-        <View style={[Gutters.regularTMargin]}>
-          <View style={[Gutters.regularBMargin]}>
-            <Text style={textStyle}>Event Name</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  placeholder="Type your event name here"
-                  style={[...textStyle, Fonts.regular]}
-                />
-              )}
-              name="name"
-            />
-            {errors.name && (
-              <Text style={[Fonts.italic]}>This is required.</Text>
-            )}
-          </View>
-          <View style={[Gutters.regularBMargin]}>
-            <Text style={textStyle}>Frame</Text>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({ field: { onChange, value } }) => {
-                const changeImage = async () => {
-                  const result = await launchImageLibrary({
-                    mediaType: 'photo',
-                  })
-                  const { assets } = result
-                  const asset = assets?.[0]
-                  if (asset) {
-                    onChange(asset.uri)
-                  }
-                }
-                return (
-                  <>
-                    {value && (
-                      <View
-                        style={[
-                          { width: 200, height: 200 },
-                          Gutters.smallBMargin,
-                        ]}
-                      >
-                        <SelectedFrameImage
-                          imageUri={undefined}
-                          frameUri={value}
-                          onChange={changeImage}
-                        />
-                      </View>
-                    )}
-                    <Button
-                      type="warning"
-                      onPress={changeImage}
-                      style={[Gutters.smallBMargin]}
-                    >
-                      <Text
-                        style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}
-                      >
-                        Choose photo
-                      </Text>
-                    </Button>
-                  </>
-                )
-              }}
-              name="frame"
-            />
-            {errors.frame && (
-              <Text style={[Fonts.italic]}>This is required.</Text>
-            )}
-          </View>
-          <View style={[Gutters.regularBMargin]}>
-            <Text style={textStyle}>Status</Text>
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Picker
-                  selectedValue={value}
-                  onBlur={onBlur}
-                  onValueChange={onChange}
-                  mode="dialog"
-                >
-                  <Picker.Item label="Open" value={'OPENED'} />
-                  <Picker.Item label="Closed" value={'CLOSED'} />
-                </Picker>
-              )}
-              name="status"
-            />
-          </View>
-          <View style={[Gutters.regularBMargin]}>
-            <Text style={textStyle}>Host</Text>
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  editable={false}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  style={[...textStyle, Fonts.regular]}
-                />
-              )}
-              name="host_pk"
-            />
-          </View>
-        </View>
+        <EventForm {...formProps} />
       </ScrollView>
       <View
         style={[

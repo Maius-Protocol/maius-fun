@@ -50,6 +50,7 @@ pub fn handler(ctx: Context<ClaimVault>) -> Result<()> {
 
     event.amount = 0;
     event.number_of_nft = 0;
+    event.opened = false;
 
     let balance: u64 = ctx.accounts.vault.to_account_info().lamports();
     let ix =

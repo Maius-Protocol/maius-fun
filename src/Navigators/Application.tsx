@@ -22,6 +22,7 @@ import ProgramProvider from '@/Hooks/useProgram'
 import { routingInstrumentation } from '@/..'
 import TopUpNFTContainer from '@/Containers/TopUpNFT/TopUpNFTContainer'
 import EditEventContainer from '@/Containers/Event/EditEventContainer'
+import CloseEventContainer from '@/Containers/Event/CloseEventContainer'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -166,6 +167,10 @@ const ApplicationNavigator = () => {
               <Stack.Screen
                 name={AppRoutes.UPDATE_EVENT}
                 component={EditEventContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.CLOSE_EVENT}
+                component={CloseEventContainer}
               />
             </Stack.Group>
           </Stack.Navigator>

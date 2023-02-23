@@ -58,6 +58,10 @@ const EventContainer = () => {
             onPress: () => navigate(AppRoutes.TOP_UP_NFTS, {}),
           },
           {
+            text: 'Close Event',
+            onPress: () => navigate(AppRoutes.CLOSE_EVENT, {}),
+          },
+          {
             text: 'Update event information',
             onPress: () => navigate(AppRoutes.UPDATE_EVENT, {}),
           },
@@ -76,6 +80,12 @@ const EventContainer = () => {
     }
     navigate(AppRoutes.CHOOSE_FRAME, serialized)
   }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch()
+    }, []),
+  )
 
   return (
     <View style={[Layout.fill, { marginTop: top }]}>
@@ -179,7 +189,9 @@ const EventContainer = () => {
                     <View
                       style={[
                         {
-                          backgroundColor: '#edecf0',
+                          backgroundColor: item?.opened
+                            ? '#edecf0'
+                            : Colors.gray,
                           paddingVertical: 4,
                           borderRadius: 24,
                           maxWidth: 128,
@@ -188,7 +200,15 @@ const EventContainer = () => {
                         Gutters.smallTMargin,
                       ]}
                     >
-                      <Text style={[Fonts.bold, { fontSize: 16 }]}>
+                      <Text
+                        style={[
+                          Fonts.bold,
+                          {
+                            fontSize: 16,
+                            color: item?.opened ? Colors.gray : Colors.white,
+                          },
+                        ]}
+                      >
                         {item?.opened ? 'Opened' : 'Closed'}
                       </Text>
                     </View>
