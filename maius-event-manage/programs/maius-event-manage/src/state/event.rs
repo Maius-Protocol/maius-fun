@@ -15,6 +15,7 @@ pub struct Event {
     pub collection: Option<Pubkey>,
     pub name: String,
     pub frame_url: String,
+    pub description: String
 }
 
 impl Event {
@@ -30,7 +31,9 @@ impl Event {
         8 + // number_of_nft
         8 + // amount
         8 + // index
-        1 + 32 // collection
+        1 + 32 + // collection
+        4 + 512 // description
+
     }
 }
 

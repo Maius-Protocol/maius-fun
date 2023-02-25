@@ -2,8 +2,6 @@ import * as anchor from '@project-serum/anchor'
 import { AnchorProvider, Program } from '@project-serum/anchor'
 import { MaiusEventManage } from '../target/types/maius_event_manage'
 import { PublicKey, SystemProgram } from '@solana/web3.js'
-import { findPDA } from './helper/setup'
-import { EventSeed, VaultSeed } from './constants'
 import { airdrop } from './helper/airdrop'
 import BN from 'bn.js'
 import { getLamportBalance } from './helper/helper'
@@ -32,7 +30,7 @@ describe('maius-event-manage', async () => {
     await airdrop(provider, host.publicKey, airdropSolAmount)
   })
   it('Init event!', async () => {
-    [identifierAccount, identifierBump] = await PublicKey.findProgramAddress(
+    [identifierAccount, identifierBump] = PublicKey.findProgramAddressSync(
       [Buffer.from('v1'), Buffer.from('identifier'), host.publicKey.toBuffer()],
       program.programId,
     )
@@ -47,7 +45,7 @@ describe('maius-event-manage', async () => {
       .rpc()
     const identifier = await program.account.identifier.fetch(identifierAccount)
     console.log('[identifier] Create result: ', identifier)
-    ;[eventAccount, eventBump] = await PublicKey.findProgramAddress(
+    ;[eventAccount, eventBump] = PublicKey.findProgramAddressSync(
       [
         Buffer.from('v1'),
         Buffer.from('event'),
@@ -56,7 +54,7 @@ describe('maius-event-manage', async () => {
       ],
       program.programId,
     )
-    ;[vaultAccount, vaultBump] = await PublicKey.findProgramAddress(
+    ;[vaultAccount, vaultBump] = PublicKey.findProgramAddressSync(
       [
         Buffer.from('v1'),
         Buffer.from('vault'),
@@ -66,7 +64,7 @@ describe('maius-event-manage', async () => {
       program.programId,
     )
     await program.methods
-      .initEvent(executor.publicKey)
+      .initEvent(executor.publicKey, true, 'abc', 'kjakjsf', 'this is test')
       .accounts({
         event: eventAccount,
         vault: vaultAccount,
@@ -134,6 +132,9 @@ describe('maius-event-manage', async () => {
       .updateEvent(
         new BN(3),
         new PublicKey('4mKSoDDqApmF1DqXvVTSL6tu2zixrSSNjqMxUnwvVzy2'),
+        null,
+        null,
+        null
       )
       .accounts({
         event: eventAccount,

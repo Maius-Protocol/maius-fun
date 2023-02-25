@@ -71,6 +71,10 @@ export type MaiusEventManage = {
         {
           "name": "frameUrl",
           "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
         }
       ]
     },
@@ -302,6 +306,10 @@ export type MaiusEventManage = {
           },
           {
             "name": "frameUrl",
+            "type": "string"
+          },
+          {
+            "name": "description",
             "type": "string"
           }
         ]
@@ -411,6 +419,10 @@ export const IDL: MaiusEventManage = {
         {
           "name": "frameUrl",
           "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
         }
       ]
     },
@@ -642,6 +654,10 @@ export const IDL: MaiusEventManage = {
           },
           {
             "name": "frameUrl",
+            "type": "string"
+          },
+          {
+            "name": "description",
             "type": "string"
           }
         ]
