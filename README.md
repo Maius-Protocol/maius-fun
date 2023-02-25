@@ -20,5 +20,14 @@
 - Open workspace in Xcode: `open ios/MaiusEventManage.xcworkspace`
 - Run project in Xcode
 
+### Notice for build fail on XCode
+- Open file `ios/MaiusAirdrop.xcodeproj/project.pbxproj`
+- **Using code editor remove 2 below line**: 
+```
+"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Assets.car",
+"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Assets.car",
+```
+- Run app again & **do not try pod install**
+
 ***
 API URL, Solana Cluster configs are in `src/Config/index.ts` file. You can change them to your own.
