@@ -9,7 +9,7 @@ use crate::error::*;
 
 use instructions::*;
 
-declare_id!("2QkLoXJsqvgaXQ7hEW1yXqVaToj8DVFU8tLfm8tKYiKD");
+declare_id!("5ZfnmNHBaXSSpNkKa6Eb2dJ4h2psmQ3i8BLR3pJfYbgw");
 
 #[program]
 pub mod maius_event_manage {
@@ -19,8 +19,8 @@ pub mod maius_event_manage {
         create_identifier::handler(ctx)
     }
 
-    pub fn init_event(ctx: Context<InitEvent>, executor: Pubkey, opened: bool, name: String, frame_url: String) -> Result<()> {
-        init_event::handler(ctx, executor, opened, name, frame_url)
+    pub fn init_event(ctx: Context<InitEvent>, executor: Pubkey, opened: bool, name: String, frame_url: String, description: String) -> Result<()> {
+        init_event::handler(ctx, executor, opened, name, frame_url, description)
     }
 
     pub fn set_event(ctx: Context<SetEvent>, number_of_nft: u64) -> Result<()> {
