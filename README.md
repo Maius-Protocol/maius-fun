@@ -29,5 +29,7 @@
 ```
 - Run app again & **do not try pod install**
 
+Issue reference: https://github.com/mrousavy/react-native-google-nearby-messages
+
 ***
 API URL, Solana Cluster configs are in `src/Config/index.ts` file. You can change them to your own.
