@@ -6,12 +6,12 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    let event = await getEvent('CmFrcQVtrNDssNKZoUj1byegFtxBHn9thCuoXmBQUJHN')
+    let event = await getEvent('DyLs3LSJHHCABFtmqBTR27Ny1rKC71xMiewADpD4yeFL')
     return res.status(200).json({
       data: { event },
       error: null,
     })
   } catch (e) {
-    return res.status(500)
+    return res.status(500).json({ data: undefined, error: e?.toString() })
   }
 }

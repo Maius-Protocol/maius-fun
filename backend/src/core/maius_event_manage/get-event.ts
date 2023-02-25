@@ -33,6 +33,6 @@ export const getEvent = async (event: string): Promise<EventAccount> => {
     }
     return eventData
   } catch (e) {
-    throw Error('Can failed event account')
+    throw Error(e?.toString())
   }
 }
