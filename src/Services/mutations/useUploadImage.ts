@@ -15,7 +15,7 @@ interface Response {
   }
 }
 
-function useUploadImage() {
+function useUploadImage(event_address: string) {
   return useMutation<
     AxiosResponse<Response>,
     unknown,
@@ -31,7 +31,11 @@ function useUploadImage() {
       uri: front,
       name: 'front',
     })
-    return await axiosInstance.post(ApiRoutes.UPLOAD_IMAGE, formData)
+    return await axiosInstance.post(ApiRoutes.UPLOAD_IMAGE, formData, {
+      params: {
+        event_address,
+      },
+    })
   })
 }
 

@@ -16,11 +16,12 @@ const MintNFTContainer = () => {
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
   const _selectedEvent = useSelector(selectedEvent)
+  const event_address = _selectedEvent?.eventAccountAddress!
   const {
     data,
     mutateAsync: uploadImage,
     isLoading: isUploadingImage,
-  } = useUploadImage()
+  } = useUploadImage(event_address)
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
 
   // const data = {
@@ -35,10 +36,10 @@ const MintNFTContainer = () => {
   const image = data?.data?.data?.image
   const json = data?.data?.data?.json
 
-  console.log(image, json)
+  console.log(image, json, _selectedEvent?.eventAccountAddress)
 
   const buildUrl = () => {
-    return buildSolanaPayUrl({
+    return buildSolanaPayUrl(event_address, {
       image,
       json,
       event_address: _selectedEvent?.eventAccountAddress,
