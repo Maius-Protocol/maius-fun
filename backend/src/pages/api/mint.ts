@@ -20,6 +20,7 @@ import {
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
 import { getTransferFeeInstructions } from '@/program/getTransferFeeInstruction'
+import Constants from '@/config/constants'
 
 interface GetResponse {
   label: string
@@ -27,7 +28,7 @@ interface GetResponse {
 }
 
 const get: NextApiHandler<GetResponse> = async (request, response) => {
-  const label = 'Maius Airdrop: Mint NFT 🔥'
+  const label = `${Constants.APP_NAME}: Mint NFT 🔥`
   const icon = `https://${request.headers.host}/ms-icon-310x310.png`
 
   response.status(200).send({
@@ -56,7 +57,6 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   }
 
   const eventAccount = await getEventAccount(event_address as string)
-  console.log('debug', eventAccount?.name?.toString() || 'Maius Airdrop')
   const applicantWallet = MaiusKeypair
 
   let mint = Keypair.generate()

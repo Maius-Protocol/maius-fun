@@ -22,6 +22,7 @@ export const Config = {
   APP_URL: 'https://airdrop.maiuspay.com',
   FEE_PER_NFT: 0.02,
   NEARBY_MESSAGES_API_KEY: EnvConfig.NEARBY_MESSAGES_API_KEY,
+  APP_NAME: 'Maius Fun',
 }
 
 export const ApiRoutes = {

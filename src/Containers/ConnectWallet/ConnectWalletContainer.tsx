@@ -46,7 +46,7 @@ const ConnectWalletContainer = () => {
           </View>
           <View style={[Layout.center]}>
             <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
-              Welcome to Maius Airdrop!
+              Welcome to {Config.APP_NAME}!
             </Text>
             <Text
               style={[
@@ -57,7 +57,8 @@ const ConnectWalletContainer = () => {
                 Gutters.smallTMargin,
               ]}
             >
-              Please connect your wallet to start using app
+              Please connect your wallet to start using app. You need to have
+              Phantom Wallet installed
             </Text>
           </View>
         </View>

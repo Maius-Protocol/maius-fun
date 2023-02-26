@@ -1,4 +1,5 @@
 const Constants = {
+  APP_NAME: 'Maius Fun',
   CDN_URL: 'https://cdn.maiuspay.com/',
   IMAGE_SIZE: 512,
 }
