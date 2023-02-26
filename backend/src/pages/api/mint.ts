@@ -20,7 +20,6 @@ import {
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
 import { getTransferFeeInstructions } from '@/program/getTransferFeeInstruction'
-import Constants from '@/config/constants'
 
 interface GetResponse {
   label: string
