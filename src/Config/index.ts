@@ -11,7 +11,7 @@ const DevConfig = {
 }
 const ProductionConfig = {
   API_URL: 'https://airdrop.maiuspay.com/api',
-  SOLANA_CLUSTER: 'mainnet-beta' as Cluster,
+  SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_DEEPLINK: {},
 }
