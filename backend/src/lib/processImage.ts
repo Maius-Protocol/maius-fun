@@ -5,15 +5,14 @@ import fs from 'fs'
 
 const sharp = require('sharp')
 
+const tmpFolder = process.env.NODE_ENV === 'production' ? 'tmp' : 'public/tmp'
+
 const processImage = async (front: string, background: string) => {
   try {
-    if (!fs.existsSync('public/tmp')) {
-      fs.mkdirSync('public/tmp', { recursive: true })
-    }
     const key = v4()
-    const resizedBackgroundName = `public/tmp/resized_background_${key}`
-    const resizedForegroundName = `public/tmp/resized_foreground_${key}`
-    const finalImageName = `public/tmp/${key}.jpeg`
+    const resizedBackgroundName = `${tmpFolder}/resized_background_${key}`
+    const resizedForegroundName = `${tmpFolder}/resized_foreground_${key}`
+    const finalImageName = `${tmpFolder}/${key}.jpeg`
     await sharp(background)
       .resize({
         width: Constants.IMAGE_SIZE,
