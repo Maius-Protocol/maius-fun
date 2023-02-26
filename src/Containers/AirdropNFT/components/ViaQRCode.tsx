@@ -19,10 +19,7 @@ const ViaQrCode = ({ url }: { url: string }) => {
             Layout.center,
           ]}
         >
-          <QRCode
-            size={maximumRes(windowWidth * 0.5)}
-            value="http://awesome.link.qr"
-          />
+          <QRCode size={maximumRes(windowWidth * 0.5)} value={url} />
         </View>
         <View style={[Layout.center, Gutters.largeTMargin]}>
           <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>

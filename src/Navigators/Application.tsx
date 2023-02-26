@@ -23,6 +23,7 @@ import { routingInstrumentation } from '@/..'
 import TopUpNFTContainer from '@/Containers/TopUpNFT/TopUpNFTContainer'
 import EditEventContainer from '@/Containers/Event/EditEventContainer'
 import CloseEventContainer from '@/Containers/Event/CloseEventContainer'
+import CurrentNftsRemaining from '@/Components/CurrentNftsRemaining'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -137,7 +138,18 @@ const ApplicationNavigator = () => {
                 headerLeft: () => null,
               }}
             />
-            <Stack.Group>
+            <Stack.Group
+              screenOptions={{
+                headerTitle: () => <CurrentNftsRemaining />,
+                headerTitleStyle: {
+                  opacity: 1,
+                },
+                headerBackgroundContainerStyle: {
+                  opacity: 0,
+                  backgroundColor: Colors.background,
+                },
+              }}
+            >
               <Stack.Screen
                 name={AppRoutes.CHOOSE_FRAME}
                 component={ChooseFrameContainer}

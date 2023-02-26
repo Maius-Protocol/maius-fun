@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { useSelector } from 'react-redux'
 import { walletPublicKey } from '@/Store/Wallet'
 
-function useEvent(eventAccountAddress: string) {
+function useEvent(eventAccountAddress: string, options: any = {}) {
   const { program } = useProgram()
   const wallet = useSelector(walletPublicKey)
 
@@ -18,6 +18,7 @@ function useEvent(eventAccountAddress: string) {
     },
     {
       enabled: eventAccountAddress !== undefined,
+      ...options,
     },
   )
 }
