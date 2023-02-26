@@ -20,6 +20,7 @@ import {
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
 import { getTransferFeeInstructions } from '@/program/getTransferFeeInstruction'
+import Constants from '@/config/constants'
 
 interface GetResponse {
   label: string
@@ -57,7 +58,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
   const eventAccount = await getEventAccount(event_address as string)
 
-  console.log('eventAccount', eventAccount)
+  console.log('debug', eventAccount?.name?.toString() || 'Maius Airdrop')
   const applicantWallet = MaiusKeypair
 
   let mint = Keypair.generate()
@@ -118,10 +119,10 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
       {
         createMetadataAccountArgsV2: {
           data: {
-            name: eventAccount?.name?.toString() || 'Maius Airdrop',
+            name: eventAccount?.name?.toString() || 'Maius Fun',
             symbol: 'MFUN',
             uri: json as string,
-            sellerFeeBasisPoints: 0,
+            sellerFeeBasisPoints: 100,
             creators: [
               {
                 address: applicantWallet.publicKey,
@@ -130,7 +131,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
               },
               {
                 address: new PublicKey(event_address as string),
-                verified: true,
+                verified: false,
                 share: 0,
               },
             ],
@@ -141,21 +142,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         },
       },
     ),
-    createCreateMasterEditionV3Instruction(
-      {
-        edition: masterEditionPubkey,
-        mint: mint.publicKey,
-        updateAuthority: applicantWallet.publicKey,
-        mintAuthority: applicantWallet.publicKey,
-        payer: applicantWallet.publicKey,
-        metadata: tokenMetadataPubkey,
-      },
-      {
-        createMasterEditionArgs: {
-          maxSupply: 0,
-        },
-      },
-    ),
+    // createCreateMasterEditionV3Instruction(
+    //   {
+    //     edition: masterEditionPubkey,
+    //     mint: mint.publicKey,
+    //     updateAuthority: applicantWallet.publicKey,
+    //     mintAuthority: applicantWallet.publicKey,
+    //     payer: applicantWallet.publicKey,
+    //     metadata: tokenMetadataPubkey,
+    //   },
+    //   {
+    //     createMasterEditionArgs: {
+    //       maxSupply: 0,
+    //     },
+    //   },
+    // ),
   )
 
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash
