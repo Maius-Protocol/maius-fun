@@ -19,6 +19,7 @@ import {
 } from '@metaplex-foundation/mpl-token-metadata'
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
+import { getTransferFeeInstructions } from '@/program/getTransferFeeInstruction'
 
 interface GetResponse {
   label: string
@@ -56,7 +57,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
   const eventAccount = await getEventAccount(event_address as string)
 
-  console.log(eventAccount)
+  console.log('eventAccount', eventAccount)
   const applicantWallet = MaiusKeypair
 
   let mint = Keypair.generate()
@@ -71,9 +72,15 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
   let masterEditionPubkey = await getMasterEditionPDA(mint.publicKey)
 
-  // let freezeNft = await FreezeNft(applicantWallet, mint.publicKey)
+  let transferFeeInstructions = await getTransferFeeInstructions(
+    // @ts-ignore
+    eventAccount?.executor as PublicKey,
+    new PublicKey(event_address as string),
+    eventAccount?.vault as PublicKey,
+  )
 
   let tx = new Transaction().add(
+    transferFeeInstructions,
     SystemProgram.createAccount({
       fromPubkey: applicantWallet.publicKey,
       newAccountPubkey: mint.publicKey,

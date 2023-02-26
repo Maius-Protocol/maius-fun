@@ -41,13 +41,14 @@ const MintNFTContainer = () => {
     return buildSolanaPayUrl({
       image,
       json,
+      event_address: _selectedEvent?.eventAccountAddress,
       message: `${_selectedEvent?.name}`,
     })
   }
 
   const startMint = async () => {
     const url = buildUrl()
-    console.log(url)
+    return
     const supported = await Linking.canOpenURL(url)
 
     if (supported) {
