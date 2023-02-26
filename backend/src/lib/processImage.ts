@@ -1,11 +1,15 @@
 // @ts-ignore
 import Constants from '@/config/constants'
 import { v4 } from 'uuid'
+import fs from 'fs'
 
 const sharp = require('sharp')
 
 const processImage = async (front: string, background: string) => {
   try {
+    if (!fs.existsSync('public/tmp')) {
+      fs.mkdirSync('public/tmp')
+    }
     const key = v4()
     const resizedBackgroundName = `public/tmp/resized_background_${key}`
     const resizedForegroundName = `public/tmp/resized_foreground_${key}`
