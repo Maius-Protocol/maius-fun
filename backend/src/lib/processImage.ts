@@ -8,7 +8,7 @@ const sharp = require('sharp')
 const processImage = async (front: string, background: string) => {
   try {
     if (!fs.existsSync('public/tmp')) {
-      fs.mkdirSync('public/tmp')
+      fs.mkdirSync('public/tmp', { recursive: true })
     }
     const key = v4()
     const resizedBackgroundName = `public/tmp/resized_background_${key}`
