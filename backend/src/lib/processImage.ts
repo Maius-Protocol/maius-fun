@@ -5,7 +5,7 @@ import fs from 'fs'
 
 const sharp = require('sharp')
 
-const tmpFolder = process.env.NODE_ENV === 'production' ? 'tmp' : 'public/tmp'
+const tmpFolder = process.env.NODE_ENV === 'production' ? '/tmp' : 'public/tmp'
 
 const processImage = async (front: string, background: string) => {
   try {
