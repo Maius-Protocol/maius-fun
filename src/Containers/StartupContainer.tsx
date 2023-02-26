@@ -34,10 +34,17 @@ const StartupContainer = () => {
         resizeMode="cover"
       />
       <Brand />
-      <Text style={[Fonts.bold, Fonts.textLarge, Fonts.textBlack]}>
+      <Text style={[Fonts.titleLarge, Fonts.textLarge, Fonts.textBlack]}>
         {Config.APP_NAME}
       </Text>
-      <Text style={[Fonts.textCenter, Fonts.regular, Fonts.textBlack]}>
+      <Text
+        style={[
+          Fonts.textCenter,
+          Fonts.regular,
+          Fonts.textBlack,
+          { fontSize: 18 },
+        ]}
+      >
         a fun product from Maius Protocol
       </Text>
       <ActivityIndicator style={[Gutters.largeVMargin]} />

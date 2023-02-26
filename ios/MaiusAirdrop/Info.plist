@@ -1,96 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>CFBundleDevelopmentRegion</key>
-		<string>en</string>
-		<key>CFBundleDisplayName</key>
-		<string>Maius Airdrop</string>
-		<key>CFBundleExecutable</key>
-		<string>$(EXECUTABLE_NAME)</string>
-		<key>CFBundleIdentifier</key>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-		<key>CFBundleInfoDictionaryVersion</key>
-		<string>6.0</string>
-		<key>CFBundleName</key>
-		<string>$(PRODUCT_NAME)</string>
-		<key>CFBundlePackageType</key>
-		<string>APPL</string>
-		<key>CFBundleShortVersionString</key>
-		<string>1.0</string>
-		<key>CFBundleSignature</key>
-		<string>????</string>
-		<key>CFBundleVersion</key>
-		<string>1</string>
-		<key>LSRequiresIPhoneOS</key>
-		<true/>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>We need access to photo library in order to choose frame</string>
-		<key>NSCameraUsageDescription</key>
-		<string>This app requires access to the camera.</string>
-		<key>NSBluetoothPeripheralUsageDescription</key>
-		<string>This app needs bluetooth to discover nearby devices</string>
-		<key>NSBluetoothAlwaysUsageDescription</key>
-		<string>This app needs bluetooth to discover nearby devices</string>
-		<key>NSMicrophoneUsageDescription</key>
-		<string>This app needs audio to discover nearby devices</string>
-		<key>NSAppTransportSecurity</key>
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Maius Airdrop</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
 		<dict>
-			<key>NSExceptionDomains</key>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mairdrop</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>solana</string>
+		<string>phantom</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
 			<dict>
-				<key>localhost</key>
-				<dict>
-					<key>NSExceptionAllowsInsecureHTTPLoads</key>
-					<true/>
-				</dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
 			</dict>
 		</dict>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string/>
-		<key>UILaunchStoryboardName</key>
-		<string>LaunchScreen</string>
-		<key>UIRequiredDeviceCapabilities</key>
-		<array>
-			<string>armv7</string>
-		</array>
-		<key>UISupportedInterfaceOrientations</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
-		</array>
-		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
-		<key>UIAppFonts</key>
-		<array>
-			<string>DMSans-Bold.ttf</string>
-			<string>DMSans-BoldItalic.ttf</string>
-			<string>DMSans-Italic.ttf</string>
-			<string>DMSans-Medium.ttf</string>
-			<string>DMSans-MediumItalic.ttf</string>
-			<string>DMSans-Regular.ttf</string>
-            <string>Ionicons.ttf</string>
-		</array>
-		<key>CFBundleURLTypes</key>
-		<array>
-			<dict>
-				<key>CFBundleURLSchemes</key>
-				<array>
-					<string>mairdrop</string>
-				</array>
-			</dict>
-		</array>
-		<key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>solana</string>
-            <string>phantom</string>
-        </array>
-        <key>NSBluetoothAlwaysUsageDescription</key>
-        	<string>We using bluetooth to detect nearby devices</string>
-        	<key>NSBluetoothPeripheralUsageDescription</key>
-        	<string>We using bluetooth to detect nearby devices</string>
-        	<key>NSLocationWhenInUseUsageDescription</key>
-        	<string>lWe using location to detect nearby devices
-        	</string>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>We using bluetooth to detect nearby devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We using bluetooth to detect nearby devices</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>lWe using location to detect nearby devices
+        	</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs audio to discover nearby devices</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to photo library in order to choose frame</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>DMSans-Bold.ttf</string>
+		<string>DMSans-BoldItalic.ttf</string>
+		<string>DMSans-Italic.ttf</string>
+		<string>DMSans-Medium.ttf</string>
+		<string>DMSans-MediumItalic.ttf</string>
+		<string>DMSans-Regular.ttf</string>
+		<string>Ionicons.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+		<string>external-accessory</string>
+		<string>fetch</string>
+		<string>nearby-interaction</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
 </plist>

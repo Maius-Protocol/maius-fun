@@ -24,19 +24,8 @@ const MintNFTContainer = () => {
   } = useUploadImage(event_address)
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
 
-  // const data = {
-  //   data: {
-  //     data: {
-  //       image:
-  //         'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.jpeg',
-  //       json: 'https://cdn.maiuspay.com/mairdrop/ad89c2e6-0c83-4074-8034-2a3b106ab8dd.json',
-  //     },
-  //   },
-  // }
   const image = data?.data?.data?.image
   const json = data?.data?.data?.json
-
-  console.log(image, json, _selectedEvent?.eventAccountAddress)
 
   const buildUrl = () => {
     return buildSolanaPayUrl(event_address, {
@@ -121,7 +110,14 @@ const MintNFTContainer = () => {
         </View>
 
         <View>
-          <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
+          <Text
+            style={[
+              Fonts.textRegular,
+              Fonts.textGray,
+              Fonts.bold,
+              Fonts.textCenter,
+            ]}
+          >
             Step 3: Let's mint NFT!
           </Text>
           <Text
@@ -147,17 +143,19 @@ const MintNFTContainer = () => {
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>Mint NFT</Text>
         </Button>
 
-        <TouchableOpacity
-          onPress={() => {
-            const url = buildUrl()
-            navigate(AppRoutes.AIRDROP_NFT, { url })
-          }}
-          style={[Gutters.regularVPadding]}
-        >
-          <Text style={[Fonts.textGray, Fonts.textCenter]}>
-            Share with your Friends!
-          </Text>
-        </TouchableOpacity>
+        {!isUploadingImage && (
+          <TouchableOpacity
+            onPress={() => {
+              const url = buildUrl()
+              navigate(AppRoutes.AIRDROP_NFT, { url })
+            }}
+            style={[Gutters.regularVPadding]}
+          >
+            <Text style={[Fonts.textGray, Fonts.textCenter]}>
+              Share with your Friends!
+            </Text>
+          </TouchableOpacity>
+        )}
 
         {/*<TouchableOpacity onPress={skip} style={[Gutters.regularVPadding]}>*/}
         {/*  <Text style={[Fonts.textGray, Fonts.textCenter]}>Skip</Text>*/}

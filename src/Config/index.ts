@@ -4,7 +4,7 @@ import EnvConfig from 'react-native-config'
 const isDev = process.env.NODE_ENV === 'development'
 
 const DevConfig = {
-  API_URL: 'https://f0cc-115-79-204-39.ap.ngrok.io/api',
+  API_URL: 'https://02fb-115-79-204-39.ap.ngrok.io/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_CONNECTION: {},
@@ -28,4 +28,5 @@ export const Config = {
 export const ApiRoutes = {
   UPLOAD_IMAGE: '/upload',
   UPLOAD_FRAME: '/upload-frame',
+  SEND_NOTIFY: '/notify',
 }

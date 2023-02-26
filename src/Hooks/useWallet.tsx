@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import nacl from 'tweetnacl'
 import bs58 from 'bs58'
-import { Alert, Linking } from 'react-native'
+import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native'
 import { Config } from '@/Config'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -28,6 +28,8 @@ import {
   useNearbySubscription,
 } from 'react-native-google-nearby-messages'
 import { NearbyConfig } from 'react-native-google-nearby-messages'
+import messaging from '@react-native-firebase/messaging'
+import { AppRoutes, navigate, navigationRef } from '@/Navigators/utils'
 
 interface WalletContextState {
   connect: () => Promise<void>
@@ -45,15 +47,15 @@ const WalletContext = React.createContext<WalletContextState | undefined>(
 const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   children,
 }): JSX.Element => {
+  const [FCMToken, setFCMToken] = useState<string>('')
   const wallet = useSelector(walletPublicKey)
   const nearbyConfig = useMemo<NearbyConfig>(
     () => ({ apiKey: Config.NEARBY_MESSAGES_API_KEY }),
     [],
   )
-  const { nearbyMessages } = useNearbySubscription(nearbyConfig)
   const nearbyStatus = useNearbyPublication(
     nearbyConfig,
-    `Hello from: ${wallet}`,
+    `Hello from:[${wallet}]-[${FCMToken}]`,
   )
   const dispatch = useDispatch()
   const dappKeyPairSecret = useSelector(keypairSecretSelector)
@@ -187,7 +189,27 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     }
   }, [])
 
+  async function requestUserPermission() {
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      )
+    }
+    const authStatus = await messaging().requestPermission()
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus)
+    }
+    await messaging().registerDeviceForRemoteMessages()
+    const token = await messaging().getToken()
+    setFCMToken(token)
+  }
+
   useEffect(() => {
+    requestUserPermission()
     if (!dappKeyPairSecret) {
       dispatch(
         updateKeypairSecret({
@@ -196,12 +218,19 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       )
     }
   }, [])
-
   useEffect(() => {
-    if (nearbyMessages) {
-      console.log(nearbyMessages)
-    }
-  }, [nearbyMessages])
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      if (remoteMessage?.notification?.title?.includes('NFT request')) {
+        navigate(AppRoutes.RECEIVED_NFT, {
+          solanaUrl: remoteMessage?.data?.url,
+          ...remoteMessage?.data,
+        })
+      }
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage))
+    })
+
+    return unsubscribe
+  }, [])
 
   return (
     <WalletContext.Provider

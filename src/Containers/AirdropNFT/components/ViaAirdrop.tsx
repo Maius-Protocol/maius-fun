@@ -5,10 +5,11 @@ import Lottie from 'lottie-react-native'
 import { Button } from '@ant-design/react-native'
 import { useTheme } from '@/Hooks'
 import { useMutation } from 'react-query'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const ViaAirdrop = ({ url }: { url: string }) => {
   const { Images, Layout, Fonts, Gutters } = useTheme()
-
+  const { bottom } = useSafeAreaInsets()
   const { isLoading, mutateAsync } = useMutation(async () => {
     try {
       const result = await Share.share({
@@ -53,7 +54,7 @@ const ViaAirdrop = ({ url }: { url: string }) => {
           </Text>
         </View>
       </View>
-      <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
+      <View style={[Layout.fullWidth, { marginBottom: bottom + 80 }]}>
         <Button
           loading={isLoading}
           onPress={() => {

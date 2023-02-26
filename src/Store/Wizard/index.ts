@@ -42,9 +42,7 @@ const slice = createSlice({
       state,
       { payload: { selectedEvent } }: WizardPayload,
     ) => {
-      if (typeof selectedEvent !== 'undefined') {
-        state.selectedEvent = selectedEvent
-      }
+      state.selectedEvent = selectedEvent
     },
   },
 })

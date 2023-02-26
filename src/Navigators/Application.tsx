@@ -25,6 +25,7 @@ import EditEventContainer from '@/Containers/Event/EditEventContainer'
 import CloseEventContainer from '@/Containers/Event/CloseEventContainer'
 import CurrentNftsRemaining from '@/Components/CurrentNftsRemaining'
 import BackToHome from '@/Components/BackToHome'
+import ReceivedNFTContainer from '@/Containers/ReceivedNFT/ReceivedNFTContainer'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -149,7 +150,6 @@ const ApplicationNavigator = () => {
                   opacity: 0,
                   backgroundColor: Colors.background,
                 },
-                headerRight: () => <BackToHome />,
               }}
             >
               <Stack.Screen
@@ -163,10 +163,23 @@ const ApplicationNavigator = () => {
               <Stack.Screen
                 name={AppRoutes.MINT_NFT}
                 component={MintNFTContainer}
+                options={{
+                  headerRight: () => <BackToHome />,
+                }}
               />
               <Stack.Screen
                 name={AppRoutes.AIRDROP_NFT}
                 component={AirdropNFTContainer}
+                options={{
+                  headerRight: () => <BackToHome />,
+                }}
+              />
+              <Stack.Screen
+                name={AppRoutes.RECEIVED_NFT}
+                component={ReceivedNFTContainer}
+                options={{
+                  headerRight: () => <BackToHome />,
+                }}
               />
             </Stack.Group>
             <Stack.Group>

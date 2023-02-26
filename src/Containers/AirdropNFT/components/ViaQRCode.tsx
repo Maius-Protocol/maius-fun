@@ -13,13 +13,13 @@ const ViaQrCode = ({ url }: { url: string }) => {
         <View
           style={[
             {
-              height: windowWidth * 0.5,
-              width: windowWidth * 0.5,
+              height: windowWidth * 0.8,
+              width: windowWidth * 0.8,
             },
             Layout.center,
           ]}
         >
-          <QRCode size={maximumRes(windowWidth * 0.5)} value={url} />
+          <QRCode size={maximumRes(windowWidth * 0.65)} value={url} />
         </View>
         <View style={[Layout.center, Gutters.largeTMargin]}>
           <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>

@@ -24,6 +24,9 @@ type RootStackParamList = {
   TOP_UP_NFTS: undefined
   UPDATE_EVENT: undefined
   CLOSE_EVENT: undefined
+  RECEIVED_NFT: {
+    solanaUrl: string
+  }
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
@@ -42,6 +45,7 @@ export enum AppRoutes {
   MINT_NFT = 'MINT_NFT',
   AIRDROP_NFT = 'AIRDROP_NFT',
   CLOSE_EVENT = 'CLOSE_EVENT',
+  RECEIVED_NFT = 'RECEIVED_NFT',
 }
 
 export function navigate(name: keyof RootStackParamList, params: any) {

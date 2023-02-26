@@ -21,6 +21,7 @@ import { useAppDispatch } from '@/Store'
 import { useSelector } from 'react-redux'
 import { walletPublicKey } from '@/Store/Wallet'
 import { useFocusEffect } from '@react-navigation/native'
+import { serializeEvent } from '@/Utils/serializeEvent'
 
 const EventContainer = () => {
   const { top } = useSafeAreaInsets()
@@ -30,19 +31,7 @@ const EventContainer = () => {
   const dispatch = useAppDispatch()
 
   const selectEvent = (event: EventType, eventAccountAddress: string) => {
-    const serialized = {
-      name: event.name,
-      opened: event.opened,
-      host: event.host.toBase58(),
-      vault: event.vault.toBase58(),
-      executor: event.executor.toBase58(),
-      number_of_nft: event.numberOfNft.toNumber(),
-      amount: event.amount.toNumber(),
-      index: event.index.toNumber(),
-      collection: event.collection?.toBase58(),
-      frameUrl: event.frameUrl,
-      eventAccountAddress,
-    }
+    const serialized = serializeEvent(event, eventAccountAddress)
     dispatch(
       changeSelectedEvent({
         selectedEvent: serialized,

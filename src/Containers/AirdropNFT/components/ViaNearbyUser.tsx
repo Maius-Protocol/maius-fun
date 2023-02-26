@@ -24,20 +24,32 @@ import { SvgUri } from 'react-native-svg'
 import { Colors } from '@/Theme/Variables'
 import { useSelector } from 'react-redux'
 import { walletPublicKey } from '@/Store/Wallet'
+import useSendNotify from '@/Services/mutations/useSendNotify'
+import { selectedEvent } from '@/Store/Wizard'
 
 const ViaNearbyUser = ({ url }: { url: string }) => {
   const _walletPublickey = useSelector(walletPublicKey)
-
+  const { mutateAsync } = useSendNotify()
+  const _selectedEvent = useSelector(selectedEvent)
+  const event_address = _selectedEvent?.eventAccountAddress!
   const { Images, Layout, Fonts, Gutters } = useTheme()
   const nearbyConfig = useMemo<NearbyConfig>(
     () => ({ apiKey: Config.NEARBY_MESSAGES_API_KEY }),
     [],
   )
-  const { nearbyMessages, nearbyStatus } = useNearbySubscription(nearbyConfig)
-
+  const { nearbyMessages } = useNearbySubscription(nearbyConfig)
   const nearbyWallets = nearbyMessages
-    ?.map(message => message?.replace('Hello from: ', ''))
     ?.filter(message => message !== 'undefined')
+    ?.map(message => {
+      const matches = message?.match(/\[([^\][]*)]/g)
+      const walletAddress = matches?.[0]?.replace('[', '')?.replace(']', '')
+      const fcmToken = matches?.[1]?.replace('[', '')?.replace(']', '')
+      return {
+        walletAddress,
+        fcmToken,
+      }
+    })
+    ?.filter(message => message.walletAddress !== 'undefined')
 
   return (
     <>
@@ -52,17 +64,17 @@ const ViaNearbyUser = ({ url }: { url: string }) => {
             },
           ]}
         >
-          {!nearbyWallets && (
+          {(!nearbyWallets || nearbyWallets?.length === 0) && (
             <View
               style={{
                 height: maximumRes(windowWidth * 0.9),
                 width: maximumRes(windowWidth * 0.9),
               }}
             >
-              <Lottie source={Images.animations.share} autoPlay loop />
+              <Lottie source={Images.animations.scan} autoPlay loop />
             </View>
           )}
-          {nearbyWallets && (
+          {nearbyWallets && nearbyWallets.length !== 0 && (
             <FlatList
               data={nearbyWallets}
               numColumns={3}
@@ -72,9 +84,12 @@ const ViaNearbyUser = ({ url }: { url: string }) => {
                 return (
                   <TouchableOpacity
                     onPress={async () => {
-                      await publish(
-                        `Sent NFT: from <${_walletPublickey}> to ${wallet} with url <${url}>`,
-                      )
+                      mutateAsync({
+                        wallet: _walletPublickey!,
+                        fcm_token: wallet?.fcmToken!,
+                        url: url,
+                        event_address: event_address,
+                      })
                     }}
                     style={[
                       Layout.center,
@@ -107,7 +122,7 @@ const ViaNearbyUser = ({ url }: { url: string }) => {
                       ]}
                       numberOfLines={2}
                     >
-                      {wallet}
+                      {wallet.walletAddress}
                     </Text>
                   </TouchableOpacity>
                 )
