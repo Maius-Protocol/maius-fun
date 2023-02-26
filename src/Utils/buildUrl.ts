@@ -5,9 +5,7 @@ export const buildUrl = (path: string, params: URLSearchParams) =>
   `https://phantom.app/ul/v1/${path}?${params.toString()}`
 
 export const buildSolanaPayUrl = (event_address: string, params: any) => {
-  const baseUrl = encodeURIComponent(
-    `${Config.API_URL}/mint?event_address=${event_address}`,
-  )
+  const baseUrl = encodeURIComponent(`${Config.API_URL}/mint?`)
 
   return `solana:${baseUrl?.toString()}${encodeURIComponent(
     queryString.stringify({
