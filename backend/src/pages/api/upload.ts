@@ -1,9 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable'
 import { FormidableError, parseForm } from '@/lib/parse-form'
-import uploadToStorage from '@/lib/upload-to-storage'
 import processImage from '@/lib/processImage'
 import { getEventAccount } from '@/program/getEventAccount'
+import { folderS3 } from '@/config/s3'
+import { v4 } from 'uuid'
+import {
+  uploadImageToStorage,
+  uploadJsonToStorage,
+} from '@/lib/upload-to-storage'
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,12 +37,26 @@ export default async function handler(
     const finalImage = await processImage(front.filepath, background.filepath)
     const eventAccount = await getEventAccount(event_address as string)
 
-    const { uploadImageCdnUrl, uploadJsonCdnUrl } = await uploadToStorage(
+    const fileName = `${folderS3}/${v4()}`
+    const uploadImageCdnUrl = await uploadImageToStorage(fileName, finalImage!)
+    const uploadJsonCdnUrl = await uploadJsonToStorage(
       finalImage!,
+      uploadImageCdnUrl,
       {
+        // @ts-ignore
         name: eventAccount?.name?.toString(),
+        // @ts-ignore
         description: eventAccount?.description?.toString(),
-        attributes: [{ trait_type: 'Maius Fun', value: new Date() }],
+        attributes: [{ trait_type: 'Maius Fun', value: 'true' }],
+        properties: {
+          files: [
+            {
+              uri: uploadImageCdnUrl!,
+              type: 'image/jpeg',
+            },
+          ],
+          category: 'image',
+        },
       },
     )
 
