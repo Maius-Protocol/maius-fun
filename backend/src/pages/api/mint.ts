@@ -57,7 +57,6 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   }
 
   const eventAccount = await getEventAccount(event_address as string)
-
   console.log('debug', eventAccount?.name?.toString() || 'Maius Airdrop')
   const applicantWallet = MaiusKeypair
 
@@ -125,7 +124,11 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
             sellerFeeBasisPoints: 100,
             creators: [
               {
-                address: applicantWallet.publicKey,
+                address: new PublicKey(
+                  (typeof eventAccount?.host === 'string'
+                    ? eventAccount?.host
+                    : eventAccount?.host?.toBase58()) as string,
+                ),
                 verified: true,
                 share: 100,
               },
@@ -142,21 +145,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         },
       },
     ),
-    // createCreateMasterEditionV3Instruction(
-    //   {
-    //     edition: masterEditionPubkey,
-    //     mint: mint.publicKey,
-    //     updateAuthority: applicantWallet.publicKey,
-    //     mintAuthority: applicantWallet.publicKey,
-    //     payer: applicantWallet.publicKey,
-    //     metadata: tokenMetadataPubkey,
-    //   },
-    //   {
-    //     createMasterEditionArgs: {
-    //       maxSupply: 0,
-    //     },
-    //   },
-    // ),
+    createCreateMasterEditionV3Instruction(
+      {
+        edition: masterEditionPubkey,
+        mint: mint.publicKey,
+        updateAuthority: applicantWallet.publicKey,
+        mintAuthority: applicantWallet.publicKey,
+        payer: applicantWallet.publicKey,
+        metadata: tokenMetadataPubkey,
+      },
+      {
+        createMasterEditionArgs: {
+          maxSupply: 0,
+        },
+      },
+    ),
   )
 
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash

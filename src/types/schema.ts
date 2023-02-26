@@ -1,4 +1,4 @@
-import { MaiusEventManage } from '@/types/maius_event_manage'
+import { MaiusEventManage } from './maius_event_manage'
 import { Program } from '@project-serum/anchor'
 
 export type EventType = Awaited<
