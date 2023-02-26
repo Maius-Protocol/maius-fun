@@ -123,11 +123,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
             sellerFeeBasisPoints: 100,
             creators: [
               {
-                address: new PublicKey(
-                  (typeof eventAccount?.host === 'string'
-                    ? eventAccount?.host
-                    : eventAccount?.host?.toBase58()) as string,
-                ),
+                address: applicantWallet.publicKey,
                 verified: true,
                 share: 100,
               },
