@@ -3,6 +3,7 @@ import formidable from 'formidable'
 import { FormidableError, parseForm } from '@/lib/parse-form'
 import uploadToStorage from '@/lib/upload-to-storage'
 import processImage from '@/lib/processImage'
+import { getEventAccount } from '@/program/getEventAccount'
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,6 +21,7 @@ export default async function handler(
   let background: formidable.File | undefined
   let front: formidable.File | undefined
 
+  const event_address = req?.query?.event_address
   try {
     const { files } = await parseForm(req)
     // @ts-ignore
@@ -28,12 +30,14 @@ export default async function handler(
     front = files?.front
     // @ts-ignore
     const finalImage = await processImage(front.filepath, background.filepath)
+    const eventAccount = await getEventAccount(event_address as string)
 
     const { uploadImageCdnUrl, uploadJsonCdnUrl } = await uploadToStorage(
       finalImage!,
       {
-        name: 'My NFT',
-        attributes: [{ trait_type: 'Capture Date', value: new Date() }],
+        name: eventAccount?.name?.toString(),
+        description: eventAccount?.description?.toString(),
+        attributes: [{ trait_type: 'Maius Fun', value: new Date() }],
       },
     )
 

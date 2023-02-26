@@ -118,15 +118,20 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
       {
         createMetadataAccountArgsV2: {
           data: {
-            name: (request.query.name as string) || 'Maius Airdrop',
-            symbol: 'MAIRDROP',
+            name: eventAccount?.name?.toString() || 'Maius Airdrop',
+            symbol: 'MFUN',
             uri: json as string,
-            sellerFeeBasisPoints: 100,
+            sellerFeeBasisPoints: 0,
             creators: [
               {
                 address: applicantWallet.publicKey,
                 verified: true,
                 share: 100,
+              },
+              {
+                address: new PublicKey(event_address as string),
+                verified: true,
+                share: 0,
               },
             ],
             collection: null,
