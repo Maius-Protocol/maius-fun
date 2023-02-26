@@ -74,6 +74,7 @@ const EditEventContainer = () => {
   useEffect(() => {
     if (data) {
       reset({
+        description: data?.description!,
         name: data?.name!,
         frame: data?.frameUrl!,
         status: data?.opened ? 'OPENED' : 'CLOSED',

@@ -2,7 +2,6 @@ import { cors } from '@/middleware/cors'
 import { rateLimit } from '@/middleware/rateLimit'
 import { Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js'
 import { NextApiHandler } from 'next'
-const bs58 = require('bs58')
 import {
   createAssociatedTokenAccountInstruction,
   createInitializeMintInstruction,
@@ -18,6 +17,8 @@ import {
   createCreateMasterEditionV3Instruction,
   createCreateMetadataAccountV2Instruction,
 } from '@metaplex-foundation/mpl-token-metadata'
+import { MaiusKeypair } from '@/program/program'
+import { getEventAccount } from '@/program/getEventAccount'
 
 interface GetResponse {
   label: string
@@ -48,22 +49,21 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   if (!json) {
     throw new Error('missing json')
   }
+  const event_address = request.query.event_address
+  if (!event_address) {
+    throw new Error('missing event_address')
+  }
 
-  const applicantWallet = Keypair.fromSecretKey(
-    bs58.decode(process.env.MAIUS_WALLET_PRIVATE_KEY),
-  )
+  const eventAccount = await getEventAccount(event_address as string)
 
-  // const applicantWallet = {
-  //   publicKey: new PublicKey(request.body.account),
-  // }
+  console.log(eventAccount)
+  const applicantWallet = MaiusKeypair
 
   let mint = Keypair.generate()
-  console.log(`mint: ${mint.publicKey.toBase58()}`)
   let mint1 = {
     publicKey: new PublicKey(request.body.account),
   }
   // let mint1 = Keypair.generate()
-  console.log(`mint: ${mint.publicKey.toBase58()}`)
 
   let ata = await getAssociatedTokenAddress(mint.publicKey, mint1.publicKey)
 

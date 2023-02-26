@@ -9,12 +9,12 @@ import {
   createNavigationContainerRef,
 } from '@react-navigation/native'
 import { store } from '@/Store'
-import { Event } from '@/types/schema'
+import { EventType } from '@/types/schema'
 
 type RootStackParamList = {
   Startup: undefined
   Home: undefined
-  CHOOSE_FRAME: Partial<Event>
+  CHOOSE_FRAME: Partial<EventType>
   CAPTURE_PHOTO: undefined
   MINT_NFT: undefined
   AIRDROP_NFT: undefined

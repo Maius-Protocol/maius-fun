@@ -14,6 +14,7 @@ interface useCreateEventProps {
   opened: boolean
   name: string
   frame_url: string
+  description: string
   count: number
 }
 
@@ -21,7 +22,13 @@ function useCreateEvent() {
   const { program } = useProgram()
   const wallet = useSelector(walletPublicKey)
   return useMutation(
-    async ({ count = 0, opened, name, frame_url }: useCreateEventProps) => {
+    async ({
+      count = 0,
+      opened,
+      name,
+      frame_url,
+      description,
+    }: useCreateEventProps) => {
       const [eventAccountAddress, eventBump] = findEventAddress(
         new PublicKey(wallet!),
         count,
@@ -39,7 +46,13 @@ function useCreateEvent() {
       )
 
       const initEvent = await program.methods
-        .initEvent(new PublicKey(MaiusPublicKey), opened, name, frame_url)
+        .initEvent(
+          new PublicKey(MaiusPublicKey),
+          opened,
+          name,
+          frame_url,
+          description,
+        )
         .accounts({
           event: eventAccountAddress,
           vault: vaultAccountAddress,

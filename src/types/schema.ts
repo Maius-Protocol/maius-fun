@@ -1,8 +1,7 @@
 import { MaiusEventManage } from '@/types/maius_event_manage'
 import { Program } from '@project-serum/anchor'
-import { PublicKey } from '@solana/web3.js'
 
-export type Event = Awaited<
+export type EventType = Awaited<
   ReturnType<Program<MaiusEventManage>['account']['event']['fetch']>
 > & {
   eventAccountAddress?: string

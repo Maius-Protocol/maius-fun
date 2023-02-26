@@ -15,7 +15,7 @@ import { AppRoutes, navigate } from '@/Navigators/utils'
 import useEvents from '@/Services/modules/events/useEvents'
 import { Colors, wp } from '@/Theme/Variables'
 import { maximumRes } from '@/Config/dimensions'
-import { Event } from '@/types/schema'
+import { EventType } from '@/types/schema'
 import { changeSelectedEvent } from '@/Store/Wizard'
 import { useAppDispatch } from '@/Store'
 import { useSelector } from 'react-redux'
@@ -29,7 +29,7 @@ const EventContainer = () => {
   const { data, refetch, isRefetching: isLoading } = useEvents()
   const dispatch = useAppDispatch()
 
-  const selectEvent = (event: Event, eventAccountAddress: string) => {
+  const selectEvent = (event: EventType, eventAccountAddress: string) => {
     const serialized = {
       name: event.name,
       opened: event.opened,

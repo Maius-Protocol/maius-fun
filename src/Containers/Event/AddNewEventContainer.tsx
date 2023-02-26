@@ -63,7 +63,7 @@ const AddNewEventContainer = () => {
   const enabled = errors.name === undefined && errors.frame === undefined
   const onSubmit = async (data: any) => {
     let instructions: Transaction[] = []
-    const { frame, status, name } = data
+    const { frame, status, name, description } = data
     const _frameUrl = await uploadFrame({ frame })
     const frameUrl = _frameUrl?.data?.data?.url
     if (!identifier) {
@@ -75,6 +75,7 @@ const AddNewEventContainer = () => {
       opened: status === 'OPENED',
       frame_url: frameUrl,
       count: eventCount,
+      description: description,
     })
     instructions = [...instructions, eventTransaction]
     await sendInstruction(instructions)

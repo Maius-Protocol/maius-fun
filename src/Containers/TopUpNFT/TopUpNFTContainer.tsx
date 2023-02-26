@@ -39,8 +39,8 @@ const TopUpNFTContainer = () => {
   const disabled = numberOfNFTs <= 0
 
   const submit = async () => {
-    const transactions = await mutateAsyncTopupTransaction(numberOfNFTs)
-    await sendTransaction([transactions!])
+    const transaction = await mutateAsyncTopupTransaction(numberOfNFTs)
+    await sendTransaction([transaction!])
     refetch()
     navigationRef.goBack()
   }

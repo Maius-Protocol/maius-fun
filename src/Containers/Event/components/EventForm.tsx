@@ -35,6 +35,28 @@ const EventForm = ({ control, formState: { errors } }: UseFormReturn<any>) => {
         {errors.name && <Text style={[Fonts.italic]}>This is required.</Text>}
       </View>
       <View style={[Gutters.regularBMargin]}>
+        <Text style={textStyle}>Description</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              placeholder="Type your event description here"
+              style={[...textStyle, Fonts.regular]}
+            />
+          )}
+          name="description"
+        />
+        {errors.description && (
+          <Text style={[Fonts.italic]}>This is required.</Text>
+        )}
+      </View>
+      <View style={[Gutters.regularBMargin]}>
         <Text style={textStyle}>Frame</Text>
         <Controller
           control={control}

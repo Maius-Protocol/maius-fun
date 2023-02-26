@@ -13,12 +13,12 @@ import { useSelector } from 'react-redux'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import { useRoute } from '@react-navigation/native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Event } from '@/types/schema'
+import { EventType } from '@/types/schema'
 
 const ChooseFrameContainer = () => {
   const { bottom } = useSafeAreaInsets()
   const route = useRoute()
-  const params = route.params as Partial<Event>
+  const params = route.params as Partial<EventType>
   const dispatch = useAppDispatch()
   const _selectedFrame = useSelector(selectedFrame)
   const { Images, Layout, Fonts, Gutters } = useTheme()

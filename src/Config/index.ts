@@ -4,7 +4,7 @@ import EnvConfig from 'react-native-config'
 const isDev = process.env.NODE_ENV === 'development'
 
 const DevConfig = {
-  API_URL: 'https://f38a-1-52-110-22.ap.ngrok.io/api',
+  API_URL: 'https://31ef-113-161-75-91.ap.ngrok.io/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_CONNECTION: {},
