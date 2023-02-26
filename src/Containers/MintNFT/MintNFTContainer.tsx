@@ -139,7 +139,7 @@ const MintNFTContainer = () => {
       </View>
       <View style={[Layout.fullWidth, { marginBottom: bottom + 24 }]}>
         <Button
-          // disabled
+          disabled={isUploadingImage}
           loading={isUploadingImage}
           onPress={startMint}
           type="primary"

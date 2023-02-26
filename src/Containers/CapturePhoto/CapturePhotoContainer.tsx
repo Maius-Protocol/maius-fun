@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, View } from '@ant-design/react-native'
 import { useAppDispatch } from '@/Store'
 import { useTheme } from '@/Hooks'
@@ -46,6 +46,16 @@ const CapturePhotoContainer = () => {
   const skip = () => {
     navigate(AppRoutes.MINT_NFT, {})
   }
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        changePhoto({
+          selectedPhoto: undefined,
+        }),
+      )
+    }
+  }, [])
 
   return (
     <View
