@@ -24,6 +24,7 @@ import TopUpNFTContainer from '@/Containers/TopUpNFT/TopUpNFTContainer'
 import EditEventContainer from '@/Containers/Event/EditEventContainer'
 import CloseEventContainer from '@/Containers/Event/CloseEventContainer'
 import CurrentNftsRemaining from '@/Components/CurrentNftsRemaining'
+import BackToHome from '@/Components/BackToHome'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -148,6 +149,7 @@ const ApplicationNavigator = () => {
                   opacity: 0,
                   backgroundColor: Colors.background,
                 },
+                headerRight: () => <BackToHome />,
               }}
             >
               <Stack.Screen
