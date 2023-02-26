@@ -11,9 +11,11 @@ import { Text, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import SelectedFrameImage from '@/Containers/ChooseFrame/components/SelectedFrameImage'
 import { AppRoutes, navigate } from '@/Navigators/utils'
+import { useNavigation } from '@react-navigation/native'
 
 const CapturePhotoContainer = () => {
   const dispatch = useAppDispatch()
+  const navigation = useNavigation()
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
 
@@ -47,15 +49,17 @@ const CapturePhotoContainer = () => {
     navigate(AppRoutes.MINT_NFT, {})
   }
 
-  useEffect(() => {
-    return () => {
-      dispatch(
-        changePhoto({
-          selectedPhoto: undefined,
-        }),
-      )
-    }
-  }, [])
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        dispatch(
+          changePhoto({
+            selectedPhoto: undefined,
+          }),
+        )
+      }),
+    [],
+  )
 
   return (
     <View

@@ -6,3 +6,9 @@ fs.copyFileSync(
   'maius-event-manage/target/types/maius_event_manage.ts',
   'src/types/maius_event_manage.ts',
 )
+
+fs.writeFileSync('backend/src/types/idl.json', JSON.stringify(idl))
+fs.copyFileSync(
+  'maius-event-manage/target/types/maius_event_manage.ts',
+  'backend/src/types/maius_event_manage.ts',
+)

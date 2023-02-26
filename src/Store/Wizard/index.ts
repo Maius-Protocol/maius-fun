@@ -33,14 +33,10 @@ const slice = createSlice({
       }
     },
     changeFrame: (state, { payload: { selectedFrame } }: WizardPayload) => {
-      if (typeof selectedFrame !== 'undefined') {
-        state.selectedFrame = selectedFrame
-      }
+      state.selectedFrame = selectedFrame
     },
     changePhoto: (state, { payload: { selectedPhoto } }: WizardPayload) => {
-      if (typeof selectedPhoto !== 'undefined') {
-        state.selectedPhoto = selectedPhoto
-      }
+      state.selectedPhoto = selectedPhoto
     },
     changeSelectedEvent: (
       state,

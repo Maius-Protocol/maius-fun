@@ -1,7 +1,7 @@
 import { PublicKey } from '@solana/web3.js'
 import { MaiusFunProgram } from '@/program/program'
-import { EventType } from '../../../src/types/schema'
 import { cache } from '@/core/cache'
+import { EventType } from '@/types/schema'
 
 const eventKeyCache = (address: String) => `event_${address}`
 
