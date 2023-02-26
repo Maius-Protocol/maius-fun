@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Webp.net-resizeimage (2).png",
+      "filename" : "camera.on.rectangle.fill.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Webp.net-resizeimage (1).png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Webp.net-resizeimage.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

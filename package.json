@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "mirror": "git push --tags --force --prune mirror \"refs/remotes/origin/*:refs/heads/*\"",
-    "prepare": "node copyIdl.js",
+    "prepare:idl": "node copyIdl.js",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
     "type-check": "tsc",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "create-appicon": "iconset create ./app_icon.png"
   },
   "dependencies": {
     "@ant-design/react-native": "^5.0.3",
@@ -116,6 +117,7 @@
     "eslint-import-resolver-babel-module": "^5.1.2",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^24.3.5",
+    "icon-set-creator": "^1.1.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.70.3",
