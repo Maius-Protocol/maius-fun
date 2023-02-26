@@ -48,7 +48,6 @@ const MintNFTContainer = () => {
 
   const startMint = async () => {
     const url = buildUrl()
-    return
     const supported = await Linking.canOpenURL(url)
 
     if (supported) {
