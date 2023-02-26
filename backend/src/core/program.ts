@@ -58,13 +58,13 @@ export const selectProgram =
   (programs: Program[]) => (programAddress: string) =>
     programs.find(program => program.programId.toBase58() === programAddress)
 
-export const useWallet = () => {
+export const GetWallet = () => {
   let nodeWallet = new NodeWallet(walletKeypair)
   return nodeWallet
 }
 
 export const AnchorProviderProvider = () => {
-  let wallet = useWallet()
+  let wallet = GetWallet()
   let cluster = CLUSTERS.devnet
   const c = new Connection(cluster.endpoint)
 
@@ -79,14 +79,14 @@ export const AnchorProviderProvider = () => {
   return provider
 }
 
-export const useAnchorProvider = () => {
+export const GetAnchorProvider = () => {
   const context = AnchorProviderProvider()
 
   return context
 }
 
 export const ProgramsProvider = () => {
-  let anchorProvider = useAnchorProvider()
+  let anchorProvider = GetAnchorProvider()
 
   const Programs = Object.entries(PROGRAMS_IDLS).map(([programId, idls]) => {
     // default to first idl version for each program id.

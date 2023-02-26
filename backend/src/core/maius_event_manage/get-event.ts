@@ -1,8 +1,9 @@
 import { GetMaiusEventManageProgram } from '../program'
 import { PublicKey } from '@solana/web3.js'
 import { BN } from '@project-serum/anchor'
+import { cache } from '../cache'
 
-const maiusInvestProgram = GetMaiusEventManageProgram()
+const maiusEventManageProgram = GetMaiusEventManageProgram()
 
 export type EventAccount = {
   host: PublicKey
@@ -17,7 +18,7 @@ export type EventAccount = {
 
 export const getEvent = async (event: string): Promise<EventAccount> => {
   try {
-    let data = await maiusInvestProgram.account.event.fetch(
+    let data = await maiusEventManageProgram.account.event.fetch(
       new PublicKey(event),
       'confirmed',
     )
@@ -31,6 +32,8 @@ export const getEvent = async (event: string): Promise<EventAccount> => {
       frame_url: data.frameUrl,
       description: data.description,
     }
+    let key = 'event' + event
+    await cache.set(key, eventData)
     return eventData
   } catch (e) {
     throw Error(e?.toString())

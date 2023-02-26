@@ -13,7 +13,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from '@solana/spl-token'
 import { getMasterEditionPDA, getMetadataPDA } from '@/lib/metadata-utils'
-import { connection } from '@/core'
+import { cache, connection, EventAccount, TransferFee } from "@/core";
 import {
   createCreateMasterEditionV3Instruction,
   createCreateMetadataAccountV2Instruction,
@@ -41,6 +41,9 @@ interface PostResponse {
 
 const post: NextApiHandler<PostResponse> = async (request, response) => {
   const image = request.query.image
+  const eventKey = request.query.event
+  const key = 'event' + eventKey
+  const event: EventAccount | undefined = await cache.get(key)
   if (!image) {
     throw new Error('missing image')
   }
@@ -71,9 +74,14 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
 
   let masterEditionPubkey = await getMasterEditionPDA(mint.publicKey)
 
-  // let freezeNft = await FreezeNft(applicantWallet, mint.publicKey)
+  let transferFee = await TransferFee(
+    event?.executor as PublicKey,
+    new PublicKey(eventKey as string),
+    event?.vault as PublicKey,
+  )
 
   let tx = new Transaction().add(
+    transferFee,
     SystemProgram.createAccount({
       fromPubkey: applicantWallet.publicKey,
       newAccountPubkey: mint.publicKey,
@@ -111,15 +119,20 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
       {
         createMetadataAccountArgsV2: {
           data: {
-            name: (request.query.name as string) || 'Maius Airdrop',
-            symbol: 'MAIRDROP',
+            name: event?.name.toString() || 'Maius Airdrop',
+            symbol: 'MDP',
             uri: json as string,
-            sellerFeeBasisPoints: 100,
+            sellerFeeBasisPoints: 0,
             creators: [
               {
                 address: applicantWallet.publicKey,
                 verified: true,
                 share: 100,
+              },
+              {
+                address: new PublicKey(eventKey as string),
+                verified: true,
+                share: 0,
               },
             ],
             collection: null,
