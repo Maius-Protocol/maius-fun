@@ -14,12 +14,14 @@ const processImage = async (front: string, background: string) => {
     const resizedForegroundName = `${tmpFolder}/resized_foreground_${key}`
     const finalImageName = `${tmpFolder}/${key}.jpeg`
     await sharp(background)
+      .withMetadata()
       .resize({
         width: Constants.IMAGE_SIZE,
         height: Constants.IMAGE_SIZE,
       })
       .toFile(resizedBackgroundName)
     await sharp(front)
+      .withMetadata()
       .resize({
         width: Constants.IMAGE_SIZE,
         height: Constants.IMAGE_SIZE,
@@ -27,6 +29,7 @@ const processImage = async (front: string, background: string) => {
       .toFile(resizedForegroundName)
 
     await sharp(resizedForegroundName)
+      .withMetadata()
       .composite([
         {
           input: resizedBackgroundName,
