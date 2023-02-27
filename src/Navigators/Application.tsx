@@ -137,6 +137,7 @@ const ApplicationNavigator = () => {
               component={ConnectWalletContainer}
               options={{
                 presentation: 'modal',
+                gestureEnabled: false,
                 headerLeft: () => null,
               }}
             />
