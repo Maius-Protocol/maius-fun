@@ -1,0 +1,8 @@
+app_identifier("com.megatunger.mairdrop") # The bundle identifier of your app
+apple_id("megatunger@gmail.com") # Your Apple Developer Portal username
+
+itc_team_id("121113310") # App Store Connect Team ID
+team_id("679FU78457") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
