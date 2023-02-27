@@ -1,7 +1,7 @@
 const Constants = {
   APP_NAME: 'Maius Fun',
   CDN_URL: 'https://cdn.maiuspay.com/',
-  IMAGE_SIZE: 512,
+  IMAGE_SIZE: 1500,
 }
 
 export const ConvertS3UrlToCDN = (key: string) => {

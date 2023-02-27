@@ -366,6 +366,8 @@ PODS:
     - React-Core
   - react-native-image-picker (5.0.1):
     - React-Core
+  - react-native-image-resizer (3.0.5):
+    - React-Core
   - react-native-netinfo (9.3.7):
     - React-Core
   - react-native-pager-view (6.1.4):
@@ -547,6 +549,7 @@ DEPENDENCIES:
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-google-nearby-messages (from `../node_modules/react-native-google-nearby-messages`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
@@ -659,6 +662,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-google-nearby-messages"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-image-resizer:
+    :path: "../node_modules/@bam.tech/react-native-image-resizer"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -776,6 +781,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: a6ea6a8a65dc93e96e24a11105b1a9c8cfe1d72a
   react-native-google-nearby-messages: ca7d14308252aa686ab093f27cda52fae86af6ef
   react-native-image-picker: 8cb4280e2c1efc3daeb2d9d597f9429a60472e40
+  react-native-image-resizer: 00ceb0e05586c7aadf061eea676957a6c2ec60fa
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-pager-view: b58cb9e9f42f64e50cab3040815772c1d119a2e2
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846

@@ -60,11 +60,6 @@ const ChooseFrameContainer = () => {
       ]}
     >
       <View style={[Layout.fill, Layout.center]}>
-        {_selectedFrame && (
-          <View style={[Layout.center, Gutters.smallBMargin]}>
-            <Text style={[Fonts.regular]}>Tap image to change</Text>
-          </View>
-        )}
         <View
           style={[
             {
@@ -79,7 +74,7 @@ const ChooseFrameContainer = () => {
           {_selectedFrame && (
             <SelectedFrameImage
               imageUri={undefined}
-              onChange={pickFrame}
+              onChange={() => {}}
               frameUri={_selectedFrame}
             />
           )}

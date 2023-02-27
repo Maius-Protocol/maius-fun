@@ -11,6 +11,8 @@ import useUploadImage from '@/Services/mutations/useUploadImage'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { buildSolanaPayUrl } from '@/Utils/buildUrl'
 import { AppRoutes, navigate } from '@/Navigators/utils'
+import ImageResizer from '@bam.tech/react-native-image-resizer'
+
 const MintNFTContainer = () => {
   const { bottom } = useSafeAreaInsets()
   const _selectedPhoto = useSelector(selectedPhoto)
@@ -67,12 +69,24 @@ const MintNFTContainer = () => {
     return ''
   }, [isUploadingImage, data])
 
-  useEffect(() => {
-    // TODO: Ensure if front image is selected && background image is selected
+  const uploadImageWrapped = async () => {
+    const front = await ImageResizer.createResizedImage(
+      _selectedPhoto!,
+      1500,
+      1500,
+      'JPEG',
+      90,
+      0,
+    )
     uploadImage({
-      front: _selectedPhoto!,
+      front: front.uri!,
       background: _selectedFrame!,
     })
+  }
+
+  useEffect(() => {
+    uploadImageWrapped()
+    // TODO: Ensure if front image is selected && background image is selected
   }, [])
 
   console.log(data?.data?.data)
@@ -135,7 +149,7 @@ const MintNFTContainer = () => {
       </View>
       <View style={[Layout.fullWidth, { marginBottom: bottom + 24 }]}>
         <Button
-          disabled={isUploadingImage}
+          disabled={isUploadingImage || !image || !json}
           loading={isUploadingImage}
           onPress={startMint}
           type="primary"
@@ -143,7 +157,7 @@ const MintNFTContainer = () => {
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>Mint NFT</Text>
         </Button>
 
-        {!isUploadingImage && (
+        {!isUploadingImage && json && (
           <TouchableOpacity
             onPress={() => {
               const url = buildUrl()
