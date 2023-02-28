@@ -40,7 +40,7 @@ export default async function handler(
     const fileName = `${folderS3}/${v4()}`
     const uploadImageCdnUrl = await uploadImageToStorage(fileName, finalImage!)
     const uploadJsonCdnUrl = await uploadJsonToStorage(
-      finalImage!,
+      fileName,
       uploadImageCdnUrl,
       {
         // @ts-ignore
@@ -59,7 +59,7 @@ export default async function handler(
         },
       },
     )
-
+    console.log(uploadImageCdnUrl, uploadJsonCdnUrl)
     return res.status(200).json({
       data: { image: uploadImageCdnUrl, json: uploadJsonCdnUrl },
       error: null,

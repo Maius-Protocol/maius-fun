@@ -1,10 +1,10 @@
 import { Cluster } from '@solana/web3.js'
 import EnvConfig from 'react-native-config'
 
-const isDev = false
+const isDev = process.env.NODE_ENV === 'development'
 
 const DevConfig = {
-  API_URL: 'https://02fb-115-79-204-39.ap.ngrok.io/api',
+  API_URL: 'https://1a1b-113-22-113-75.ap.ngrok.io/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_CONNECTION: {},
