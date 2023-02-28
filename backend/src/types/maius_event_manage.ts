@@ -342,6 +342,11 @@ export type MaiusEventManage = {
       "code": 6001,
       "name": "InvalidAccount",
       "msg": "Invalid account"
+    },
+    {
+      "code": 6002,
+      "name": "NotEnoughNFT",
+      "msg": "Not enough NFT"
     }
   ]
 };
@@ -690,6 +695,11 @@ export const IDL: MaiusEventManage = {
       "code": 6001,
       "name": "InvalidAccount",
       "msg": "Invalid account"
+    },
+    {
+      "code": 6002,
+      "name": "NotEnoughNFT",
+      "msg": "Not enough NFT"
     }
   ]
 };

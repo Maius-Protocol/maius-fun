@@ -49,7 +49,8 @@ pub fn handler(ctx: Context<TransferFee>) -> Result<()> {
     let event = &mut ctx.accounts.event;
 
     let balance: u64 = ctx.accounts.vault.to_account_info().lamports();
-
+    let current_nft_no = event.number_of_nft - 1;
+    require!(current_nft_no != 0, ErrorCodes::NotEnoughNFT);
     require!(balance >= FEE, ErrorCodes::NotEnoughLamport);
 
     event.amount -= FEE;

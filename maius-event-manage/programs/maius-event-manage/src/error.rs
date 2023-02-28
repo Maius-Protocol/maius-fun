@@ -9,4 +9,7 @@ pub enum ErrorCodes {
     #[msg("Invalid account")]
     InvalidAccount,
 
+    #[msg("Not enough NFT")]
+    NotEnoughNFT,
+
 }

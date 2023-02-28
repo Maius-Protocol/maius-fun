@@ -31,6 +31,13 @@ const EventContainer = () => {
   const dispatch = useAppDispatch()
 
   const selectEvent = (event: EventType, eventAccountAddress: string) => {
+    if (
+      event?.numberOfNft?.toNumber() <= 0 &&
+      wallet !== event.host.toBase58()
+    ) {
+      Alert.alert('No NFTs left', 'Please contact host for further information')
+      return
+    }
     const serialized = serializeEvent(event, eventAccountAddress)
     dispatch(
       changeSelectedEvent({
@@ -150,8 +157,6 @@ const EventContainer = () => {
                         {
                           width: 96,
                           height: 96,
-                          borderColor: Colors.gray,
-                          borderRadius: 6,
                         },
                         Gutters.regularRMargin,
                       ]}
