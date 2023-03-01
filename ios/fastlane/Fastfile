@@ -15,12 +15,101 @@
 
 default_platform(:ios)
 
+before_all do
+  Dotenv.overload(".env")
+end
+
+TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"]
+TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"]
+APPLE_ISSUER_ID = ENV["APPLE_ISSUER_ID"]
+APPLE_KEY_ID = ENV["APPLE_KEY_ID"]
+APPLE_KEY_CONTENT = ENV["APPLE_KEY_CONTENT"]
+
+def delete_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: false,
+    timeout: 0
+  )
+end
+
+def ensure_keychain(name, password)
+  delete_keychain(name)
+  create_temp_keychain(name, password)
+end
+
 platform :ios do
-  desc "Push a new beta build to TestFlight"
   lane :beta do
-    match(type: "appstore")
+    keychain_name = TEMP_KEYCHAIN_USER
+    keychain_password = TEMP_KEYCHAIN_PASSWORD
+    ensure_keychain(keychain_name, keychain_password)
+
+    api_key = app_store_connect_api_key(
+      key_id: APPLE_KEY_ID,
+      issuer_id: APPLE_ISSUER_ID,
+      key_content: APPLE_KEY_CONTENT,
+      duration: 1200,
+      in_house: false
+    )
+
     increment_build_number(xcodeproj: "MaiusAirdrop.xcodeproj")
-    build_app(workspace: "MaiusAirdrop.xcworkspace", scheme: "MaiusAirdrop")
-    upload_to_testflight(skip_waiting_for_build_processing: true)
+
+    cocoapods(
+      clean_install: true
+    )
+
+    match(
+      type: 'appstore',
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password,
+      api_key: api_key
+    )
+
+    gym(
+      configuration: "Release",
+      workspace: "MaiusAirdrop.xcworkspace",
+      scheme: "MaiusAirdrop",
+      export_method: "app-store",
+      output_directory: './build',
+      output_name: "MaiusAirdrop.ipa",
+    )
+
+    pilot(
+      skip_waiting_for_build_processing: true,
+      skip_submission: true,
+      distribute_external: false,
+      notify_external_testers: false,
+      ipa: "./build/MaiusAirdrop.ipa"
+    )
+
+    delete_keychain(keychain_name)
+
+    git_commit(
+      path: [
+          "./MaiusAirdrop.xcodeproj/project.pbxproj",
+          "./MaiusAirdrop/Info.plist",
+        ],
+       message: "Increment Build number"
+     )
+    version = get_version_number(
+      xcodeproj: "MaiusAirdrop.xcodeproj",
+      target: "MaiusAirdrop"
+     )
+    build_num = get_build_number(
+      xcodeproj: "MaiusAirdrop.xcodeproj",
+    )
+    add_git_tag(
+      tag: "Release_v"+version+'('+build_num.to_s+')',
+     )
+
+    push_to_git_remote
   end
 end

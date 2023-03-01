@@ -14,6 +14,10 @@ jobs:
       FASTLANE_PASSWORD: '${{ secrets.FASTLANE_PASSWORD }}'
       TEMP_KEYCHAIN_PASSWORD: 'login'
       TEMP_KEYCHAIN_USER: 'login'
+      APPLE_KEY_ID: '${{ secrets.APPLE_KEY_ID }}'
+      APPLE_ISSUER_ID: '${{ secrets.APPLE_ISSUER_ID }}'
+      APPLE_KEY_CONTENT: '${{ secrets.APPLE_KEY_CONTENT }}'
+
     steps:
       - uses: actions/checkout@v2
       - name: Install SSH key
@@ -53,7 +57,5 @@ jobs:
       - name: Install Fastlane
         run: gem install fastlane
 
-      - uses: maierj/fastlane-action@v3.0.0
-        with:
-          lane: 'beta'
-          subdirectory: 'ios'
+      - name: Releasing application
+        run: cd ios && fastlane beta ios
