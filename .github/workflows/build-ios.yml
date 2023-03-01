@@ -54,8 +54,5 @@ jobs:
       - name: Test NPM packages
         run: yarn react-native --version
 
-      - name: Install Fastlane
-        run: bundle install
-
       - name: Releasing application
-        run: cd ios && pod install && fastlane ios beta
+        run: cd ios && bundle install && pod install && fastlane ios beta
