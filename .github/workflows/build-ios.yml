@@ -12,6 +12,7 @@ jobs:
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
+          known_hosts: unnecessary
           key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
       - uses: maxim-lobanov/setup-xcode@v1
         with:
