@@ -7,6 +7,13 @@ on:
 jobs:
   deploy:
     runs-on: macos-latest
+    env:
+      MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: '${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}'
+      FASTLANE_USER: 'megatunger@gmail.com'
+      FASTLANE_PASSWORD: '${{ secrets.FASTLANE_PASSWORD }}'
+      TEMP_KEYCHAIN_PASSWORD: 'login'
+      TEMP_KEYCHAIN_USER: 'login'
     steps:
       - uses: actions/checkout@v2
       - name: Install SSH key
