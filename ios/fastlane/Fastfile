@@ -97,7 +97,7 @@ platform :ios do
           "./MaiusAirdrop.xcodeproj/project.pbxproj",
           "./MaiusAirdrop/Info.plist",
         ],
-       message: "Increment Build number"
+       message: "[skip ci] Increment Build number"
      )
     version = get_version_number(
       xcodeproj: "MaiusAirdrop.xcodeproj",
