@@ -45,7 +45,7 @@ const StartupContainer = () => {
           { fontSize: 18 },
         ]}
       >
-        a fun product from Maius Protocol
+        A fun product from Maius team ❤️
       </Text>
       <ActivityIndicator style={[Gutters.largeVMargin]} />
     </View>
