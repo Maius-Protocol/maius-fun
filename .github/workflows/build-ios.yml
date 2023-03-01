@@ -58,4 +58,4 @@ jobs:
         run: gem install fastlane
 
       - name: Releasing application
-        run: cd ios && fastlane beta ios
+        run: cd ios && fastlane ios beta
