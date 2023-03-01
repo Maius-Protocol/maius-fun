@@ -11,6 +11,7 @@ import { updateWalletPublicKey, walletPublicKey } from '@/Store/Wallet'
 import { navigationRef } from '@/Navigators/utils'
 import { Config } from '@/Config'
 import MockData from '@/Config/mock'
+import ConnectWithSmsWallet from '@/Components/ConnectWithSmsWallet'
 
 const ConnectWalletContainer = () => {
   const dispatch = useDispatch()
@@ -46,7 +47,7 @@ const ConnectWalletContainer = () => {
           </View>
           <View style={[Layout.center]}>
             <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
-            👋 Welcome to {Config.APP_NAME}!
+              👋 Welcome to {Config.APP_NAME}!
             </Text>
             <Text
               style={[
@@ -62,6 +63,7 @@ const ConnectWalletContainer = () => {
           </View>
         </View>
         <View style={[Layout.fullWidth, Gutters.largeBMargin]}>
+          {Config.IS_ANDROID && <ConnectWithSmsWallet />}
           <Button
             loading={isLoading}
             onPress={() => {
@@ -76,6 +78,7 @@ const ConnectWalletContainer = () => {
               mutate()
             }}
             type="primary"
+            style={{ backgroundColor: '#512da8' }}
           >
             <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
               Connect with Phantom Wallet

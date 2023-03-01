@@ -53,10 +53,10 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     () => ({ apiKey: Config.NEARBY_MESSAGES_API_KEY }),
     [],
   )
-  const nearbyStatus = useNearbyPublication(
-    nearbyConfig,
-    `Hello from:[${wallet}]-[${FCMToken}]`,
-  )
+  // const nearbyStatus = useNearbyPublication(
+  //   nearbyConfig,
+  //   `Hello from:[${wallet}]-[${FCMToken}]`,
+  // )
   const dispatch = useDispatch()
   const dappKeyPairSecret = useSelector(keypairSecretSelector)
   const sharedSecretStr = useSelector(sharedSecretSelector)
@@ -191,9 +191,9 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
 
   async function requestUserPermission() {
     if (Platform.OS === 'android') {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      )
+      // await PermissionsAndroid.request(
+      //   PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      // )
     }
     const authStatus = await messaging().requestPermission()
     const enabled =

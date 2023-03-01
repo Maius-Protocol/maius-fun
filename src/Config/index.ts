@@ -1,5 +1,6 @@
 import { Cluster } from '@solana/web3.js'
 import EnvConfig from 'react-native-config'
+import { Platform } from 'react-native'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -23,6 +24,7 @@ export const Config = {
   FEE_PER_NFT: 0.02,
   NEARBY_MESSAGES_API_KEY: EnvConfig.NEARBY_MESSAGES_API_KEY,
   APP_NAME: 'Maius Fun',
+  IS_ANDROID: Platform.OS === 'android',
 }
 
 export const ApiRoutes = {
