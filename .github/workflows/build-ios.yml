@@ -1,4 +1,4 @@
-name: build-ios-app
+name: Build iOS
 on:
   push:
     branches:
@@ -38,8 +38,10 @@ jobs:
       - name: Test NPM packages
         run: yarn react-native --version
 
-      - name: Fastlane
-        uses: maierj/fastlane-action@v3.0.0
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - uses: maierj/fastlane-action@v3.0.0
         with:
           lane: 'beta'
           subdirectory: 'ios'
