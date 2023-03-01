@@ -55,7 +55,7 @@ jobs:
         run: yarn react-native --version
 
       - name: Install Fastlane
-        run: gem install fastlane
+        run: bundle install
 
       - name: Releasing application
         run: cd ios && pod install && fastlane ios beta
