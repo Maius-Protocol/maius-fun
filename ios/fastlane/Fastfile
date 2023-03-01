@@ -21,6 +21,6 @@ platform :ios do
     match(type: "appstore")
     increment_build_number(xcodeproj: "MaiusAirdrop.xcodeproj")
     build_app(workspace: "MaiusAirdrop.xcworkspace", scheme: "MaiusAirdrop")
-    upload_to_testflight
+    upload_to_testflight(skip_waiting_for_build_processing: true)
   end
 end
