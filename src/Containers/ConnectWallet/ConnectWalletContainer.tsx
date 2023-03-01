@@ -46,7 +46,7 @@ const ConnectWalletContainer = () => {
           </View>
           <View style={[Layout.center]}>
             <Text style={[Fonts.textRegular, Fonts.textGray, Fonts.bold]}>
-              Welcome to {Config.APP_NAME}!
+            👋 Welcome to {Config.APP_NAME}!
             </Text>
             <Text
               style={[
@@ -57,8 +57,7 @@ const ConnectWalletContainer = () => {
                 Gutters.smallTMargin,
               ]}
             >
-              Please connect your wallet to start using app. You need to have
-              Phantom Wallet installed
+              Please connect your wallet to start using app
             </Text>
           </View>
         </View>
