@@ -1,8 +1,8 @@
 name: Build iOS
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 jobs:
   deploy:
     runs-on: macos-latest
