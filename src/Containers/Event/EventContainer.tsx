@@ -174,6 +174,7 @@ const EventContainer = () => {
                     <View style={[Layout.justifyContentBetween]}>
                       <View>
                         <Text
+                          numberOfLines={1}
                           style={[
                             Fonts.bold,
                             Fonts.textWhite,
@@ -193,6 +194,7 @@ const EventContainer = () => {
                           Host: {item?.host?.toBase58()}
                         </Text>
                         <Text
+                          numberOfLines={1}
                           style={[
                             Fonts.regular,
                             Fonts.textWhite,
@@ -211,7 +213,7 @@ const EventContainer = () => {
                               : Colors.gray,
                             paddingVertical: 4,
                             borderRadius: 24,
-                            maxWidth: 128,
+                            maxWidth: 100,
                           },
                           Layout.center,
                           Gutters.regularTMargin,
@@ -226,7 +228,7 @@ const EventContainer = () => {
                             },
                           ]}
                         >
-                          {item?.opened ? 'Opened' : 'Closed'}
+                          {item?.opened ? 'Open' : 'Closed'}
                         </Text>
                       </View>
                     </View>
