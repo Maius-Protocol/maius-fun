@@ -1,6 +1,6 @@
 {
   "name": "maiusairdrop",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "mirror": "git push --tags --force --prune mirror \"refs/remotes/origin/*:refs/heads/*\"",
@@ -13,7 +13,7 @@
     "type-check": "tsc",
     "postinstall": "patch-package",
     "create-appicon": "iconset create ./app_icon.png",
-    "release": "release"
+    "release": "release minor"
   },
   "dependencies": {
     "@ant-design/react-native": "^5.0.3",
