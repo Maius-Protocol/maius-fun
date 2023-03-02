@@ -80,6 +80,7 @@ platform :ios do
       export_method: "app-store",
       output_directory: './build',
       output_name: "MaiusAirdrop.ipa",
+      export_options: { manageAppVersionAndBuildNumber: false }
     )
 
     pilot(
@@ -91,22 +92,5 @@ platform :ios do
     )
 
     delete_keychain(keychain_name)
-
-    git_commit(
-      path: [
-          "./MaiusAirdrop.xcodeproj/project.pbxproj",
-          "./MaiusAirdrop/Info.plist",
-        ],
-       message: "[skip ci] Increment Build number"
-     )
-    version = get_version_number(
-      xcodeproj: "MaiusAirdrop.xcodeproj",
-      target: "MaiusAirdrop"
-     )
-    build_num = get_build_number(
-      xcodeproj: "MaiusAirdrop.xcodeproj",
-    )
-
-    push_to_git_remote
   end
 end
