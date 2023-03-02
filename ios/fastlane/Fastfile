@@ -106,9 +106,6 @@ platform :ios do
     build_num = get_build_number(
       xcodeproj: "MaiusAirdrop.xcodeproj",
     )
-    add_git_tag(
-      tag: "Release_v"+version+'('+build_num.to_s+')',
-     )
 
     push_to_git_remote
   end
