@@ -3,6 +3,7 @@ import { ThemeVariables } from './theme'
 export default function ({}: ThemeVariables) {
   return {
     logo: require('@/Assets/Images/TOM.png'),
+    logo_rounded: require('@/Assets/Images/logo_rounded.png'),
     placeholder: require('@/Assets/Images/placeholder.jpg'),
     blur_1: require('@/Assets/Images/blur_1.png'),
     blur_2: require('@/Assets/Images/blur_2.png'),

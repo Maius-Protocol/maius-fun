@@ -168,7 +168,9 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
     requireAllSignatures: false,
   })
   const base64 = serialized.toString('base64')
-  response.status(200).send({ transaction: base64, message: '' })
+  response
+    .status(200)
+    .send({ transaction: base64, message: 'powered by Maius team' })
 }
 
 const index: NextApiHandler<GetResponse | PostResponse> = async (
