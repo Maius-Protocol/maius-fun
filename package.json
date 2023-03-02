@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "type-check": "tsc",
     "postinstall": "patch-package",
-    "create-appicon": "iconset create ./app_icon.png"
+    "create-appicon": "iconset create ./app_icon.png",
+    "release": "release"
   },
   "dependencies": {
     "@ant-design/react-native": "^5.0.3",
