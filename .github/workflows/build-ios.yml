@@ -27,7 +27,7 @@ jobs:
           key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
 
       - name: Switch to SSH Git
-        run: git remote set-url origin git@github.com:Maius-Protocol/maius-airdrop.git
+        run: git remote set-url origin git@github.com:Maius-Protocol/maius-fun.git
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:

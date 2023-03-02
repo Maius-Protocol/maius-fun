@@ -19,7 +19,7 @@ const ProductionConfig = {
 
 export const Config = {
   ...(isDev ? DevConfig : ProductionConfig),
-  IOS_APP_SCHEME: 'mairdrop',
+  IOS_APP_SCHEME: 'maiusfun',
   APP_URL: 'https://maius.fun',
   FEE_PER_NFT: 0.02,
   NEARBY_MESSAGES_API_KEY: EnvConfig.NEARBY_MESSAGES_API_KEY,
