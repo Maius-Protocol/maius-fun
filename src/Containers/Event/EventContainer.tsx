@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux'
 import { walletPublicKey } from '@/Store/Wallet'
 import { useFocusEffect } from '@react-navigation/native'
 import { serializeEvent } from '@/Utils/serializeEvent'
+import LinearGradient from 'react-native-linear-gradient'
 
 const EventContainer = () => {
   const { top } = useSafeAreaInsets()
@@ -134,84 +135,111 @@ const EventContainer = () => {
                 selectEvent(item, _item.publicKey.toBase58())
               }}
             >
-              <View
+              <LinearGradient
                 style={[
-                  Layout.row,
-                  Layout.alignItemsCenter,
-                  Layout.justifyContentBetween,
-                  Gutters.regularVPadding,
-                  Gutters.regularHPadding,
+                  Layout.fullWidth,
+                  { borderRadius: 8 },
                   Gutters.regularVMargin,
-                  {
-                    backgroundColor: index % 2 === 0 ? '#f6956a' : '#e0d2ef',
-                    borderColor: Colors.gray,
-                    borderRadius: 8,
-                  },
+                  { minHeight: 140 },
                 ]}
+                colors={['#414345', '#232526']}
               >
-                <View style={[Layout.row]}>
-                  {item?.frameUrl && (
-                    <Image
-                      source={{ uri: item?.frameUrl }}
-                      style={[
-                        {
-                          width: 96,
-                          height: 96,
-                        },
-                        Gutters.regularRMargin,
-                      ]}
-                    />
-                  )}
-                  <View style={[Layout.justifyContentBetween]}>
-                    <View>
-                      <Text style={[Fonts.bold, { fontSize: 18 }]}>
-                        {item?.name}
-                      </Text>
-                      <Text
-                        numberOfLines={1}
+                <View
+                  style={[
+                    Layout.fill,
+                    Layout.row,
+                    Layout.alignItemsCenter,
+                    Layout.justifyContentBetween,
+                    Gutters.regularVPadding,
+                    Gutters.regularHPadding,
+                    {
+                      borderColor: Colors.gray,
+                      borderRadius: 8,
+                    },
+                  ]}
+                >
+                  <View style={[Layout.row]}>
+                    {item?.frameUrl && (
+                      <Image
+                        source={{ uri: item?.frameUrl }}
                         style={[
-                          Fonts.regular,
-                          { fontSize: 14, width: maximumRes(wp('40%')) },
-                        ]}
-                      >
-                        Host: {item?.host?.toBase58()}
-                      </Text>
-                      <Text style={[Fonts.regular, { fontSize: 14 }]}>
-                        Remaining: {item?.numberOfNft?.toNumber()} NFTs
-                      </Text>
-                    </View>
-                    <View
-                      style={[
-                        {
-                          backgroundColor: item?.opened
-                            ? '#edecf0'
-                            : Colors.gray,
-                          paddingVertical: 4,
-                          borderRadius: 24,
-                          maxWidth: 128,
-                        },
-                        Layout.center,
-                        Gutters.smallTMargin,
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          Fonts.bold,
                           {
-                            fontSize: 16,
-                            color: item?.opened ? Colors.gray : Colors.white,
+                            width: 100,
+                            height: 100,
                           },
+                          Gutters.largeRMargin,
+                        ]}
+                      />
+                    )}
+                    <View style={[Layout.justifyContentBetween]}>
+                      <View>
+                        <Text
+                          style={[
+                            Fonts.bold,
+                            Fonts.textWhite,
+                            { fontSize: 18 },
+                          ]}
+                        >
+                          {item?.name}
+                        </Text>
+                        <Text
+                          numberOfLines={1}
+                          style={[
+                            Fonts.regular,
+                            Fonts.textWhite,
+                            { fontSize: 14, width: maximumRes(wp('40%')) },
+                          ]}
+                        >
+                          Host: {item?.host?.toBase58()}
+                        </Text>
+                        <Text
+                          style={[
+                            Fonts.regular,
+                            Fonts.textWhite,
+                            ,
+                            { fontSize: 14 },
+                          ]}
+                        >
+                          Remaining: {item?.numberOfNft?.toNumber()} NFTs
+                        </Text>
+                      </View>
+                      <View
+                        style={[
+                          {
+                            backgroundColor: item?.opened
+                              ? '#edecf0'
+                              : Colors.gray,
+                            paddingVertical: 4,
+                            borderRadius: 24,
+                            maxWidth: 128,
+                          },
+                          Layout.center,
+                          Gutters.regularTMargin,
                         ]}
                       >
-                        {item?.opened ? 'Opened' : 'Closed'}
-                      </Text>
+                        <Text
+                          style={[
+                            Fonts.bold,
+                            {
+                              fontSize: 16,
+                              color: item?.opened ? Colors.gray : Colors.white,
+                            },
+                          ]}
+                        >
+                          {item?.opened ? 'Opened' : 'Closed'}
+                        </Text>
+                      </View>
                     </View>
                   </View>
+                  <View>
+                    <Icon
+                      name="chevron-forward"
+                      color={Colors.white}
+                      size={24}
+                    />
+                  </View>
                 </View>
-                <View>
-                  <Icon name="chevron-forward" size={24} />
-                </View>
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
           )
         }}

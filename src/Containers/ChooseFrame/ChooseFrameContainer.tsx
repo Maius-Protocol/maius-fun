@@ -94,7 +94,7 @@ const ChooseFrameContainer = () => {
             ]}
           >
             Your host set the frame for this event. You can start taking photo
-            with this frame or choose another frame if you want.
+            with this frame.
           </Text>
         </View>
       </View>
