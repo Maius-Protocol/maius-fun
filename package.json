@@ -1,6 +1,6 @@
 {
   "name": "maiusairdrop",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "mirror": "git push --tags --force --prune mirror \"refs/remotes/origin/*:refs/heads/*\"",
