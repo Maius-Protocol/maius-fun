@@ -12,7 +12,6 @@
 
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
-
 default_platform(:ios)
 
 before_all do
@@ -47,6 +46,7 @@ end
 
 platform :ios do
   lane :beta do
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
     keychain_name = TEMP_KEYCHAIN_USER
     keychain_password = TEMP_KEYCHAIN_PASSWORD
     ensure_keychain(keychain_name, keychain_password)
