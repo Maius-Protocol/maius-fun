@@ -1,6 +1,6 @@
 import { ThemeVariables } from './theme'
 
-export default function ({ }: ThemeVariables) {
+export default function ({}: ThemeVariables) {
   return {
     logo: require('@/Assets/Images/TOM.png'),
     logo_rounded: require('@/Assets/Images/logo_rounded.png'),

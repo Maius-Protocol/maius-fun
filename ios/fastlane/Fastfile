@@ -77,13 +77,14 @@ platform :ios do
       api_key: api_key
     )
 
+    build_number = get_build_number()
     gym(
       configuration: "Release",
       workspace: "MaiusAirdrop.xcworkspace",
       scheme: "MaiusAirdrop",
       export_method: "app-store",
       output_directory: './build',
-      output_name: "MaiusAirdrop.ipa",
+      output_name: "MaiusAirdrop_#{build_number}.ipa",
     )
 
     pilot(
@@ -91,7 +92,7 @@ platform :ios do
       skip_submission: true,
       distribute_external: false,
       notify_external_testers: false,
-      ipa: "./build/MaiusAirdrop.ipa"
+      ipa: "./build/MaiusAirdrop_#{build_number}.ipa"
     )
 
     delete_keychain(keychain_name)

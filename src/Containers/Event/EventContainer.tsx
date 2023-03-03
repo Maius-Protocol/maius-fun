@@ -198,7 +198,6 @@ const EventContainer = () => {
                           style={[
                             Fonts.regular,
                             Fonts.textWhite,
-                            ,
                             { fontSize: 14 },
                           ]}
                         >
