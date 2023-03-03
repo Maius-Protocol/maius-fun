@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@/Hooks'
 import { windowWidth } from '@/Config/dimensions'
 import Lottie from 'lottie-react-native'
@@ -78,11 +78,31 @@ const ConnectWalletContainer = () => {
               mutate()
             }}
             type="primary"
-            style={{ backgroundColor: '#512da8' }}
+            style={{
+              backgroundColor: '#512da8',
+            }}
           >
-            <Text style={[Fonts.textWhite, Fonts.textCenter, Fonts.bold]}>
-              Connect with Phantom Wallet
-            </Text>
+            <View
+              style={{
+                flexWrap: 'wrap',
+                flex: 1,
+                justifyContent: 'space-between',
+                padding: 30,
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+                source={Images.phantom_logo}
+              />
+              <Text style={[Fonts.textWhite, Fonts.bold]}>
+                Connect with Phantom Wallet
+              </Text>
+            </View>
           </Button>
         </View>
       </View>

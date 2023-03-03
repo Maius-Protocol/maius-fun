@@ -1,6 +1,6 @@
 import { ThemeVariables } from './theme'
 
-export default function ({}: ThemeVariables) {
+export default function ({ }: ThemeVariables) {
   return {
     logo: require('@/Assets/Images/TOM.png'),
     logo_rounded: require('@/Assets/Images/logo_rounded.png'),
@@ -15,5 +15,6 @@ export default function ({}: ThemeVariables) {
       share: require('@/Assets/Animations/113973-share.json'),
       scan: require('@/Assets/Animations/45696-scan.json'),
     },
+    phantom_logo: require('@/Assets/Images/phantom-icon-purple.png'),
   }
 }
