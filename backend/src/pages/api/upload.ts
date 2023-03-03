@@ -47,7 +47,7 @@ export default async function handler(
         name: eventAccount?.name?.toString(),
         // @ts-ignore
         description: eventAccount?.description?.toString(),
-        attributes: [{ trait_type: 'Maius Fun', value: 'true' }],
+        // attributes: [{ trait_type: 'Maius Fun', value: 'true' }],
         properties: {
           files: [
             {
