@@ -4,6 +4,7 @@ import { RootState } from '@/Store'
 const slice = createSlice({
   name: 'wallet',
   initialState: {
+    isSmsWallet: false,
     walletPublicKey: undefined,
     sharedSecret: undefined,
     dappKeypairSecret: undefined,
@@ -12,9 +13,10 @@ const slice = createSlice({
   reducers: {
     updateWalletPublicKey: (
       state,
-      { payload: { walletPublicKey } }: WalletPayload,
+      { payload: { walletPublicKey, isSmsWallet = false } }: WalletPayload,
     ) => {
       state.walletPublicKey = walletPublicKey
+      state.isSmsWallet = isSmsWallet
     },
     updateSharedSecret: (
       state,
@@ -41,6 +43,7 @@ export const {
   updateSession,
 } = slice.actions
 
+export const isSmsWallet = (state: RootState) => state.wallet.isSmsWallet
 export const walletPublicKey = (state: RootState) =>
   state.wallet.walletPublicKey
 
@@ -55,6 +58,7 @@ export const sessionSelector = (state: RootState) => state.wallet.session
 export default slice.reducer
 
 export type WalletState = {
+  isSmsWallet: boolean
   walletPublicKey?: string
   sharedSecret?: string
   dappKeypairSecret?: string

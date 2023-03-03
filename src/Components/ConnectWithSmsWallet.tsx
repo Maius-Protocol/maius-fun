@@ -1,16 +1,23 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text } from 'react-native'
 import { Button } from '@ant-design/react-native'
-import { Config } from '@/Config'
-import { updateWalletPublicKey } from '@/Store/Wallet'
-import MockData from '@/Config/mock'
 import { useTheme } from '@/Hooks'
+import { useWallet } from '@/Hooks/useWallet'
+import { useMutation } from 'react-query'
 
 const ConnectWithSmsWallet = () => {
-  const { Images, Layout, Fonts, Gutters, Colors } = useTheme()
+  const { Fonts, Gutters, Colors } = useTheme()
+  const { connectViaSMS } = useWallet()
+  const { isLoading, mutateAsync } = useMutation(async () => {
+    return await connectViaSMS()
+  })
+
   return (
     <Button
-      onPress={() => {}}
+      loading={isLoading}
+      onPress={async () => {
+        mutateAsync()
+      }}
       type="primary"
       style={[{ backgroundColor: Colors.success }, Gutters.smallBMargin]}
     >

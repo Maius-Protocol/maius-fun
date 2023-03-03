@@ -12,9 +12,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { buildSolanaPayUrl } from '@/Utils/buildUrl'
 import { AppRoutes, navigate } from '@/Navigators/utils'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
+import { isSmsWallet } from '@/Store/Wallet'
 
 const MintNFTContainer = () => {
   const { bottom } = useSafeAreaInsets()
+  const _isSmsWallet = useSelector(isSmsWallet)
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
   const _selectedEvent = useSelector(selectedEvent)
@@ -39,6 +41,9 @@ const MintNFTContainer = () => {
   }
 
   const startMint = async () => {
+    if (_isSmsWallet) {
+      return
+    }
     const url = buildUrl()
     const supported = await Linking.canOpenURL(url)
 
@@ -49,6 +54,7 @@ const MintNFTContainer = () => {
     }
   }
 
+  console.log(_isSmsWallet)
   const progress = useMemo(() => {
     if (data) {
       return 100
@@ -85,7 +91,7 @@ const MintNFTContainer = () => {
   }
 
   useEffect(() => {
-    uploadImageWrapped()
+    // uploadImageWrapped()
     // TODO: Ensure if front image is selected && background image is selected
   }, [])
 

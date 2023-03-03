@@ -3,7 +3,8 @@ import EnvConfig from 'react-native-config'
 import { Platform } from 'react-native'
 const pkg = require('../../package.json')
 
-const isDev = process.env.NODE_ENV === 'development'
+// const isDev = process.env.NODE_ENV === 'development'
+const isDev = false
 
 const DevConfig = {
   API_URL: 'https://1a1b-113-22-113-75.ap.ngrok.io/api',
