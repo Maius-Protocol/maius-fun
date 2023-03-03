@@ -8,14 +8,13 @@ import { navigationRef } from '@/Navigators/utils'
 import useSendTransaction from '@/Services/mutations/useSendTransaction'
 import { useSelector } from 'react-redux'
 import { selectedEvent } from '@/Store/Wizard'
-import useCloseEvent from '@/Services/modules/events/useCloseEvent'
 
-const CloseEventContainer = () => {
+const ClaimVaultContainer = () => {
   const { Gutters, Layout, Fonts, Colors } = useTheme()
   const _selectedEvent = useSelector(selectedEvent)
   const eventAccountAddress = _selectedEvent?.eventAccountAddress
   const vaultAddress = _selectedEvent?.vault
-  const { mutateAsync: claimInstruction } = useCloseEvent(
+  const { mutateAsync: claimInstruction } = useClaimVault(
     eventAccountAddress!,
     vaultAddress!,
   )
@@ -36,7 +35,7 @@ const CloseEventContainer = () => {
       <View style={[Gutters.regularHPadding, Gutters.regularTPadding]}>
         <View>
           <Text style={[Fonts.textLarge, Fonts.bold, Fonts.textBlack]}>
-            Close this event...
+            Claiming vault...
           </Text>
         </View>
         <Divider />
@@ -49,4 +48,4 @@ const CloseEventContainer = () => {
   )
 }
 
-export default CloseEventContainer
+export default ClaimVaultContainer

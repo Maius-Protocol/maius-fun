@@ -24,6 +24,7 @@ type RootStackParamList = {
   TOP_UP_NFTS: undefined
   UPDATE_EVENT: undefined
   CLOSE_EVENT: undefined
+  CLAIM_VAULT: undefined
   RECEIVED_NFT: {
     solanaUrl: string
   }
@@ -44,6 +45,7 @@ export enum AppRoutes {
   CAPTURE_PHOTO = 'CAPTURE_PHOTO',
   MINT_NFT = 'MINT_NFT',
   AIRDROP_NFT = 'AIRDROP_NFT',
+  CLAIM_VAULT = 'CLAIM_VAULT',
   CLOSE_EVENT = 'CLOSE_EVENT',
   RECEIVED_NFT = 'RECEIVED_NFT',
 }

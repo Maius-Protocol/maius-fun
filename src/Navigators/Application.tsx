@@ -26,6 +26,7 @@ import CloseEventContainer from '@/Containers/Event/CloseEventContainer'
 import CurrentNftsRemaining from '@/Components/CurrentNftsRemaining'
 import BackToHome from '@/Components/BackToHome'
 import ReceivedNFTContainer from '@/Containers/ReceivedNFT/ReceivedNFTContainer'
+import ClaimVaultContainer from '@/Containers/Event/ClaimVaultContainer'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -199,6 +200,10 @@ const ApplicationNavigator = () => {
               <Stack.Screen
                 name={AppRoutes.CLOSE_EVENT}
                 component={CloseEventContainer}
+              />
+              <Stack.Screen
+                name={AppRoutes.CLAIM_VAULT}
+                component={ClaimVaultContainer}
               />
             </Stack.Group>
           </Stack.Navigator>

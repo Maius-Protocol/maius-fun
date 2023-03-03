@@ -55,11 +55,15 @@ const EventContainer = () => {
             onPress: () => navigate(AppRoutes.TOP_UP_NFTS, {}),
           },
           {
+            text: 'Claim Vault',
+            onPress: () => navigate(AppRoutes.CLAIM_VAULT, {}),
+          },
+          {
             text: 'Close Event',
             onPress: () => navigate(AppRoutes.CLOSE_EVENT, {}),
           },
           {
-            text: 'Update event information',
+            text: 'Update Event Information',
             onPress: () => navigate(AppRoutes.UPDATE_EVENT, {}),
           },
           {
