@@ -28,21 +28,11 @@ const MintNFTContainer = () => {
   const { signAndSendTransaction } = useWallet()
   const event_address = _selectedEvent?.eventAccountAddress!
   const {
-    // data,
+    data,
     mutateAsync: uploadImage,
     isLoading: isUploadingImage,
   } = useUploadImage(event_address)
   const { Images, Layout, Fonts, Gutters, MetricsSizes } = useTheme()
-
-  const data = {
-    data: {
-      data: {
-        image:
-          'https://cdn.maius.fun/assets/bb3bfcd4-95e1-4cd7-a185-9995c502dae7.jpeg',
-        json: 'https://cdn.maius.fun/assets/bb3bfcd4-95e1-4cd7-a185-9995c502dae7.json',
-      },
-    },
-  }
 
   const image = data?.data?.data?.image
   const json = data?.data?.data?.json
@@ -70,7 +60,6 @@ const MintNFTContainer = () => {
     },
   )
 
-  console.log(_isSmsWallet)
   const progress = useMemo(() => {
     if (data) {
       return 100
@@ -107,11 +96,9 @@ const MintNFTContainer = () => {
   }
 
   useEffect(() => {
-    // uploadImageWrapped()
+    uploadImageWrapped()
     // TODO: Ensure if front image is selected && background image is selected
   }, [])
-
-  console.log(data?.data?.data)
 
   return (
     <View
