@@ -5,9 +5,9 @@
 
     <item>
         <bitmap
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:src="@drawable/splash_icon"
-        />
+            android:src="@drawable/splash_icon" />
     </item>
 
 </layer-list>

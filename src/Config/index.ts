@@ -27,6 +27,7 @@ export const Config = {
   NEARBY_MESSAGES_API_KEY: EnvConfig.NEARBY_MESSAGES_API_KEY,
   APP_NAME: 'Maius Fun',
   IS_ANDROID: Platform.OS === 'android',
+  MAXIMUM_IMAGE_RES: 2000,
   VERSION: pkg.version,
 }
 

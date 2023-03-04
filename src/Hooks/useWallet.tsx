@@ -11,6 +11,7 @@ import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native'
 import { Config } from '@/Config'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  isSmsWallet,
   keypairSecretSelector,
   sessionSelector,
   sharedSecretSelector,
@@ -32,6 +33,8 @@ import messaging from '@react-native-firebase/messaging'
 import { AppRoutes, navigate, navigationRef } from '@/Navigators/utils'
 import useAuthorization from '@/Hooks/useAuthorization'
 import { transact } from '@solana-mobile/mobile-wallet-adapter-protocol'
+import { web3 } from '@project-serum/anchor'
+import { connection } from '@/Config/program'
 
 interface WalletContextState {
   connect: () => Promise<void>
@@ -63,6 +66,7 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   const dispatch = useDispatch()
   const { authorizeSession: authorizeSMSWallet, selectedAccount } =
     useAuthorization()
+  const _isSmsWallet = useSelector(isSmsWallet)
   const dappKeyPairSecret = useSelector(keypairSecretSelector)
   const sharedSecretStr = useSelector(sharedSecretSelector)
   const session = useSelector(sessionSelector)
@@ -72,6 +76,9 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   const addLog = useCallback((log: string) => {
     if (log?.includes('errorMessage')) {
       Alert.alert('Error', log)
+    }
+    if (log?.includes('Transaction is sent successfully!')) {
+      Alert.alert('Transaction is sent successfully!')
     }
     setLogs(logs => [...logs, '> ' + log])
   }, [])
@@ -121,6 +128,19 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       session,
       transaction: bs58.encode(serializedTransaction),
     }
+    if (_isSmsWallet) {
+      const res = await transact(async wallet => {
+        await authorizeSMSWallet(wallet)
+        const send = await wallet.signAndSendTransactions({
+          payloads: [serializedTransaction.toString('base64')],
+        })
+        return send
+      })
+      await res
+      addLog('Transaction is sent successfully!')
+      return
+    }
+
     const [nonce, encryptedPayload] = encryptPayload(payload, sharedSecret)
 
     const params = new URLSearchParams({

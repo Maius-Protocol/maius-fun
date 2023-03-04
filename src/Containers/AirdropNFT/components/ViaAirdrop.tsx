@@ -54,7 +54,7 @@ const ViaAirdrop = ({ url }: { url: string }) => {
           </Text>
         </View>
       </View>
-      <View style={[Layout.fullWidth, { marginBottom: bottom + 80 }]}>
+      <View style={[Layout.fullWidth, { marginBottom: bottom + 100 }]}>
         <Button
           loading={isLoading}
           onPress={() => {
