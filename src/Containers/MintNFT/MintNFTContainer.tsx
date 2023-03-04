@@ -12,12 +12,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { buildSolanaPayUrl } from '@/Utils/buildUrl'
 import { AppRoutes, navigate } from '@/Navigators/utils'
 import ImageResizer from '@bam.tech/react-native-image-resizer'
+import { isSmsWallet } from '@/Store/Wallet'
+import useSolanaPayInstruction from '@/Services/mutations/useSolanaPayInstruction'
+import { useMutation } from 'react-query'
+import { Config } from '@/Config'
+import { useWallet } from '@/Hooks/useWallet'
 
 const MintNFTContainer = () => {
   const { bottom } = useSafeAreaInsets()
+  const _isSmsWallet = useSelector(isSmsWallet)
   const _selectedPhoto = useSelector(selectedPhoto)
   const _selectedFrame = useSelector(selectedFrame)
   const _selectedEvent = useSelector(selectedEvent)
+  const { mutateAsync: getInstructionFromSolanaPay } = useSolanaPayInstruction()
+  const { signAndSendTransaction } = useWallet()
   const event_address = _selectedEvent?.eventAccountAddress!
   const {
     data,
@@ -29,25 +37,28 @@ const MintNFTContainer = () => {
   const image = data?.data?.data?.image
   const json = data?.data?.data?.json
 
-  const buildUrl = () => {
-    return buildSolanaPayUrl(event_address, {
-      image,
-      json,
-      event_address: _selectedEvent?.eventAccountAddress,
-      message: `${_selectedEvent?.name}`,
-    })
-  }
+  const { mutateAsync: startMint, isLoading: isLoading } = useMutation(
+    async () => {
+      const url = buildSolanaPayUrl(event_address, {
+        image,
+        json,
+        event_address: _selectedEvent?.eventAccountAddress,
+        message: `${_selectedEvent?.name}`,
+      })
+      if (_isSmsWallet) {
+        const instructions = await getInstructionFromSolanaPay({ url })
+        await signAndSendTransaction(Buffer.from(instructions, 'base64'))
+        return
+      }
+      const supported = await Linking.canOpenURL(url)
 
-  const startMint = async () => {
-    const url = buildUrl()
-    const supported = await Linking.canOpenURL(url)
-
-    if (supported) {
-      await Linking.openURL(url)
-    } else {
-      Alert.alert(`Don't know how to open this URL: ${url}`)
-    }
-  }
+      if (supported) {
+        await Linking.openURL(url)
+      } else {
+        Alert.alert(`Don't know how to open this URL: ${url}`)
+      }
+    },
+  )
 
   const progress = useMemo(() => {
     if (data) {
@@ -66,19 +77,19 @@ const MintNFTContainer = () => {
     if (data) {
       return 'Your NFT is ready to be minted!'
     }
-    return ''
+    return 'Something wrong. Please try again later.'
   }, [isUploadingImage, data])
 
   const uploadImageWrapped = async () => {
     const front = await ImageResizer.createResizedImage(
       _selectedPhoto!,
-      1500,
-      1500,
+      Config.MAXIMUM_IMAGE_RES,
+      Config.MAXIMUM_IMAGE_RES,
       'JPEG',
-      90,
+      80,
       0,
     )
-    uploadImage({
+    await uploadImage({
       front: front.uri!,
       background: _selectedFrame!,
     })
@@ -88,8 +99,6 @@ const MintNFTContainer = () => {
     uploadImageWrapped()
     // TODO: Ensure if front image is selected && background image is selected
   }, [])
-
-  console.log(data?.data?.data)
 
   return (
     <View
@@ -150,8 +159,8 @@ const MintNFTContainer = () => {
       <View style={[Layout.fullWidth, { marginBottom: bottom + 24 }]}>
         <Button
           disabled={isUploadingImage || !image || !json}
-          loading={isUploadingImage}
-          onPress={startMint}
+          loading={isUploadingImage || isLoading}
+          onPress={() => startMint()}
           type="primary"
         >
           <Text style={[Fonts.textWhite, Fonts.textCenter]}>Mint NFT</Text>
@@ -160,7 +169,12 @@ const MintNFTContainer = () => {
         {!isUploadingImage && json && (
           <TouchableOpacity
             onPress={() => {
-              const url = buildUrl()
+              const url = buildSolanaPayUrl(event_address, {
+                image,
+                json,
+                event_address: _selectedEvent?.eventAccountAddress,
+                message: `${_selectedEvent?.name}`,
+              })
               navigate(AppRoutes.AIRDROP_NFT, { url })
             }}
             style={[Gutters.regularVPadding]}

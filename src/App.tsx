@@ -10,6 +10,9 @@ import { Colors } from '@/Theme/Variables'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { SafeAreaView } from 'react-native'
 const queryClient = new QueryClient()
+import { ConnectionProvider } from '@solana/wallet-adapter-react'
+import { clusterApiUrl, PublicKey, PublicKeyInitData } from '@solana/web3.js'
+import { NETWORK } from '@/Config/solana'
 const App = () => (
   <Provider store={store}>
     {/**
@@ -28,7 +31,12 @@ const App = () => (
         }}
       >
         <QueryClientProvider client={queryClient}>
-          <ApplicationNavigator />
+          <ConnectionProvider
+            config={{ commitment: 'processed' }}
+            endpoint={NETWORK}
+          >
+            <ApplicationNavigator />
+          </ConnectionProvider>
         </QueryClientProvider>
       </AntdProvider>
     </PersistGate>

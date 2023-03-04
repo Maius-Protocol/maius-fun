@@ -1,6 +1,6 @@
 {
   "name": "maiusairdrop",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "mirror": "git push --tags --force --prune mirror \"refs/remotes/origin/*:refs/heads/*\"",
@@ -13,7 +13,7 @@
     "type-check": "tsc",
     "postinstall": "patch-package",
     "create-appicon": "iconset create ./app_icon.png",
-    "release": "release minor"
+    "release": "release patches"
   },
   "dependencies": {
     "@ant-design/react-native": "^5.0.3",
@@ -37,7 +37,11 @@
     "@reduxjs/toolkit": "^1.8.3",
     "@rsksmart/rns-resolver.js": "^1.1.0",
     "@sentry/react-native": "^4.15.0",
+    "@solana-mobile/mobile-wallet-adapter-protocol": "^1.0.0",
+    "@solana-mobile/mobile-wallet-adapter-protocol-web3js": "^1.0.0",
     "@solana/pay": "^0.2.4",
+    "@solana/wallet-adapter-base": "^0.9.17",
+    "@solana/wallet-adapter-react": "^0.15.7",
     "@solana/web3.js": "^1.73.2",
     "@tradle/react-native-http": "^2.0.0",
     "amazon-cognito-identity-js": "^6.1.2",
@@ -55,8 +59,10 @@
     "events": "^1.0.0",
     "https-browserify": "~0.0.0",
     "i18next": "^21.8.14",
+    "js-base64": "^3.7.5",
     "lodash": "^4.17.21",
     "lottie-react-native": "^5.1.5",
+    "mime": "^3.0.0",
     "patch-package": "^6.5.1",
     "path-browserify": "0.0.0",
     "postinstall-postinstall": "^2.1.0",

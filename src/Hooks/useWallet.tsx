@@ -11,6 +11,7 @@ import { Alert, Linking, PermissionsAndroid, Platform } from 'react-native'
 import { Config } from '@/Config'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  isSmsWallet,
   keypairSecretSelector,
   sessionSelector,
   sharedSecretSelector,
@@ -30,9 +31,14 @@ import {
 import { NearbyConfig } from 'react-native-google-nearby-messages'
 import messaging from '@react-native-firebase/messaging'
 import { AppRoutes, navigate, navigationRef } from '@/Navigators/utils'
+import useAuthorization from '@/Hooks/useAuthorization'
+import { transact } from '@solana-mobile/mobile-wallet-adapter-protocol'
+import { web3 } from '@project-serum/anchor'
+import { connection } from '@/Config/program'
 
 interface WalletContextState {
   connect: () => Promise<void>
+  connectViaSMS: () => Promise<void>
   disconnect: () => Promise<void>
   signAndSendTransaction: (serializedTransaction: Buffer) => Promise<void>
 }
@@ -58,6 +64,9 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
   //   `Hello from:[${wallet}]-[${FCMToken}]`,
   // )
   const dispatch = useDispatch()
+  const { authorizeSession: authorizeSMSWallet, selectedAccount } =
+    useAuthorization()
+  const _isSmsWallet = useSelector(isSmsWallet)
   const dappKeyPairSecret = useSelector(keypairSecretSelector)
   const sharedSecretStr = useSelector(sharedSecretSelector)
   const session = useSelector(sessionSelector)
@@ -68,6 +77,9 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     if (log?.includes('errorMessage')) {
       Alert.alert('Error', log)
     }
+    if (log?.includes('Transaction is sent successfully!')) {
+      Alert.alert('Transaction is sent successfully!')
+    }
     setLogs(logs => [...logs, '> ' + log])
   }, [])
   const dappKeyPair = useMemo(() => {
@@ -77,6 +89,18 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     return undefined
   }, [dappKeyPairSecret])
 
+  const connectViaSMS = async () => {
+    await transact(async wallet => {
+      const freshAccount = await authorizeSMSWallet(wallet)
+
+      dispatch(
+        updateWalletPublicKey({
+          walletPublicKey: freshAccount?.publicKey?.toBase58()!,
+          isSmsWallet: true,
+        }),
+      )
+    })
+  }
   const connect = async () => {
     if (!dappKeyPair) {
       return
@@ -104,6 +128,19 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       session,
       transaction: bs58.encode(serializedTransaction),
     }
+    if (_isSmsWallet) {
+      const res = await transact(async wallet => {
+        await authorizeSMSWallet(wallet)
+        const send = await wallet.signAndSendTransactions({
+          payloads: [serializedTransaction.toString('base64')],
+        })
+        return send
+      })
+      await res
+      addLog('Transaction is sent successfully!')
+      return
+    }
+
     const [nonce, encryptedPayload] = encryptPayload(payload, sharedSecret)
 
     const params = new URLSearchParams({
@@ -123,6 +160,7 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     dispatch(
       updateWalletPublicKey({
         walletPublicKey: undefined,
+        isSmsWallet: false,
       }),
     )
   }
@@ -159,6 +197,7 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
       dispatch(
         updateWalletPublicKey({
           walletPublicKey: connectData.public_key,
+          isSmsWallet: false,
         }),
       )
 
@@ -236,6 +275,7 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     <WalletContext.Provider
       value={{
         connect,
+        connectViaSMS,
         disconnect,
         signAndSendTransaction,
       }}

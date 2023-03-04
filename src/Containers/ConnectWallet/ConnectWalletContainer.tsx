@@ -105,7 +105,9 @@ const ConnectWalletContainer = () => {
             </View>
           </Button>
         </View>
-        <Text style={[Fonts.regular]}>Version: {Config.VERSION}</Text>
+        <Text style={[Fonts.regular, Gutters.smallBMargin]}>
+          Version: {Config.VERSION}
+        </Text>
       </View>
     </SafeAreaView>
   )
