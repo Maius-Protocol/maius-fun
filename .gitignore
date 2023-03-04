@@ -88,3 +88,4 @@ amplifytools.xcconfig
 /keypair/keypair.secret.json
 
 ios/MaiusAirdrop.app.dSYM.zip
+/android/app/release/*
