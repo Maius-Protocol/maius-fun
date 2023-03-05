@@ -1,0 +1,88 @@
+name: Build iOS
+on:
+  push:
+    branches:
+      - test-android-ci
+jobs:
+  deploy:
+    runs-on: macos-latest
+    env:
+      MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+      SUPPLY_JSON_KEY_DATA: '${{ secrets.SUPPLY_JSON_KEY_DATA }}'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          known_hosts: unnecessary
+          key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+
+      - name: Switch to SSH Git
+        run: git remote set-url origin git@github.com:Maius-Protocol/maius-fun.git
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 'latest'
+      - run: ssh -T git@github.com || true
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.4
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Restore node_modules from cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install NPM dependencies
+        run: yarn install # if you use npm then please change it to npm
+
+      - name: Test Ruby
+        run: ruby -v
+
+      - name: Test Node
+        run: node -v
+
+      - name: Test NPM packages
+        run: yarn react-native --version
+
+      - name: Install fastlane
+        run: cd android && bundle install && cd ..
+
+      - name: Deploy
+        run: cd android && fastlane android deploy
+
+#      - name: Restore Pods cache
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ios/Pods
+#            ~/Library/Caches/CocoaPods
+#            ~/.cocoapods
+#          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-pods-
+#
+#      - name: Install Pods
+#        run: cd ios && pod install && cd ..
+#
+#      - name: Releasing application
+#        run: cd ios && fastlane ios beta
