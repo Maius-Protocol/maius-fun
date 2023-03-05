@@ -1,4 +1,4 @@
-name: Build iOS
+name: Build Android
 on:
   push:
     branches:
@@ -33,11 +33,30 @@ jobs:
           ruby-version: 2.7.4
           bundler-cache: true
 
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "adopt"
+          cache: "gradle"
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
           node-version: '16'
           cache: 'yarn'
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
