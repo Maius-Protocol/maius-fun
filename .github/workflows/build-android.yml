@@ -5,11 +5,14 @@ on:
       - test-android-ci
 jobs:
   deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       NEARBY_MESSAGES_API_KEY: '${{ secrets.NEARBY_MESSAGES_API_KEY }}'
       MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
       SUPPLY_JSON_KEY_DATA: '${{ secrets.SUPPLY_JSON_KEY_DATA }}'
+      STORE_PASSWORD: '${{ secrets.STORE_PASSWORD }}'
+      KEYSTORE_ALIAS: '${{ secrets.KEYSTORE_ALIAS }}'
+      KEYSTORE_PASSWORD: '${{ secrets.KEYSTORE_PASSWORD }}'
 
     steps:
       - uses: actions/checkout@v2
