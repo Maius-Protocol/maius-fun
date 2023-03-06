@@ -7,6 +7,7 @@ jobs:
   deploy:
     runs-on: macos-latest
     env:
+      NEARBY_MESSAGES_API_KEY: '${{ secrets.NEARBY_MESSAGES_API_KEY }}'
       MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
       SUPPLY_JSON_KEY_DATA: '${{ secrets.SUPPLY_JSON_KEY_DATA }}'
 
@@ -82,6 +83,9 @@ jobs:
 
       - name: Test NPM packages
         run: yarn react-native --version
+
+      - name: Create ENV File
+        run: cat .env.template | envsubst > .env
 
       - name: Install fastlane
         run: cd android && bundle install && cd ..
