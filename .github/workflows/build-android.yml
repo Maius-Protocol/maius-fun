@@ -26,9 +26,6 @@ jobs:
       - name: Switch to SSH Git
         run: git remote set-url origin git@github.com:Maius-Protocol/maius-fun.git
 
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: 'latest'
       - run: ssh -T git@github.com || true
 
       - name: Setup Ruby
