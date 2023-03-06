@@ -32,13 +32,18 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
+    android_set_version_code()
+    version = android_get_version_code()
+    android_set_version_name(
+        version_name: "#{version}"
+    )
     gradle(
       task: "bundle",
       build_type: "Release"
     )
     upload_to_play_store(
       skip_upload_apk: true,
-      track: "internal"
+      track: "production"
     )
   end
 end
