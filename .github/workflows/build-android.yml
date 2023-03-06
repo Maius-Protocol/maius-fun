@@ -1,0 +1,111 @@
+name: Build Android
+on:
+  push:
+    branches:
+      - test-android-ci
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      NEARBY_MESSAGES_API_KEY: '${{ secrets.NEARBY_MESSAGES_API_KEY }}'
+      MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
+      SUPPLY_JSON_KEY_DATA: '${{ secrets.SUPPLY_JSON_KEY_DATA }}'
+      STORE_PASSWORD: '${{ secrets.STORE_PASSWORD }}'
+      KEYSTORE_ALIAS: '${{ secrets.KEYSTORE_ALIAS }}'
+      KEYSTORE_PASSWORD: '${{ secrets.KEYSTORE_PASSWORD }}'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          known_hosts: unnecessary
+          key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+
+      - name: Switch to SSH Git
+        run: git remote set-url origin git@github.com:Maius-Protocol/maius-fun.git
+
+      - run: ssh -T git@github.com || true
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.4
+          bundler-cache: true
+
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "adopt"
+          cache: "gradle"
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Restore node_modules from cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install NPM dependencies
+        run: yarn install # if you use npm then please change it to npm
+
+      - name: Test Ruby
+        run: ruby -v
+
+      - name: Test Node
+        run: node -v
+
+      - name: Test NPM packages
+        run: yarn react-native --version
+
+      - name: Create ENV File
+        run: cat .env.template | envsubst > .env
+
+      - name: Install fastlane
+        run: cd android && bundle install && cd ..
+
+      - name: Deploy
+        run: cd android && fastlane android deploy
+
+#      - name: Restore Pods cache
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ios/Pods
+#            ~/Library/Caches/CocoaPods
+#            ~/.cocoapods
+#          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-pods-
+#
+#      - name: Install Pods
+#        run: cd ios && pod install && cd ..
+#
+#      - name: Releasing application
+#        run: cd ios && fastlane ios beta
