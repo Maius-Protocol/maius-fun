@@ -38,7 +38,6 @@ platform :android do
     )
     upload_to_play_store(
       skip_upload_apk: true,
-      aab: "app/build/outputs/bundle/release/app.aab",
       track: "internal"
     )
   end
