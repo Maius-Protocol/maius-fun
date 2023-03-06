@@ -43,7 +43,7 @@ platform :android do
     )
     upload_to_play_store(
       skip_upload_apk: true,
-      track: "internal"
+      track: "production"
     )
   end
 end
