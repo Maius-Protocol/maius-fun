@@ -24,17 +24,12 @@ import {
 import { decryptPayload, encryptPayload } from '@/Utils/payload'
 import { buildUrl } from '@/Utils/buildUrl'
 import { Buffer } from 'buffer'
-import {
-  useNearbyPublication,
-  useNearbySubscription,
-} from 'react-native-google-nearby-messages'
 import { NearbyConfig } from 'react-native-google-nearby-messages'
 import messaging from '@react-native-firebase/messaging'
 import { AppRoutes, navigate, navigationRef } from '@/Navigators/utils'
 import useAuthorization from '@/Hooks/useAuthorization'
 import { transact } from '@solana-mobile/mobile-wallet-adapter-protocol'
-import { web3 } from '@project-serum/anchor'
-import { connection } from '@/Config/program'
+import { useNearbyPublication } from '@/Utils/GoogleNearbyMessages'
 
 interface WalletContextState {
   connect: () => Promise<void>
@@ -59,10 +54,10 @@ const WalletProvider: React.FunctionComponent<WalletContextProps> = ({
     () => ({ apiKey: Config.NEARBY_MESSAGES_API_KEY }),
     [],
   )
-  // const nearbyStatus = useNearbyPublication(
-  //   nearbyConfig,
-  //   `Hello from:[${wallet}]-[${FCMToken}]`,
-  // )
+  const nearbyStatus = useNearbyPublication(
+    nearbyConfig,
+    `Hello from:[${wallet}]-[${FCMToken}]`,
+  )
   const dispatch = useDispatch()
   const { authorizeSession: authorizeSMSWallet, selectedAccount } =
     useAuthorization()

@@ -1,0 +1,71 @@
+@use 'variables.module';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  background-color: variables.$background-color;
+  color: variables.$text-color;
+  color-scheme: dark;
+}
+
+main {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+nav {
+  display: flex;
+  position: sticky;
+  top: 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  font-size: 13.5px;
+  font-weight: 400;
+  border-bottom: 1px solid variables.$border-color;
+  z-index: 999;
+
+  background-color: rgb(0, 0, 0);
+
+  @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+    backdrop-filter: saturate(180%) blur(8px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  height: variables.$nav-height;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 25px;
+  }
+
+  a {
+    font-family: "DM Sans";
+    font-size: 13px;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 750px) {
+  .--disable-mobile {
+    display: none;
+  }
+}

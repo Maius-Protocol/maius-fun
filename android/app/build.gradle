@@ -267,6 +267,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.gms:play-services-nearby:18.4.0'
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //noinspection GradleDynamicVersion
@@ -295,6 +297,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    
 }
 
 if (isNewArchitectureEnabled()) {

@@ -1,0 +1,233 @@
+@use 'variables.module';
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+.Panels {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+// ADJUST TO MOBILE DEVICES - Reduce padding / switch panels flex-direction to column / remove position: sticky to heading
+@media (max-width: 750px) {
+    .Panel {
+        padding: 17.5px !important;
+    }
+
+    .Panels {
+        flex-direction: column;
+    }
+
+    .Panel__heading {
+        position: static !important;
+    }
+
+    .Panel__features {
+        border-left: none !important;
+    }
+}
+
+.Panel {
+    padding: 25px;
+
+}
+
+.Panel__heading {
+    background-image: url("/s-4.png");
+    //height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 25px;
+    position: sticky;
+    top: variables.$nav-height;
+    height: variables.$panels-height;
+    //max-height: 722px;
+
+    h1 {
+        font-family: "DM Sans";
+        font-weight: 400;
+        font-size: clamp(35px, 3.5vw, 50px);
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+
+        img {
+            height: 50px;
+        }
+
+        &--disabled {
+            filter: brightness(50%)
+        }
+    }
+
+    &__rating {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        font-family: "DM Sans";
+
+        &__heading {
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        &__description {
+            color: gray;
+            font-size: 0.8rem;
+        }
+    }
+}
+
+.Panel__features {
+    flex: 1;
+    border-left: 1px solid variables.$border-color;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.insidePadding {
+    padding: variables.$card-padding;
+}
+.Card {
+    max-width: 550px;
+
+    @media (max-width: 750px) {
+        max-width: 100%;
+    }
+
+    font-family: "DM Sans";
+    color: white;
+    border: 1px solid variables.$border-color;
+    display: flex;
+    flex-direction: column;
+    padding: variables.$card-padding;
+    border-radius: 20px;
+    align-items: flex-start;
+    gap: 12.5px;
+
+    &--no-padding {
+        padding: 0;
+    }
+
+    &--no-bottom-padding {
+        padding-bottom: 0 !important;
+    }
+    &--no-top-padding {
+        padding-top: 0 !important;
+    }
+
+    &__badge {
+        font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase;
+        font-weight: 700;
+        background-color: variables.$main-color;
+        color: black;
+        padding: 2.5px 5px;
+        border-radius: 3px;
+        font-size: 15px;
+    }
+
+    &__title {
+        font-weight: 500;
+        font-size: variables.$card-title;
+    }
+
+    &__subtitle {
+        font-weight: 400;
+        font-size: variables.$card-subtitle;
+        color: variables.$text-color-dark;
+    }
+
+    &__phone {
+        object-fit: cover;
+        width: 100%;
+    }
+
+    &__logos {
+        margin-top: 15px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+
+        &--text {
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: variables.$main-color-dark;
+            font-size: 12px;
+        }
+
+        img {
+            max-height: 25px;
+        }
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    &__row {
+        display: flex;
+        // align-items: center;
+        // height: 150px;
+        // display: grid;
+        // grid-template-columns: 1fr 3.5fr;
+
+        &--reverse {
+            border-bottom: 1px solid variables.$border-color;
+            border-top: 1px solid variables.$border-color;
+        }
+
+        &__image {
+            padding: variables.$card-padding;
+            border-right: 1px solid variables.$border-color;
+            // height: 100%;
+            width: 20%;
+            min-width: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                // width: 100px;
+            }
+
+            &--reverse {
+                border-left: 1px solid variables.$border-color;
+                border-right: none;
+
+            }
+        }
+
+        &__content {
+            // padding: 0 variables.$card-padding;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding: variables.$card-padding;
+        }
+    }
+}
+
+
+.Footer {
+    font-family: "DM Sans";
+    font-size: 13px;
+    opacity: 0.6;
+}
