@@ -6,7 +6,7 @@ export const HeadingPanel = () => {
     <div className={`${styles.Panel} ${styles.Panel__heading}`}>
       <div
         style={{
-          width: '100%',
+          width: '90%',
           height: 450,
           // border: '1px solid #2b2b2b',
         }}
