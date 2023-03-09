@@ -14,7 +14,7 @@ const DevConfig = {
 }
 const ProductionConfig = {
   API_URL: 'https://maius.fun/api',
-  SOLANA_CLUSTER: 'devnet' as Cluster,
+  SOLANA_CLUSTER: 'mainnet-beta' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_DEEPLINK: {},
 }
