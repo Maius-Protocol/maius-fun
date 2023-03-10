@@ -5,6 +5,7 @@ import Phone1 from './phone_1.png'
 import Phone2 from './phone_2.png'
 import Phone3 from './phone_3.png'
 import Phone4 from './phone_4.png'
+import React from 'react'
 export const FeaturesPanel = () => {
   return (
     <div className={`${styles.Panel} ${styles.Panel__features}`}>
@@ -65,6 +66,19 @@ export const FeaturesPanel = () => {
 
       <div className={styles.Card} style={{ padding: 0 }}>
         <Image src={Phone4} height={800} className={styles.Card__phone}></Image>
+      </div>
+      <div className={styles.Card} style={{ padding: 0 }}>
+        <div
+          style={{
+            width: '100%',
+            height: 450,
+            // border: '1px solid #2b2b2b',
+          }}
+          dangerouslySetInnerHTML={{
+            __html: `<iframe src="https://player.vimeo.com/video/804569135?h=09893ca336" width="100%" height="450" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" style="border-radius: 16px;" allowfullscreen></iframe>
+      <p></p>`,
+          }}
+        ></div>
       </div>
       {/*<div*/}
       {/*  className={`${styles.Card}  ${styles['Card--no-padding']}  ${styles.Card__column}`}*/}

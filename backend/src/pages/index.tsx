@@ -5,6 +5,9 @@ import { HeadingPanel } from '@/components/HeadingPanel'
 import { FeaturesPanel } from '@/components/FeaturesPanel'
 import { Layout } from '@/components/Layout'
 import { Panels } from '@/components/Panels'
+import Image from 'next/image'
+import Phone5 from '@/components/phone_5.png'
+import styles from '@/styles/Panels.module.scss'
 
 export default function Home() {
   return (
@@ -93,6 +96,7 @@ export default function Home() {
       </Head>
 
       {/*<Layout>*/}
+
       <Panels>
         <HeadingPanel />
         <FeaturesPanel />
