@@ -45,5 +45,17 @@ platform :android do
       skip_upload_apk: true,
       track: "production"
     )
+
+    git_pull()
+
+    git_commit(
+      path: [
+          "./app/build.gradle",
+        ],
+       message: "[skip ci] Increment Build number Android"
+     )
+
+    sh("git push origin HEAD:main")
+
   end
 end

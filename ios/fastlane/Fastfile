@@ -102,7 +102,7 @@ platform :ios do
           "./MaiusAirdrop.xcodeproj/project.pbxproj",
           "./MaiusAirdrop/Info.plist",
         ],
-       message: "[skip ci] Increment Build number"
+       message: "[skip ci] Increment Build number iOS"
      )
 
     sh("git push origin HEAD:main")
