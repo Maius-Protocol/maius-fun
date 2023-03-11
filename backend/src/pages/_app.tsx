@@ -12,8 +12,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
-      const logEvent = url => {
-        firebaseLogEvent(analytics!, 'screen_view', url)
+      const logEvent = (url: string) => {
+        firebaseLogEvent(analytics!, 'page_view', { page_path: url })
       }
 
       routers.events.on('routeChangeComplete', logEvent)
