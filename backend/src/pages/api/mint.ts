@@ -20,7 +20,7 @@ import {
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
 import { getTransferFeeInstructions } from '@/program/getTransferFeeInstruction'
-import { GetResponse, get } from '@/lib/get-response'
+import { getMaiusInfoRequest, GetResponse } from '@/api/getMaiusInfoRequest'
 
 interface PostResponse {
   transaction: string
@@ -166,7 +166,7 @@ const index: NextApiHandler<GetResponse | PostResponse> = async (
   await rateLimit(request, response)
 
   if (request.method === 'GET') {
-    return get(request, response)
+    return getMaiusInfoRequest(request, response)
   }
   if (request.method === 'POST') {
     return post(request, response)
