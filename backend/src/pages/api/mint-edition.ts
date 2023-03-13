@@ -10,15 +10,17 @@ import {
   toBigNumber,
   toNftOriginalEdition,
   toOriginalEditionAccount,
+  KeypairSigner,
 } from '@metaplex-foundation/js'
 import { getMaiusInfoRequest, GetResponse } from '@/api/getMaiusInfoRequest'
+import { toNumber } from 'web3-utils'
 
 interface PostResponse {
   transaction: string
   message?: string
 }
 
-const nftAddress = 'Bk6oPtAXwAzRcXEsRbDtbeLv5g1GMz5zr7eGQpNw7uBC'
+const nftAddress = 'ANXvfMwQfexUUM95V6YRXrerdFdmGVCA1WuCmLY1Auoe'
 
 const post: NextApiHandler<PostResponse> = async (request, response) => {
   const applicantWallet = MaiusKeypair
@@ -42,31 +44,51 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
   const originalEdition = toNftOriginalEdition(
     toOriginalEditionAccount(originalEditionAccount),
   )
-  const originalSupply = originalEdition?.supply?.toNumber()
+  let originalSupply = originalEdition?.supply?.toNumber()
 
   if (!originalSupply) {
-    throw new Error('Can not fetch current supply')
+    originalSupply = toNumber(0)
   }
+
+  const newMint = Keypair.generate()
+
   const transactionBuilder = await metaplex
     .nfts()
     .builders()
     .printNewEdition({
       originalSupply: toBigNumber(originalSupply),
+      newMint: newMint,
       originalMint: new PublicKey(nftAddress),
       newOwner: userWallet,
     })
+
   const latestBlockhash = await connection.getLatestBlockhash()
-  const tx = await transactionBuilder.toTransaction(latestBlockhash)
-  // transactionBuilder.getSigners().forEach(signer => {
-  //   tx.partialSign(signer)
-  // })
-  tx.feePayer = applicantWallet.publicKey
-  tx.partialSign(applicantWallet)
-  const serialized = tx.serialize({
+
+  const transaction = await transactionBuilder.toTransaction(latestBlockhash)
+
+  const signer = transactionBuilder
+    .getSigners()
+    .map(value => value as KeypairSigner)
+  const signerPublicKey = signer.map(value => value.publicKey)
+  let signerPublicKeyUnique = []
+  let flags = []
+  for (let i = 0; i < signerPublicKey.length; i++) {
+    if (flags[signerPublicKey[i].toString() as any]) {
+      continue
+    }
+    flags[signerPublicKey[i].toString() as any] = true
+    signerPublicKeyUnique.push(signerPublicKey[i])
+  }
+  transaction.feePayer = applicantWallet.publicKey
+  transaction.setSigners(...signerPublicKeyUnique, userWallet)
+  transaction.partialSign(...signer)
+
+  // Serialize the transaction and convert to base64 to return it
+  const serializedTransaction = transaction.serialize({
     verifySignatures: false,
-    requireAllSignatures: false,
+    requireAllSignatures: false, // account is a missing signature
   })
-  const base64 = serialized.toString('base64')
+  const base64 = serializedTransaction.toString('base64')
 
   const message = 'Powered by Maius Fun'
   // Return the serialized transaction
