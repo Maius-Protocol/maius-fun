@@ -20,22 +20,7 @@ import {
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
 import { getTransferFeeInstructions } from '@/program/getTransferFeeInstruction'
-import Constants from '@/config/constants'
-
-interface GetResponse {
-  label: string
-  icon: string
-}
-
-const get: NextApiHandler<GetResponse> = async (request, response) => {
-  const label = `${Constants.APP_NAME}: Mint NFT 📸`
-  const icon = `https://${request.headers.host}/ms-icon-310x310.png`
-
-  response.status(200).send({
-    label,
-    icon,
-  })
-}
+import { getMaiusInfoRequest, GetResponse } from '@/api/getMaiusInfoRequest'
 
 interface PostResponse {
   transaction: string
@@ -181,7 +166,7 @@ const index: NextApiHandler<GetResponse | PostResponse> = async (
   await rateLimit(request, response)
 
   if (request.method === 'GET') {
-    return get(request, response)
+    return getMaiusInfoRequest(request, response)
   }
   if (request.method === 'POST') {
     return post(request, response)
