@@ -97,6 +97,8 @@ platform :ios do
 
     delete_keychain(keychain_name)
 
+    git_pull()
+
     git_commit(
       path: [
           "./MaiusAirdrop.xcodeproj/project.pbxproj",
