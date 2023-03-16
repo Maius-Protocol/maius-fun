@@ -256,6 +256,12 @@ export type MaiusEventManage = {
           "type": {
             "option": "string"
           }
+        },
+        {
+          "name": "description",
+          "type": {
+            "option": "string"
+          }
         }
       ]
     }
@@ -606,6 +612,12 @@ export const IDL: MaiusEventManage = {
         },
         {
           "name": "frameUrl",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "description",
           "type": {
             "option": "string"
           }

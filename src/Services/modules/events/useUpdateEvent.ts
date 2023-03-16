@@ -10,6 +10,7 @@ interface useUpdateEventProps {
   nft_more: number
   collection: string
   frameUrl: string
+  description: string
   opened: boolean
 }
 
@@ -27,6 +28,7 @@ function useUpdateEvent(
       frameUrl,
       nft_more,
       collection,
+      description,
     }: Partial<useUpdateEventProps>) => {
       try {
         const update = await program.methods
@@ -36,6 +38,7 @@ function useUpdateEvent(
             typeof opened !== 'undefined' ? opened : null,
             name ? name : null,
             frameUrl ? frameUrl : null,
+            description ? description : null,
           )
           .accounts({
             event: new PublicKey(eventAccountAddress),

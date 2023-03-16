@@ -52,7 +52,7 @@ const EditEventContainer = () => {
   const isLoading = isUploadFrame || isUpdatingEvent || isSendingInstruction
 
   const onSubmit = async (data: any) => {
-    const { frame, status, name } = data
+    const { frame, status, name, description } = data
     let frameUrl = data?.frameUrl
     if (frame !== data?.frameUrl) {
       const _frameUrl = await uploadFrame({ frame })
@@ -62,6 +62,7 @@ const EditEventContainer = () => {
       name: name,
       opened: status === 'OPENED',
       frameUrl: frameUrl,
+      description,
     })
     const instructions = [eventTransaction]
     await sendInstruction(instructions)

@@ -47,7 +47,8 @@ pub fn handler(
     collection: Option<Pubkey>,
     opened: Option<bool>,
     name: Option<String>,
-    frame_url: Option<String>
+    frame_url: Option<String>,
+    description: Option<String>
 ) -> Result<()> {
     let event = &mut ctx.accounts.event;
     if nft_more != None {
@@ -79,6 +80,9 @@ pub fn handler(
     }
     if frame_url != None {
         event.frame_url = frame_url.unwrap();
+    }
+    if description != None {
+        event.description = description.unwrap();
     }
 
     Ok(())
