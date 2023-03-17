@@ -7,7 +7,7 @@ const pkg = require('../../package.json')
 const isDev = false
 
 const DevConfig = {
-  API_URL: 'https://1a1b-113-22-113-75.ap.ngrok.io/api',
+  API_URL: 'http://192.168.1.180:3000/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_CONNECTION: {},
@@ -35,4 +35,5 @@ export const ApiRoutes = {
   UPLOAD_IMAGE: '/upload',
   UPLOAD_FRAME: '/upload-frame',
   SEND_NOTIFY: '/notify',
+  NFTS: '/nfts',
 }

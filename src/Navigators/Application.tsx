@@ -27,6 +27,7 @@ import CurrentNftsRemaining from '@/Components/CurrentNftsRemaining'
 import BackToHome from '@/Components/BackToHome'
 import ReceivedNFTContainer from '@/Containers/ReceivedNFT/ReceivedNFTContainer'
 import ClaimVaultContainer from '@/Containers/Event/ClaimVaultContainer'
+import WebViewContainer from '@/Containers/WebView/WebViewContainer'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -132,6 +133,10 @@ const ApplicationNavigator = () => {
               component={StartupContainer}
             />
             <Stack.Screen name={AppRoutes.HOME} component={Home} />
+            <Stack.Screen
+              name={AppRoutes.WEBVIEW}
+              component={WebViewContainer}
+            />
 
             <Stack.Screen
               name={AppRoutes.CONNECT_WALLET}

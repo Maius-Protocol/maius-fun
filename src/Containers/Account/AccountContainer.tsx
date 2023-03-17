@@ -1,5 +1,12 @@
 import React from 'react'
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { useTheme } from '@/Hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -19,12 +26,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Colors } from '@/Theme/Variables'
 import { ActivityIndicator } from '@ant-design/react-native'
+import AllMinted from '@/Containers/Account/components/AllMinted'
+import useMintedNfts from '@/Services/modules/events/useMintedNfts'
 
 const AccountContainer = () => {
   const { top } = useSafeAreaInsets()
   const { Gutters, Layout, Fonts, Images } = useTheme()
   const wallet = useSelector(walletPublicKey)
   const dispatch = useDispatch()
+  const { isRefetching, refetch } = useMintedNfts()
   const { mutateAsync, isLoading } = useMutation(async () => {
     dispatch(
       updateWalletPublicKey({
@@ -69,6 +79,12 @@ const AccountContainer = () => {
           Layout.maxWidthTablet,
           Layout.fullWidth,
         ]}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => refetch()}
+          />
+        }
       >
         <View
           style={[
@@ -137,7 +153,9 @@ const AccountContainer = () => {
           </Text>
           <Divider />
         </View>
-        <Text style={[Gutters.smallTMargin]}>Coming Soon</Text>
+        <Text style={[Gutters.smallTMargin]}>
+          <AllMinted />
+        </Text>
       </ScrollView>
 
       {/*<TouchableOpacity*/}

@@ -1,6 +1,6 @@
 {
   "name": "maiusairdrop",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "mirror": "git push --tags --force --prune mirror \"refs/remotes/origin/*:refs/heads/*\"",
@@ -96,6 +96,7 @@
     "react-native-svg": "^13.8.0",
     "react-native-url-polyfill": "^1.3.0",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-webview": "^11.26.1",
     "react-query": "^3.39.3",
     "react-redux": "^8.0.2",
     "readable-stream": "1.0.33",

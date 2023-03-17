@@ -28,6 +28,9 @@ type RootStackParamList = {
   RECEIVED_NFT: {
     solanaUrl: string
   }
+  WEBVIEW: {
+    url: string
+  }
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
@@ -48,6 +51,7 @@ export enum AppRoutes {
   CLAIM_VAULT = 'CLAIM_VAULT',
   CLOSE_EVENT = 'CLOSE_EVENT',
   RECEIVED_NFT = 'RECEIVED_NFT',
+  WEBVIEW = 'WEBVIEW',
 }
 
 export function navigate(name: keyof RootStackParamList, params: any) {
