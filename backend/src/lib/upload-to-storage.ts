@@ -41,6 +41,7 @@ export const uploadJsonToStorage = async (
       Body: JSON.stringify({
         ...params,
         image: uploadImageCdnUrl,
+        external_url: 'https://maius.fun',
         properties: {
           files: [
             {
