@@ -11,9 +11,11 @@ export const getAllNFTs: NextApiHandler<any> = async (request, response) => {
     throw new Error('missing wallet')
   }
   const metaplex = new Metaplex(connection)
-  const nfts = await metaplex.nfts().findAllByOwner({
+  let nfts = await metaplex.nfts().findAllByOwner({
     owner: new PublicKey(wallet!),
   })
+
+  nfts = nfts?.filter(nft => nft.symbol === 'MFUN' || nft.symbol === 'MAIRDROP')
 
   return response.status(200).send({
     data: nfts,
