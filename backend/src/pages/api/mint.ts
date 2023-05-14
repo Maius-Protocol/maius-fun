@@ -15,7 +15,7 @@ import { getMasterEditionPDA, getMetadataPDA } from '@/lib/metadata-utils'
 import { connection } from '@/core'
 import {
   createCreateMasterEditionV3Instruction,
-  createCreateMetadataAccountV2Instruction,
+  createCreateMetadataAccountV3Instruction,
 } from '@metaplex-foundation/mpl-token-metadata'
 import { MaiusKeypair } from '@/program/program'
 import { getEventAccount } from '@/program/getEventAccount'
@@ -91,7 +91,7 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
       1,
       0,
     ),
-    createCreateMetadataAccountV2Instruction(
+    createCreateMetadataAccountV3Instruction(
       {
         metadata: tokenMetadataPubkey,
         mint: mint.publicKey,
@@ -100,7 +100,8 @@ const post: NextApiHandler<PostResponse> = async (request, response) => {
         updateAuthority: applicantWallet.publicKey,
       },
       {
-        createMetadataAccountArgsV2: {
+        createMetadataAccountArgsV3: {
+          collectionDetails: null,
           data: {
             name: eventAccount?.name?.toString() || 'Maius Fun',
             symbol: 'MFUN',
