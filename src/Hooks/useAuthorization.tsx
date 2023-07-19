@@ -94,7 +94,7 @@ export default function useAuthorization() {
             auth_token: authorization.authToken,
           })
         : wallet.authorize({
-            cluster: 'mainnet-beta',
+            cluster: 'devnet',
             identity: APP_IDENTITY,
           }))
       return (await handleAuthorizationResult(authorizationResult))

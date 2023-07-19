@@ -4,13 +4,15 @@ import { Platform } from 'react-native'
 const pkg = require('../../package.json')
 
 // const isDev = process.env.NODE_ENV === 'development'
-const isDev = false
+export const isDev = true
 
 const DevConfig = {
-  API_URL: 'http://192.168.1.180:3000/api',
+  // API_URL: 'http://192.168.1.180:3000/api',
+  API_URL: 'https://maius.fun/api',
   SOLANA_CLUSTER: 'devnet' as Cluster,
   MOCKING_ENABLED: false,
   MOCKED_CONNECTION: {},
+  MOCKED_DEEPLINK: {},
 }
 const ProductionConfig = {
   API_URL: 'https://maius.fun/api',
