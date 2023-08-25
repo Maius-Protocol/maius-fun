@@ -1,4 +1,4 @@
-export const isDev = true
+export const isDev = false
 
 export const CLUSTER_ENDPOINT = isDev
   ? 'https://api.devnet.solana.com'
